@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slick-initialized .slick-slide {
+    margin: 0 8px;
+}
+
+.slick-slider .slick-track {
+    padding-bottom: 8px;
+}
+
+nav.nav-search a {
+    @apply hover:text-rose-700;
+}
+nav a.navbar {
+    @apply hover:text-rose-700 text-rose-500 font-bold;
+}
