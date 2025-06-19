@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('pages.index');
 });
+
+Route::get('/nha-dat-ban', function () {
+    return view('pages.nha_dat_ban');
+});
+
+Route::get('/nha-dat-thue', function () {
+    return view('pages.nha_dat_thue');
+});
+
+Route::get('/du-an', function () {
+    return view('pages.du_an');
+});

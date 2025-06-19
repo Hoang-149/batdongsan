@@ -13,7 +13,7 @@
 
     <div id="app">@yield('content')</div>
 
-    <footer class="bg-gray-800 text-white py-8">@include('includes.footer')</footer>
+    <footer class="bg-gray-200 text-black py-8">@include('includes.footer')</footer>
 </body>
 
 </html>

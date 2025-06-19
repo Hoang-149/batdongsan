@@ -213,17 +213,16 @@
 
 
     </div>
-
-    <script>
-        jQuery(document).ready(function($) {
-            $('nav a').click(function(e) {
-                e.preventDefault();
-                var target = $(this).data('id');
-                $('.content').addClass('hidden');
-                $('nav a').removeClass('navbar');
-                $(this).addClass('navbar');
-                $('#' + target).removeClass('hidden');
-            });
+@endsection
+<script>
+    jQuery(document).ready(function($) {
+        $('nav a').click(function(e) {
+            e.preventDefault();
+            var target = $(this).data('id');
+            $('.content').addClass('hidden');
+            $('nav a').removeClass('navbar');
+            $(this).addClass('navbar');
+            $('#' + target).removeClass('hidden');
         });
-    </script>
-@stop
+    });
+</script>
