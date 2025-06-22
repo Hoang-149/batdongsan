@@ -13,106 +13,95 @@
             </div>
         </div>
 
-        <div class="bg-[#E03C31] py-6">
-            <div class="container mx-auto px-4">
-                <div class="bg-white rounded-lg p-4">
-                    <div class="content active" id="nha-dat-ban">
-                        <!-- Main Search -->
-                        <div class="grid grid-cols-3 gap-4 mb-4">
-                            <div class="col-span-3">
-                                <input type="text" placeholder="Tìm kiếm địa điểm, khu vực"
-                                    class="w-full border rounded-lg p-2.5 focus:outline-none focus:border-[#E03C31]">
-                            </div>
+        <div class="max-w-6xl mx-auto">
+            <!-- Main Search Container -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+                <!-- Search Bar -->
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="flex-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" placeholder="Trên toàn quốc"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700">
+                    </div>
+                    <button
+                        class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        Tìm kiếm
+                    </button>
+                    <button
+                        class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
+                        <i class="fas fa-map"></i>
+                        Xem bản đồ
+                    </button>
+                </div>
 
-                            <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                                    <option>Loại nhà đất</option>
-                                    <option>Căn hộ chung cư</option>
-                                    <option>Nhà riêng</option>
-                                    <option>Đất nền</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
+                <!-- Filter Options -->
+                <div class="flex items-center gap-4 flex-wrap">
+                    <!-- Filter Button -->
+                    <button
+                        class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-filter text-gray-600"></i>
+                        <span class="text-gray-700 font-medium">Lọc</span>
+                    </button>
 
-                            <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                                    <option>Mức giá</option>
-                                    <option>Dưới 1 tỷ</option>
-                                    <option>1 - 2 tỷ</option>
-                                    <option>2 - 3 tỷ</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                                    <option>Diện tích</option>
-                                    <option>Dưới 30 m²</option>
-                                    <option>30 - 50 m²</option>
-                                    <option>50 - 80 m²</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
+                    <!-- Property Type Dropdown -->
+                    <div class="relative">
+                        <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
+                            <option>Loại nhà đất</option>
+                            <option>Căn hộ chung cư</option>
+                            <option>Nhà riêng</option>
+                            <option>Đất nền</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
+                            </svg>
                         </div>
 
-                        <!-- Advanced Search -->
-                        <div class="grid grid-cols-4 gap-4">
-                            <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                                    <option>Phòng ngủ</option>
-                                    <option>1+</option>
-                                    <option>2+</option>
-                                    <option>3+</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
+                    </div>
 
-                            <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                                    <option>Hướng nhà</option>
-                                    <option>Đông</option>
-                                    <option>Tây</option>
-                                    <option>Nam</option>
-                                    <option>Bắc</option>
-                                </select>
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
+                    <!-- Price Range Dropdown -->
+                    <div class="relative">
+                        <select class="w-36 border rounded-lg p-2.5 appearance-none bg-white">
+                            <option>Chọn mức giá</option>
+                            <option>Dưới 1 tỷ</option>
+                            <option>1 - 2 tỷ</option>
+                            <option>2 - 3 tỷ</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
 
-                            <div class="col-span-2 text-right">
-                                <button
-                                    class="px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-[#ca372d] transition-colors">
-                                    Xem bản đồ
-                                </button>
-                                <button
-                                    class="px-8 py-2.5 bg-[#E03C31] text-white rounded-lg hover:bg-[#ca372d] transition-colors">
-                                    Tìm kiếm
-                                </button>
-                            </div>
+                    </div>
+
+                    <!-- Verified Toggle -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="text-gray-700 font-medium">Tin xác thực</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Professional Agent Toggle -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-user-tie text-blue-500"></i>
+                            <span class="text-gray-700 font-medium">Môi giới chuyên nghiệp</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500">
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -120,7 +109,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="container mx-auto px-4 py-4">
+        <div class="container mx-auto y-4 pb-8">
             <div class="flex gap-6">
                 <!-- Left Sidebar Filters -->
                 <div class="w-[300px] flex-shrink-0">

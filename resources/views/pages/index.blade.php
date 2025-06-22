@@ -2,9 +2,12 @@
 @section('title', 'Home')
 @section('content')
 
-    <div class="bg-white">
+    <div class="bg-gray-100">
+
+        <div class="container mx-auto py-4">
+        </div>
         <!-- Header Search Section -->
-        <div class="bg-[#E03C31] py-20">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 py-4 my-4">
             <div class="container mx-auto px-4">
                 <div class="bg-white rounded-lg p-4">
                     <!-- Search Tabs -->
@@ -183,46 +186,46 @@
         <div class="bg-gray-100 py-8">
             <h2 class="container mx-auto text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
             <div class="slider-section1-home ">
-
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full object-cover"></a>
+                            class="w-full h-40 object-contain"></a>
                 </div>
             </div>
         </div>
 
 
     </div>
-@endsection
-<script>
-    jQuery(document).ready(function($) {
-        $('nav a').click(function(e) {
-            e.preventDefault();
-            var target = $(this).data('id');
-            $('.content').addClass('hidden');
-            $('nav a').removeClass('navbar');
-            $(this).addClass('navbar');
-            $('#' + target).removeClass('hidden');
+    <script>
+        jQuery(document).ready(function($) {
+            $('nav.nav-search a').click(function(e) {
+                e.preventDefault();
+                var target = $(this).data('id');
+                $('.content').addClass('hidden');
+                $('nav a').removeClass('navbar');
+                $(this).addClass('navbar');
+                $('#' + target).removeClass('hidden');
+            });
         });
-    });
-</script>
+    </script>
+
+@endsection

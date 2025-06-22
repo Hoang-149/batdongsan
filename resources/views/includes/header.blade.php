@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Logo -->
     <div class="text-2xl font-bold text-blue-600">
-        <a href="/"><img src="assets/img/favicon2.png" alt="" class="w-[160px]"></a>
+        <a href="/"><img src="assets/img/logo.png" alt="" class="w-[160px]"></a>
     </div>
     <!-- Navigation -->
     <nav class="hidden md:flex space-x-6 flex-1 ml-8">
