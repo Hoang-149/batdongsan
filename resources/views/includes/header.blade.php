@@ -8,8 +8,8 @@
         <a href="/nha-dat-ban" class="text-gray-700 font-semibold hover:text-red-800">Nhà đất bán</a>
         <a href="/nha-dat-thue" class="text-gray-700 font-semibold hover:text-red-800">Nhà đất thuê</a>
         <a href="/du-an" class="text-gray-700 font-semibold hover:text-red-800">Dự án</a>
-        <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Tin tức</a>
-        <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Wiki BĐS</a>
+        <a href="/tin-tuc" class="text-gray-700 font-semibold hover:text-red-800">Tin tức</a>
+        <a href="/wiki" class="text-gray-700 font-semibold hover:text-red-800">Wiki BĐS</a>
         <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Phân tích đánh giá</a>
         <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Danh bạ</a>
     </nav>
