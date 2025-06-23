@@ -15,9 +15,17 @@
     </nav>
     <!-- User Actions -->
     <div class="flex items-center space-x-4">
-        <a href="#" class="text-red-600 font-semibold hover:text-red-800">Đăng nhập</a>
-        <a href="#" class="text-red-600 font-semibold hover:text-red-800">Đăng ký</a>
+        <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng nhập</a>
+        <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng ký</a>
         <a href="#"
             class="border border-gray-700 font-semibold text-gray-700 px-4 py-2 rounded hover:text-red-800">Đăng tin</a>
     </div>
 </div>
+
+<script>
+    jQuery(document).ready(function($) {
+        $('a.login').click(function() {
+            $('#loginModal').toggleClass('hidden');
+        });
+    });
+</script>

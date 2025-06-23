@@ -28,9 +28,15 @@ Route::get('/nha-dat-thue', function () {
 Route::get('/du-an', function () {
     return view('pages.du_an');
 });
+
 Route::get('/tin-tuc', function () {
     return view('pages.tin_tuc');
 });
+
 Route::get('/wiki', function () {
     return view('pages.wiki');
+});
+
+Route::get('/thong-tin-ca-nhan', function () {
+    return view('pages.profile');
 });
