@@ -111,7 +111,90 @@
         <!-- Main Content -->
         <div class="container mx-auto y-4 pb-8">
             <div class="flex gap-6">
-                <!-- Left Sidebar Filters -->
+                <!-- Main Content Area -->
+                <div class="flex-1">
+
+                    <!-- Property Listings -->
+                    <div class="space-y-4">
+                        @forelse ($properties as $property)
+                            {{-- @php
+                                print $property;
+                            @endphp --}}
+
+                            <div class="bg-white rounded-lg p-4 gap-4">
+                                <div class="w-full mb-4">
+                                    <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
+                                        @php
+                                            $images = $property->images;
+                                        @endphp
+                                        <div class="row-span-2 col-span-2">
+                                            <img src="{{ isset($images[0]) ? asset($images[0]->image_url) : asset('assets/img/placeholder.jpg') }}"
+                                                class="w-full h-full object-cover rounded" alt="{{ $property->title }}">
+                                        </div>
+                                        <div class="grid grid-cols-2 grid-rows-2 gap-2 h-[234px]">
+                                            <div class="col-span-2 row-span-1">
+                                                <img src="{{ isset($images[1]) ? asset($images[1]->image_url) : asset('assets/img/placeholder.jpg') }}"
+                                                    class="w-full h-full object-cover rounded" alt="{{ $property->title }}">
+                                            </div>
+                                            <div class="col-span-2 grid grid-cols-2 grid-rows-1 gap-2 ">
+                                                <div class="col-span-1 row-span-1">
+                                                    <img src="{{ isset($images[2]) ? asset($images[2]->image_url) : asset('assets/img/placeholder.jpg') }}"
+                                                        class="w-full h-full object-cover rounded"
+                                                        alt="{{ $property->title }}">
+                                                </div>
+                                                <div class="col-span-1 row-span-1">
+                                                    <img src="{{ isset($images[3]) ? asset($images[3]->image_url) : asset('assets/img/placeholder.jpg') }}"
+                                                        class="w-full h-full object-cover rounded"
+                                                        alt="{{ $property->title }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg text-[#E03C31] mb-2">
+                                        {{ $property->title }}
+                                    </h3>
+                                    <p class="text-[#E03C31] font-bold text-xl mb-2">
+                                        {{ number_format($property->price, 0, ',', '.') }} VND
+                                    </p>
+                                    <p class="text-gray-600 mb-2">
+                                        {{ $property->area }} m² - {{ $property->propertyType->type_name ?? 'N/A' }}
+                                    </p>
+                                    <p class="text-gray-500 text-sm mb-4">
+                                        {{ Str::limit($property->description, 100) }}
+                                    </p>
+                                    <div class="flex justify-between items-end">
+                                        <div class="text-gray-500 text-sm">
+                                            <p>{{ $property->created_at->format('d/m/Y') }}</p>
+                                            <p>{{ $property->location->province ? $property->location->ward . ', ' . $property->location->province : 'N/A' }}
+                                            </p>
+                                        </div>
+                                        {{-- <a href="{{ route('properties.show', $property->property_id) }}" --}}
+                                        <a href="#" class="text-blue-600 hover:underline">
+                                            Chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-gray-600">Không tìm thấy bất động sản nào.</p>
+                        @endforelse
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-6">
+                        <div class="flex gap-2">
+                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Trước</button>
+                            <button class="px-4 py-2 border rounded bg-[#E03C31] text-white">1</button>
+                            <button class="px-4 py-2 border rounded hover:bg-gray-100">2</button>
+                            <button class="px-4 py-2 border rounded hover:bg-gray-100">3</button>
+                            <button class="px-4 py-2 border rounded hover:bg-gray-100">...</button>
+                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Sau</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="w-[300px] flex-shrink-0">
                     <div class="bg-white rounded-lg p-4 mb-4">
                         <h3 class="font-semibold mb-4">Lọc theo khoảng giá</h3>
@@ -154,80 +237,6 @@
                                 <input type="checkbox" class="rounded border-gray-300">
                                 <span class="ml-2">80 - 100 m²</span>
                             </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Content Area -->
-                <div class="flex-1">
-                    <!-- Sort and View Options -->
-                    <div class="bg-white rounded-lg p-4 mb-4 flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <span class="text-gray-600">108,234 kết quả</span>
-                            <select class="border rounded px-2 py-1">
-                                <option>Thông thường</option>
-                                <option>Tin mới nhất</option>
-                                <option>Giá thấp đến cao</option>
-                                <option>Giá cao đến thấp</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 border rounded hover:bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                            <button class="p-2 border rounded hover:bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Property Listings -->
-                    <div class="space-y-4">
-                        @for ($i = 1; $i <= 10; $i++)
-                            <div class="bg-white rounded-lg p-4 flex gap-4">
-                                <div class="w-[260px] flex-shrink-0">
-                                    <img src="assets/img/Anh-3.webp" class="w-full h-[180px] object-cover rounded">
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-lg text-[#E03C31] mb-2">
-                                        Bán nhà riêng 80m² tại Quận 7
-                                    </h3>
-                                    <p class="text-[#E03C31] font-bold text-xl mb-2">2.8 tỷ</p>
-                                    <p class="text-gray-600 mb-2">80m² - 3 PN - 2 WC</p>
-                                    <p class="text-gray-500 text-sm mb-4">
-                                        Nhà đẹp, vị trí thuận tiện, gần trường học, chợ, siêu thị...
-                                    </p>
-                                    <div class="flex justify-between items-end">
-                                        <div class="text-gray-500 text-sm">
-                                            <p>Đăng hôm nay</p>
-                                            <p>Quận 7, TP HCM</p>
-                                        </div>
-                                        <button class="text-blue-600 hover:underline">
-                                            Chi tiết
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="flex justify-center mt-6">
-                        <div class="flex gap-2">
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Trước</button>
-                            <button class="px-4 py-2 border rounded bg-[#E03C31] text-white">1</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">2</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">3</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">...</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Sau</button>
                         </div>
                     </div>
                 </div>

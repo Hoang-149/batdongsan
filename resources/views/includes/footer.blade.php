@@ -26,7 +26,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Hỗ trợ khách hàng</p>
-                            <p class="font-semibold text-gray-800">trogiup@batdongsan.com.vn</p>
+                            <p class="font-semibold text-gray-800">trogiup@Cafebizland.com</p>
                         </div>
                     </div>
 
@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Chăm sóc khách hàng</p>
-                            <p class="font-semibold text-gray-800">horro@batdongsan.com.vn</p>
+                            <p class="font-semibold text-gray-800">horro@Cafebizland.com</p>
                         </div>
                     </div>
                 </div>

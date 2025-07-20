@@ -9,14 +9,11 @@
         <a href="/nha-dat-thue" class="text-gray-700 font-semibold hover:text-red-800">Nhà đất thuê</a>
         <a href="/du-an" class="text-gray-700 font-semibold hover:text-red-800">Dự án</a>
         <a href="/tin-tuc" class="text-gray-700 font-semibold hover:text-red-800">Tin tức</a>
-        <a href="/wiki" class="text-gray-700 font-semibold hover:text-red-800">Wiki BĐS</a>
-        <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Phân tích đánh giá</a>
-        <a href="#" class="text-gray-700 font-semibold hover:text-red-800">Danh bạ</a>
     </nav>
     <!-- User Actions -->
     <div class="flex items-center space-x-4">
         <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng nhập</a>
-        <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng ký</a>
+        <a href="#" class="text-red-600 font-semibold hover:text-red-800 logup">Đăng ký</a>
         <a href="#"
             class="border border-gray-700 font-semibold text-gray-700 px-4 py-2 rounded hover:text-red-800">Đăng tin</a>
     </div>
@@ -26,6 +23,9 @@
     jQuery(document).ready(function($) {
         $('a.login').click(function() {
             $('#loginModal').toggleClass('hidden');
+        });
+        $('a.logup').click(function() {
+            $('#logupModal').toggleClass('hidden');
         });
     });
 </script>

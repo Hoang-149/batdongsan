@@ -12,6 +12,7 @@
     </header>
 
     @include('modals.loginModal')
+    @include('modals.logupModal')
 
     <div id="app" class="w-full max-w-[1140px] mx-auto mt-24">@yield('content')</div>
 
