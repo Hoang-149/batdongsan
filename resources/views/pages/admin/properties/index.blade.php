@@ -45,7 +45,8 @@
                                         <th>Area</th>
                                         <th>For Sale</th>
                                         <th>Verified</th>
-                                        <th>VIP Status</th>
+                                        {{-- <th>VIP Status</th> --}}
+                                        <th>Demande</th>
                                         <th>Created At</th>
                                         <th>Actions</th>
                                     </tr>
@@ -56,9 +57,9 @@
                                             <td>{{ $property->property_id }}</td>
                                             <td>{{ $property->title }}</td>
                                             <td>{{ $property->user->username ?? 'N/A' }}</td>
-                                            <td>{{ $property->propertyType->type_name ?? 'N/A' }}</td>
-                                            <td>{{ $property->location->province ?? 'N/A' }} -
-                                                {{ $property->location->district ?? '' }}</td>
+                                            <td>{{ implode(', ', $property->propertyTypes->pluck('type_name')->toArray()) }}
+                                            </td>
+                                            <td>{{ $property->location ?? 'N/A' }}</td>
                                             <td>{{ $property->project->project_name ?? 'N/A' }}</td>
                                             <td>
                                                 <div class="flex flex-wrap gap-2">
@@ -91,18 +92,29 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                @if ($property->isVipActive())
-                                                    <span class="badge bg-primary">VIP (Expires:
-                                                        {{ $property->vip_expires_at->format('Y-m-d') }})</span>
+                                                @if ($property->demande == 0)
+                                                    <span>Thuê</span>
                                                 @else
-                                                    <form action="#" {{-- action="{{ route('admin.properties.markAsVip', $property->property_id) }}" --}} method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-primary btn-sm">Mark as
-                                                            VIP</button>
-                                                    </form>
+                                                    @if ($property->demande == 1)
+                                                        <span>Bán</span>
+                                                    @else
+                                                        <span>Thuê và Bán</span>
+                                                    @endif
                                                 @endif
                                             </td>
+                                            {{-- <td> --}}
+                                            {{-- @if ($property->isVipActive()) --}}
+                                            {{-- <span class="badge bg-primary">VIP (Expires: --}}
+                                            {{-- {{ $property->vip_expires_at->format('Y-m-d') }})</span> --}}
+                                            {{-- @else --}}
+                                            {{-- <form action="#" action="{{ route('admin.properties.markAsVip', $property->property_id) }}" method="POST" --}}
+                                            {{-- style="display:inline;"> --}}
+                                            {{-- @csrf --}}
+                                            {{-- <button type="submit" class="btn btn-primary btn-sm">Mark as --}}
+                                            {{-- VIP</button> --}}
+                                            {{-- </form> --}}
+                                            {{-- @endif --}}
+                                            {{-- </td> --}}
                                             <td>{{ $property->created_at->format('Y-m-d H:i:s') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.properties.edit', $property->property_id) }}"

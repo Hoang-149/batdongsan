@@ -86,7 +86,7 @@
                     nhập</button>
                 <div class="flex items-center justify-between mb-4">
                     <label class="flex items-center text-gray-600 text-sm">
-                        <input type="checkbox" class="mr-2 rounded border-gray-300"> Nhớ tài khoản
+                        <input type="checkbox" class="mr-2 rounded border-gray-300" name="remember"> Nhớ tài khoản
                     </label>
                     <a href="#" class="text-[#E03C31] text-sm hover:underline">Quên mật khẩu?</a>
                 </div>
@@ -144,4 +144,10 @@
         document.getElementById('loginModal').classList.remove('hidden');
         console.log("Vo day 2");
     @endif
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 </script>

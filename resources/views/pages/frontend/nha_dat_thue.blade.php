@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Nhà đất thuê')
+@section('title', 'Nhà đất bán')
 @section('content')
 
 
@@ -29,11 +29,11 @@
                         class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                         Tìm kiếm
                     </button>
-                    <button
+                    {{-- <button
                         class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
                         <i class="fas fa-map"></i>
                         Xem bản đồ
-                    </button>
+                    </button> --}}
                 </div>
 
                 <!-- Filter Options -->
@@ -109,27 +109,45 @@
         </div>
 
         <!-- Main Content -->
+        <!-- Main Content -->
         <div class="container mx-auto y-4 pb-8">
             <div class="flex gap-6">
-                <!-- Left Sidebar Filters -->
+                <!-- Main Content Area -->
+                <div class="flex-1">
+                    <!-- Property Listings -->
+                    <div class="space-y-4" id="property-list">
+                        @include('partials.property-list', ['properties' => $properties])
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-6" id="pagination">
+                        {{ $properties->links() }}
+                    </div>
+                </div>
+
+                <!-- Filter Sidebar -->
                 <div class="w-[300px] flex-shrink-0">
                     <div class="bg-white rounded-lg p-4 mb-4">
                         <h3 class="font-semibold mb-4">Lọc theo khoảng giá</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="price_ranges[]" value="under_1b"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">Dưới 1 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="price_ranges[]" value="1b_2b"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">1 - 2 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="price_ranges[]" value="2b_3b"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">2 - 3 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="price_ranges[]" value="3b_5b"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">3 - 5 tỷ</span>
                             </label>
                         </div>
@@ -139,95 +157,25 @@
                         <h3 class="font-semibold mb-4">Lọc theo diện tích</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="area_ranges[]" value="under_30"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">Dưới 30 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="area_ranges[]" value="30_50"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">30 - 50 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="area_ranges[]" value="50_80"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">50 - 80 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="rounded border-gray-300">
+                                <input type="checkbox" name="area_ranges[]" value="80_100"
+                                    class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">80 - 100 m²</span>
                             </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Content Area -->
-                <div class="flex-1">
-                    <!-- Sort and View Options -->
-                    <div class="bg-white rounded-lg p-4 mb-4 flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <span class="text-gray-600">108,234 kết quả</span>
-                            <select class="border rounded px-2 py-1">
-                                <option>Thông thường</option>
-                                <option>Tin mới nhất</option>
-                                <option>Giá thấp đến cao</option>
-                                <option>Giá cao đến thấp</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2 border rounded hover:bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                            <button class="p-2 border rounded hover:bg-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Property Listings -->
-                    <div class="space-y-4">
-                        @for ($i = 1; $i <= 10; $i++)
-                            <div class="bg-white rounded-lg p-4 flex gap-4">
-                                <div class="w-[260px] flex-shrink-0">
-                                    <img src="assets/img/Anh-3.webp" class="w-full h-[180px] object-cover rounded">
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="font-semibold text-lg text-[#E03C31] mb-2">
-                                        Bán nhà riêng 80m² tại Quận 7
-                                    </h3>
-                                    <p class="text-[#E03C31] font-bold text-xl mb-2">2.8 tỷ</p>
-                                    <p class="text-gray-600 mb-2">80m² - 3 PN - 2 WC</p>
-                                    <p class="text-gray-500 text-sm mb-4">
-                                        Nhà đẹp, vị trí thuận tiện, gần trường học, chợ, siêu thị...
-                                    </p>
-                                    <div class="flex justify-between items-end">
-                                        <div class="text-gray-500 text-sm">
-                                            <p>Đăng hôm nay</p>
-                                            <p>Quận 7, TP HCM</p>
-                                        </div>
-                                        <button class="text-blue-600 hover:underline">
-                                            Chi tiết
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="flex justify-center mt-6">
-                        <div class="flex gap-2">
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Trước</button>
-                            <button class="px-4 py-2 border rounded bg-[#E03C31] text-white">1</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">2</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">3</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">...</button>
-                            <button class="px-4 py-2 border rounded hover:bg-gray-100">Sau</button>
                         </div>
                     </div>
                 </div>
@@ -235,5 +183,102 @@
         </div>
     </div>
 
+    <script>
+        // Add some interactivity
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                console.log(`${this.parentElement.previousElementSibling.textContent}: ${this.checked}`);
+            });
+        });
 
+        $(document).ready(function() {
+            // Hàm lấy dữ liệu bất động sản
+            function loadProperties(page = 1) {
+                // Thu thập giá trị bộ lọc
+                let priceRanges = [];
+                let areaRanges = [];
+                $('.filter-checkbox[name="price_ranges[]"]:checked').each(function() {
+                    priceRanges.push($(this).val());
+                });
+                $('.filter-checkbox[name="area_ranges[]"]:checked').each(function() {
+                    areaRanges.push($(this).val());
+                });
+
+                $.ajax({
+                    url: '{{ route('properties.indexThue') }}',
+                    type: 'GET',
+                    data: {
+                        page: page,
+                        price_ranges: priceRanges,
+                        area_ranges: areaRanges,
+                    },
+                    success: function(response) {
+                        // Cập nhật danh sách bất động sản
+                        $('#property-list').html(response.properties.map(property => `
+                    <div class="bg-white rounded-lg p-4 gap-4">
+                        <div class="w-full mb-4">
+                            <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
+                                <div class="row-span-2 col-span-2">
+                                    <img src="${property.images[0] ? '{{ asset('') }}' + property.images[0].image_url : '{{ asset('assets/img/placeholder.jpg') }}'}"
+                                        class="w-full h-full object-cover rounded" alt="${property.title}">
+                                </div>
+                                <div class="grid grid-cols-2 grid-rows-2 gap-2 h-[234px]">
+                                    <div class="col-span-2 row-span-1">
+                                        <img src="${property.images[1] ? '{{ asset('') }}' + property.images[1].image_url : '{{ asset('assets/img/placeholder.jpg') }}'}"
+                                            class="w-full h-full object-cover rounded" alt="${property.title}">
+                                    </div>
+                                    <div class="col-span-2 grid grid-cols-2 grid-rows-1 gap-2">
+                                        <div class="col-span-1 row-span-1">
+                                            <img src="${property.images[2] ? '{{ asset('') }}' + property.images[2].image_url : '{{ asset('assets/img/placeholder.jpg') }}'}"
+                                                class="w-full h-full object-cover rounded" alt="${property.title}">
+                                        </div>
+                                        <div class="col-span-1 row-span-1">
+                                            <img src="${property.images[3] ? '{{ asset('') }}' + property.images[3].image_url : '{{ asset('assets/img/placeholder.jpg') }}'}"
+                                                class="w-full h-full object-cover rounded" alt="${property.title}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg text-[#E03C31] mb-2">${property.title}</h3>
+                            <p class="text-[#E03C31] font-bold text-xl mb-2">${new Intl.NumberFormat('vi-VN').format(property.price)} VND</p>
+                            <p class="text-gray-600 mb-2">${property.area} m² - ${property.property_types ? property.property_types.map(type => type.type_name).join(', ') : 'N/A'}</p>
+                            <p class="text-gray-500 text-sm mb-4">${property.description ? property.description.substring(0, 100) : ''}</p>
+                            <div class="flex justify-between items-end">
+                                <div class="text-gray-500 text-sm">
+                                    <p>${new Date(property.created_at).toLocaleDateString('vi-VN')}</p>
+                                    <p>${property.location || 'N/A'}</p>
+                                </div>
+                                <a href="{{ route('properties.show', '') }}/${property.property_id}" class="text-blue-600 hover:underline">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') || '<p class="text-gray-600">Không tìm thấy bất động sản nào.</p>');
+
+                        // Cập nhật phân trang
+                        $('#pagination').html(response.pagination);
+                    },
+                    error: function(xhr) {
+                        console.error('Error loading properties:', xhr);
+                    }
+                });
+            }
+
+            // Gọi loadProperties khi tải trang
+            loadProperties();
+
+            // Xử lý click vào liên kết phân trang
+            $(document).on('click', '#pagination a', function(e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                loadProperties(page);
+            });
+
+            // Xử lý thay đổi bộ lọc
+            $('.filter-checkbox').on('change', function() {
+                loadProperties();
+            });
+        });
+    </script>
 @endsection

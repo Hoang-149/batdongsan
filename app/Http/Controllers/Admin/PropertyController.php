@@ -21,11 +21,13 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::with(['user', 'propertyType', 'location', 'project', 'images'])
-            ->orderByRaw('vip_expires_at IS NOT NULL DESC')
-            ->orderBy('vip_expires_at', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        // $properties = Property::with(['user', 'propertyType', 'location', 'project', 'images'])
+        //     ->orderByRaw('vip_expires_at IS NOT NULL DESC')
+        //     ->orderBy('vip_expires_at', 'desc')
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        // return view('pages.admin.properties.index', compact('properties'));
+        $properties = Property::with('user', 'project', 'propertyTypes', 'images')->paginate(10);
         return view('pages.admin.properties.index', compact('properties'));
     }
 
@@ -36,9 +38,8 @@ class PropertyController extends Controller
     {
         $users = User::all();
         $propertyTypes = PropertyType::all();
-        $locations = Location::all();
         $projects = Project::all();
-        return view('pages.admin.properties.create', compact('users', 'propertyTypes', 'locations', 'projects'));
+        return view('pages.admin.properties.create', compact('users', 'propertyTypes', 'projects'));
     }
 
     /**
@@ -51,13 +52,17 @@ class PropertyController extends Controller
             $request->all(),
             [
                 'user_id' => 'required|exists:Users,user_id',
-                'type_id' => 'required|exists:PropertyTypes,type_id',
-                'location_id' => 'required|exists:Locations,location_id',
+                'type_id' => 'required|array|min:1',
+                'type_id.*' => 'exists:propertytypes,type_id',
+                'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
+                'quan_name' => 'required|string|not_in:0', // Validate quận
+                'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:Projects,project_id',
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0|max:99999999999999999.99',
                 'area' => 'nullable|numeric|min:0',
+                'demande' => 'required',
                 'is_for_sale' => 'required|boolean',
                 'is_verified' => 'required|boolean',
                 'images.*' => 'image|mimes:jpeg,png,jpg|max:10240',
@@ -70,22 +75,30 @@ class PropertyController extends Controller
         }
 
         try {
+            // Tạo chuỗi location từ tỉnh, quận, phường
+            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+
+            // dd($request->all());
+
             $property = Property::create([
                 'user_id' => $request->user_id,
-                'type_id' => $request->type_id,
-                'location_id' => $request->location_id,
+                // 'type_id' => $request->type_id,
+                'location' => $location, // Lưu chuỗi location
                 'project_id' => $request->project_id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'price' => $request->price,
                 'area' => $request->area,
+                'demande' => $request->demande,
                 'is_for_sale' => $request->is_for_sale,
                 'is_verified' => $request->is_verified,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            $imageData = [];
+            if (!empty($request->type_id)) {
+                $property->propertyTypes()->attach($request->type_id);
+            }
 
             // Handle multiple image uploads
             if ($files = $request->file('images')) {
@@ -112,17 +125,14 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing a property.
-     */
     public function edit($id)
     {
-        $property = Property::with('images')->findOrFail($id);
+        $property = Property::with('user', 'project', 'propertyTypes', 'images')->findOrFail($id);
         $users = User::all();
-        $propertyTypes = PropertyType::all();
-        $locations = Location::all();
         $projects = Project::all();
-        return view('pages.admin.properties.edit', compact('property', 'users', 'propertyTypes', 'locations', 'projects'));
+        $propertyTypes = PropertyType::all();
+
+        return view('pages.admin.properties.edit', compact('property', 'users',  'projects', 'propertyTypes'));
     }
 
     /**
@@ -136,16 +146,21 @@ class PropertyController extends Controller
             $request->all(),
             [
                 'user_id' => 'required|exists:Users,user_id',
-                'type_id' => 'required|exists:PropertyTypes,type_id',
-                'location_id' => 'required|exists:Locations,location_id',
+                'type_id' => 'required|array|min:1',
+                'type_id.*' => 'exists:propertytypes,type_id',
+                'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
+                'quan_name' => 'required|string|not_in:0', // Validate quận
+                'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:Projects,project_id',
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0|max:99999999999999999.99',
                 'area' => 'nullable|numeric|min:0',
+                'demande' => 'required',
                 'is_for_sale' => 'required|boolean',
                 'is_verified' => 'required|boolean',
-                'images.*' => 'image|mimes:jpeg,png,jpg|max:10240',
+                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:10240',
+                'images' => 'nullable|array',
                 'delete_images' => 'nullable|array',
                 'delete_images.*' => 'exists:property_images,image_id',
             ]
@@ -156,20 +171,27 @@ class PropertyController extends Controller
         }
 
         try {
+            // Tạo chuỗi location từ tỉnh, quận, phường
+            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+
             // Update property with validated data
             $property->update([
                 'user_id' => $request->user_id,
-                'type_id' => $request->type_id,
-                'location_id' => $request->location_id,
+                'location' => $location,
                 'project_id' => $request->project_id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'price' => $request->price,
                 'area' => $request->area,
+                'demande' => $request->demande,
                 'is_for_sale' => $request->is_for_sale,
                 'is_verified' => $request->is_verified,
                 'updated_at' => now(),
             ]);
+
+            if (!empty($request->type_id)) {
+                $property->propertyTypes()->sync($request->type_id); // Sync để cập nhật hoặc xóa các loại cũ
+            }
 
             // Handle image deletions
             if ($request->has('delete_images')) {
@@ -230,41 +252,41 @@ class PropertyController extends Controller
         }
     }
 
-    /**
-     * Mark a property as VIP.
-     */
-    public function markAsVip(Request $request, $id)
-    {
-        $property = Property::findOrFail($id);
-        $user = auth()->user();
+    // /**
+    //  * Mark a property as VIP.
+    //  */
+    // public function markAsVip(Request $request, $id)
+    // {
+    //     $property = Property::findOrFail($id);
+    //     $user = auth()->user();
 
-        // Check if user has enough credits
-        $subscription = VipSubscription::where('user_id', $user->user_id)
-            ->where('credits', '>=', 1)
-            ->where(function ($query) {
-                $query->whereNull('expires_at')
-                    ->orWhere('expires_at', '>=', now());
-            })
-            ->first();
+    //     // Check if user has enough credits
+    //     $subscription = VipSubscription::where('user_id', $user->user_id)
+    //         ->where('credits', '>=', 1)
+    //         ->where(function ($query) {
+    //             $query->whereNull('expires_at')
+    //                 ->orWhere('expires_at', '>=', now());
+    //         })
+    //         ->first();
 
-        if (!$subscription) {
-            return redirect()->back()->with('error', 'You do not have enough credits or an active VIP subscription.');
-        }
+    //     if (!$subscription) {
+    //         return redirect()->back()->with('error', 'You do not have enough credits or an active VIP subscription.');
+    //     }
 
-        try {
-            // Determine VIP duration based on level
-            $durationDays = $subscription->level <= 5 ? 3 : 10;
-            $property->update([
-                'vip_expires_at' => now()->addDays($durationDays),
-                'updated_at' => now(),
-            ]);
+    //     try {
+    //         // Determine VIP duration based on level
+    //         $durationDays = $subscription->level <= 5 ? 3 : 10;
+    //         $property->update([
+    //             'vip_expires_at' => now()->addDays($durationDays),
+    //             'updated_at' => now(),
+    //         ]);
 
-            // Deduct 1 credit
-            $subscription->decrement('credits');
+    //         // Deduct 1 credit
+    //         $subscription->decrement('credits');
 
-            return redirect()->back()->with('success', 'Property marked as VIP successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to mark property as VIP. Please try again.');
-        }
-    }
+    //         return redirect()->back()->with('success', 'Property marked as VIP successfully.');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Failed to mark property as VIP. Please try again.');
+    //     }
+    // }
 }

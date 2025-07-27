@@ -8,72 +8,239 @@ use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
-    public function index(Request $request)
+    public function indexBan(Request $request)
     {
         // Initialize query
-        $query = Property::query()->with('images', 'propertyType', 'location');
+        // $query = Property::query()->with('images');
 
-        // Search by title or description
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+        // // Search by title or description
+        // if ($request->filled('search')) {
+        //     $search = $request->input('search');
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('title', 'like', "%{$search}%")
+        //             ->orWhere('description', 'like', "%{$search}%");
+        //     });
+        // }
+
+        // // // Filter by property type
+        // // if ($request->filled('type_id')) {
+        // //     $query->where('type_id', $request->input('type_id'));
+        // // }
+
+        // // Filter by price range
+        // if ($request->filled('price_range')) {
+        //     $ranges = [
+        //         'under_1b' => [0, 1000000000],
+        //         '1b_2b' => [1000000000, 2000000000],
+        //         '2b_3b' => [2000000000, 3000000000],
+        //         '3b_5b' => [3000000000, 5000000000],
+        //     ];
+        //     if (isset($ranges[$request->input('price_range')])) {
+        //         $query->whereBetween('price', $ranges[$request->input('price_range')]);
+        //     }
+        // }
+
+        // // Filter by area range
+        // if ($request->filled('area_range')) {
+        //     $ranges = [
+        //         'under_30' => [0, 30],
+        //         '30_50' => [30, 50],
+        //         '50_80' => [50, 80],
+        //         '80_100' => [80, 100],
+        //     ];
+        //     if (isset($ranges[$request->input('area_range')])) {
+        //         $query->whereBetween('area', $ranges[$request->input('area_range')]);
+        //     }
+        // }
+
+        // // Filter by verified status
+        // if ($request->filled('is_verified')) {
+        //     $query->where('is_verified', $request->input('is_verified') === '1');
+        // }
+
+        // // Sorting
+        // $sort = $request->input('sort', 'default');
+        // if ($sort === 'newest') {
+        //     $query->orderBy('created_at', 'desc');
+        // } elseif ($sort === 'price_low_high') {
+        //     $query->orderBy('price', 'asc');
+        // } elseif ($sort === 'price_high_low') {
+        //     $query->orderBy('price', 'desc');
+        // }
+
+        // // Paginate results (e.g., 10 per page)
+        // $properties = $query->paginate(10);
+
+        // // Fetch property types for dropdown
+        // $propertyTypes = \App\Models\PropertyType::all();
+
+        // return view('pages.frontend.nha_dat_ban', compact('properties', 'propertyTypes'));
+
+        // $properties = Property::with('images')
+        //     ->whereHas('propertyTypes', function ($query) {
+        //         $query->where('propertytypeproperty.type_id', 2);
+        //     })
+        //     ->get();
+
+        // Xây dựng truy vấn cơ bản
+        // $query = Property::with('images')
+        //     ->whereHas('propertyTypes', function ($query) {
+        //         $query->where('propertytypeproperty.type_id', 2);
+        //     });
+
+        $query = Property::with('images')
+            ->whereIn('demande', [1, 2]);
+
+        // Xử lý bộ lọc giá
+        if ($request->has('price_ranges')) {
+            $priceRanges = $request->input('price_ranges', []);
+            $query->where(function ($q) use ($priceRanges) {
+                if (in_array('under_1b', $priceRanges)) {
+                    $q->orWhere('price', '<', 1000000000);
+                }
+                if (in_array('1b_2b', $priceRanges)) {
+                    $q->orWhereBetween('price', [1000000000, 2000000000]);
+                }
+                if (in_array('2b_3b', $priceRanges)) {
+                    $q->orWhereBetween('price', [2000000000, 3000000000]);
+                }
+                if (in_array('3b_5b', $priceRanges)) {
+                    $q->orWhereBetween('price', [3000000000, 5000000000]);
+                }
             });
         }
 
-        // Filter by property type
-        if ($request->filled('type_id')) {
-            $query->where('type_id', $request->input('type_id'));
+        // Xử lý bộ lọc diện tích
+        if ($request->has('area_ranges')) {
+            $areaRanges = $request->input('area_ranges', []);
+            $query->where(function ($q) use ($areaRanges) {
+                if (in_array('under_30', $areaRanges)) {
+                    $q->orWhere('area', '<', 30);
+                }
+                if (in_array('30_50', $areaRanges)) {
+                    $q->orWhereBetween('area', [30, 50]);
+                }
+                if (in_array('50_80', $areaRanges)) {
+                    $q->orWhereBetween('area', [50, 80]);
+                }
+                if (in_array('80_100', $areaRanges)) {
+                    $q->orWhereBetween('area', [80, 100]);
+                }
+            });
         }
 
-        // Filter by price range
-        if ($request->filled('price_range')) {
-            $ranges = [
-                'under_1b' => [0, 1000000000],
-                '1b_2b' => [1000000000, 2000000000],
-                '2b_3b' => [2000000000, 3000000000],
-                '3b_5b' => [3000000000, 5000000000],
-            ];
-            if (isset($ranges[$request->input('price_range')])) {
-                $query->whereBetween('price', $ranges[$request->input('price_range')]);
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('location', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('property_type')) {
+            $type = $request->input('property_type');
+            $query->whereHas('propertyTypes', function ($query) use ($type) {
+                $query->where('propertytypeproperty.type_id', $type);
+            });
+        }
+
+
+        if ($request->filled('price_filter')) {
+            switch ($request->input('price_filter')) {
+                case 'under_1b':
+                    $query->where('price', '<', 1000000000);
+                    break;
+                case '1b_3b':
+                    $query->whereBetween('price', [1000000000, 3000000000]);
+                    break;
+                case 'over_3b':
+                    $query->where('price', '>', 3000000000);
+                    break;
             }
         }
 
-        // Filter by area range
-        if ($request->filled('area_range')) {
-            $ranges = [
-                'under_30' => [0, 30],
-                '30_50' => [30, 50],
-                '50_80' => [50, 80],
-                '80_100' => [80, 100],
-            ];
-            if (isset($ranges[$request->input('area_range')])) {
-                $query->whereBetween('area', $ranges[$request->input('area_range')]);
-            }
+
+        // Phân trang
+        $perPage = 2; // Số bất động sản mỗi trang
+        $properties = $query->paginate($perPage);
+
+        // Trả về JSON nếu là yêu cầu AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'properties' => $properties->items(), // Danh sách bất động sản
+                'pagination' => view('partials.pagination', ['paginator' => $properties])->render(),
+
+                'total' => $properties->total(), // Tổng số bản ghi
+                'current_page' => $properties->currentPage(), // Trang hiện tại
+                'last_page' => $properties->lastPage(), // Trang cuối
+            ]);
         }
 
-        // Filter by verified status
-        if ($request->filled('is_verified')) {
-            $query->where('is_verified', $request->input('is_verified') === '1');
+        return view('pages.frontend.nha_dat_ban', compact('properties'));
+    }
+
+    public function show($id)
+    {
+        $property = Property::with('images')->findOrFail($id);
+        return view('properties.frontend.show', compact('property'));
+    }
+
+    public function indexThue(Request $request)
+    {
+        $query = Property::with('images')
+            ->whereIn('demande', [0, 1]);
+
+        // Xử lý bộ lọc giá
+        if ($request->has('price_ranges')) {
+            $priceRanges = $request->input('price_ranges', []);
+            $query->where(function ($q) use ($priceRanges) {
+                if (in_array('under_1b', $priceRanges)) {
+                    $q->orWhere('price', '<', 1000000000);
+                }
+                if (in_array('1b_2b', $priceRanges)) {
+                    $q->orWhereBetween('price', [1000000000, 2000000000]);
+                }
+                if (in_array('2b_3b', $priceRanges)) {
+                    $q->orWhereBetween('price', [2000000000, 3000000000]);
+                }
+                if (in_array('3b_5b', $priceRanges)) {
+                    $q->orWhereBetween('price', [3000000000, 5000000000]);
+                }
+            });
         }
 
-        // Sorting
-        $sort = $request->input('sort', 'default');
-        if ($sort === 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($sort === 'price_low_high') {
-            $query->orderBy('price', 'asc');
-        } elseif ($sort === 'price_high_low') {
-            $query->orderBy('price', 'desc');
+        // Xử lý bộ lọc diện tích
+        if ($request->has('area_ranges')) {
+            $areaRanges = $request->input('area_ranges', []);
+            $query->where(function ($q) use ($areaRanges) {
+                if (in_array('under_30', $areaRanges)) {
+                    $q->orWhere('area', '<', 30);
+                }
+                if (in_array('30_50', $areaRanges)) {
+                    $q->orWhereBetween('area', [30, 50]);
+                }
+                if (in_array('50_80', $areaRanges)) {
+                    $q->orWhereBetween('area', [50, 80]);
+                }
+                if (in_array('80_100', $areaRanges)) {
+                    $q->orWhereBetween('area', [80, 100]);
+                }
+            });
         }
 
-        // Paginate results (e.g., 10 per page)
-        $properties = $query->paginate(10);
+        // Phân trang
+        $perPage = 2; // Số bất động sản mỗi trang
+        $properties = $query->paginate($perPage);
 
-        // Fetch property types for dropdown
-        $propertyTypes = \App\Models\PropertyType::all();
+        // Trả về JSON nếu là yêu cầu AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'properties' => $properties->items(), // Danh sách bất động sản
+                'pagination' => view('partials.pagination', ['paginator' => $properties])->render(),
 
-        return view('pages.nha_dat_ban', compact('properties', 'propertyTypes'));
+                'total' => $properties->total(), // Tổng số bản ghi
+                'current_page' => $properties->currentPage(), // Trang hiện tại
+                'last_page' => $properties->lastPage(), // Trang cuối
+            ]);
+        }
+
+        return view('pages.frontend.nha_dat_thue', compact('properties'));
     }
 }

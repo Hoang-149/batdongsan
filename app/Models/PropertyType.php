@@ -15,4 +15,9 @@ class PropertyType extends Model
     public $timestamps = false;
 
     protected $fillable = ['type_name', 'description'];
+
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class, 'propertytypeproperty', 'type_id', 'property_id');
+    }
 }

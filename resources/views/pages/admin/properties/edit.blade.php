@@ -37,7 +37,8 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.properties.update', $property->property_id) }}" method="POST">
+                            <form action="{{ route('admin.properties.update', $property->property_id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
@@ -57,35 +58,63 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="type_id">Property Type <span class="text-danger">*</span></label>
-                                    <select name="type_id" id="type_id"
-                                        class="form-control @error('type_id') is-invalid @enderror">
-                                        <option value="">Select Property Type</option>
+                                    <label for="type_id" class="block text-sm font-medium text-gray-700">Property Type
+                                        <span class="text-red-500">*</span></label>
+                                    <select name="type_id[]" id="type_id" multiple
+                                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md @error('type_id.*') border-red-500 @enderror"
+                                        required>
                                         @foreach ($propertyTypes as $type)
                                             <option value="{{ $type->type_id }}"
-                                                {{ old('type_id', $property->type_id) == $type->type_id ? 'selected' : '' }}>
-                                                {{ $type->type_name }}</option>
+                                                {{ in_array($type->type_id, old('type_id', $property->propertyTypes->pluck('type_id')->toArray())) ? 'selected' : '' }}>
+                                                {{ $type->type_name }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @error('type_id')
+                                    @error('type_id.*')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="demande">Demande</label>
+                                    <select name="demande" id="demande"
+                                        class="form-control @error('demande') is-invalid @enderror" required>
+                                        <option value="0"
+                                            {{ old('demande', $property->demande) == 0 ? 'selected' : '' }}>Thuê
+                                        </option>
+                                        <option value="1"
+                                            {{ old('demande', $property->demande) == 1 ? 'selected' : '' }}>Bán
+                                        </option>
+                                        <option value="2"
+                                            {{ old('demande', $property->demande) == 2 ? 'selected' : '' }}>Thuê và Bán
+                                        </option>
+                                    </select>
+                                    @error('demande')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="location_id">Location <span class="text-danger">*</span></label>
-                                    <select name="location_id" id="location_id"
-                                        class="form-control @error('location_id') is-invalid @enderror">
-                                        <option value="">Select Location</option>
-                                        @foreach ($locations as $location)
-                                            <option value="{{ $location->location_id }}"
-                                                {{ old('location_id', $property->location_id) == $location->location_id ? 'selected' : '' }}>
-                                                {{ $location->province }} - {{ $location->district }} -
-                                                {{ $location->ward }}
-                                            </option>
-                                        @endforeach
+                                    <label for="location">Location <span class="text-danger">*</span></label>
+                                    <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                                        <option value="0">Tỉnh Thành</option>
                                     </select>
-                                    @error('location_id')
+                                    <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+                                        <option value="0">Quận Huyện</option>
+                                    </select>
+                                    <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+                                        <option value="0">Phường Xã</option>
+                                    </select>
+                                    <input type="hidden" name="tinh_name" id="tinh_name" />
+                                    <input type="hidden" name="quan_name" id="quan_name" />
+                                    <input type="hidden" name="phuong_name" id="phuong_name" />
+                                    @error('tinh')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @error('quan')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @error('phuong')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -223,85 +252,150 @@
         </div>
     </section>
 
+    <style type="text/css">
+        .css_select_div {
+            text-align: center;
+        }
+
+        .css_select {
+            display: inline-table;
+            width: 25%;
+            padding: 5px;
+            margin: 5px 2%;
+            border: solid 1px #686868;
+            border-radius: 5px;
+        }
+    </style>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.querySelector('input[name="images[]"]');
-            const preview = document.getElementById('image-preview');
-            const errorDiv = document.getElementById('image-error');
-            const currentImagesContainer = document.getElementById('current-images');
-            const deleteCheckboxes = document.querySelectorAll('.delete-checkbox');
+        jQuery(document).ready(function($) {
+            // Lấy tỉnh thành
+            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function(data_tinh) {
+                if (data_tinh.error == 0) {
+                    $.each(data_tinh.data, function(key_tinh, val_tinh) {
+                        $("#tinh").append('<option value="' + val_tinh.id + '" data-name="' +
+                            val_tinh.full_name + '">' + val_tinh
+                            .full_name + '</option>');
+                    });
 
-            // Hàm kiểm tra số lượng hình ảnh hợp lệ
-            function validateImageCount() {
-                const currentImages = currentImagesContainer.querySelectorAll('.image-container').length;
-                const deletedImages = Array.from(deleteCheckboxes).filter(cb => cb.checked).length;
-                const newImages = input.files.length;
-                const totalImages = currentImages - deletedImages + newImages;
+                    $("#tinh").on('change', function() {
+                        var idtinh = $(this).val();
+                        var nameTinh = $(this).find('option:selected').data('name');
+                        $('#tinh_name').val(nameTinh);
+                        $('#quan_name').val('');
+                        $('#phuong_name').val('');
+                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function(
+                            data_quan) {
+                            if (data_quan.error == 0) {
+                                $("#quan").html('<option value="0">Quận Huyện</option>');
+                                $("#phuong").html('<option value="0">Phường Xã</option>');
 
-                if (totalImages < 4) {
-                    errorDiv.style.display = 'block';
-                } else {
-                    errorDiv.style.display = 'none';
+                                $.each(data_quan.data, function(key_quan, val_quan) {
+                                    $("#quan").append('<option value="' + val_quan
+                                        .id + '" data-name="' +
+                                        val_quan.full_name + '">' + val_quan
+                                        .full_name +
+                                        '</option>');
+                                });
+
+                                $("#quan").off('change').on('change', function() {
+                                    var idquan = $(this).val();
+                                    var nameQuan = $(this).find('option:selected')
+                                        .data('name');
+                                    $('#quan_name').val(nameQuan);
+                                    $('#phuong_name').val('');
+                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' +
+                                        idquan + '.htm',
+                                        function(data_phuong) {
+                                            if (data_phuong.error == 0) {
+                                                $("#phuong").html(
+                                                    '<option value="0">Phường Xã</option>'
+                                                );
+                                                $.each(data_phuong.data,
+                                                    function(key_phuong,
+                                                        val_phuong) {
+                                                        $("#phuong").append(
+                                                            '<option value="' +
+                                                            val_phuong
+                                                            .id +
+                                                            '"  data-name="' +
+                                                            val_phuong
+                                                            .full_name +
+                                                            '">' +
+                                                            val_phuong
+                                                            .full_name +
+                                                            '</option>');
+                                                    });
+                                            }
+                                        });
+                                });
+                                $('#phuong').on('change', function() {
+                                    var namePhuong = $(this).find('option:selected')
+                                        .data('name');
+                                    $('#phuong_name').val(namePhuong);
+                                });
+                            }
+                        });
+                    });
                 }
-            }
-
-            // Kiểm tra số lượng hình ảnh khi thay đổi checkbox xóa
-            deleteCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', validateImageCount);
             });
 
-            // Xử lý bản xem trước hình ảnh mới
-            input.addEventListener('change', function(e) {
-                preview.innerHTML = ''; // Xóa bản xem trước cũ
-                validateImageCount(); // Kiểm tra số lượng ngay khi chọn hình mới
+            // Xử lý hiển thị ảnh
+            $('input[name="images[]"]').on('change', function(e) {
+                var files = e.target.files;
+                var $preview = $('#image-preview');
+                var $errorDiv = $('#image-error');
+                $preview.html(''); // Xóa ảnh cũ
 
-                Array.from(e.target.files).forEach(file => {
+                // Kiểm tra số lượng ảnh
+                if (files.length < 4) {
+                    $errorDiv.show();
+                } else {
+                    $errorDiv.hide();
+                }
+
+                $.each(files, function(index, file) {
                     if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-                        return; // Bỏ qua tệp không hợp lệ
+                        return true; // continue
                     }
 
-                    const reader = new FileReader();
+                    var reader = new FileReader();
                     reader.onload = function(e) {
-                        const img = new Image();
+                        var img = new Image();
                         img.src = e.target.result;
 
-                        img.onload = function() {
-                            // Tạo canvas để thu nhỏ hình ảnh
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            const maxWidth = 100; // Chiều rộng tối đa
-                            const maxHeight = 100; // Chiều cao tối đa
-                            let width = img.width;
-                            let height = img.height;
+                        $(img).on('load', function() {
+                            var canvas = $('<canvas>')[0];
+                            var ctx = canvas.getContext('2d');
+                            var maxWidth = 100,
+                                maxHeight = 100;
+                            var width = img.width,
+                                height = img.height;
 
-                            // Tính tỷ lệ thu nhỏ
-                            if (width > height) {
-                                if (width > maxWidth) {
-                                    height = Math.round((height * maxWidth) / width);
-                                    width = maxWidth;
-                                }
-                            } else {
-                                if (height > maxHeight) {
-                                    width = Math.round((width * maxHeight) / height);
-                                    height = maxHeight;
-                                }
+                            // Resize
+                            if (width > height && width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            } else if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
                             }
 
                             canvas.width = width;
                             canvas.height = height;
                             ctx.drawImage(img, 0, 0, width, height);
 
-                            // Tạo phần tử hình ảnh thu nhỏ
-                            const thumbnail = document.createElement('img');
-                            thumbnail.src = canvas.toDataURL('image/jpeg');
-                            thumbnail.classList.add('w-24', 'h-24', 'object-cover',
-                                'rounded');
-                            preview.appendChild(thumbnail);
+                            var thumbnail = $('<img>')
+                                .attr('src', canvas.toDataURL('image/jpeg'))
+                                .addClass('rounded object-cover')
+                                .css({
+                                    width: '150px'
+                                });
 
-                            // Thu hồi URL để tránh rò rỉ bộ nhớ
-                            URL.revokeObjectURL(img.src);
-                        };
+                            $preview.append(thumbnail);
+                        });
                     };
+
                     reader.readAsDataURL(file);
                 });
             });

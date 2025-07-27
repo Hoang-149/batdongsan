@@ -27,6 +27,8 @@ class Property extends Model
         'vip_expires_at',
         'created_at',
         'updated_at',
+        'location',
+        'demande',
     ];
 
     protected $dates = ['vip_expires_at', 'created_at', 'updated_at'];
@@ -36,14 +38,9 @@ class Property extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    public function propertyType()
+    public function propertyTypes()
     {
-        return $this->belongsTo(PropertyType::class, 'type_id', 'type_id');
-    }
-
-    public function location()
-    {
-        return $this->belongsTo(Location::class, 'location_id', 'location_id');
+        return $this->belongsToMany(PropertyType::class, 'propertytypeproperty', 'property_id', 'type_id');
     }
 
     public function project()

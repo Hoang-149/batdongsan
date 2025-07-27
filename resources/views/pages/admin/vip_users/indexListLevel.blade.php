@@ -11,7 +11,7 @@
                         <div class="card-header">
                             <h3 class="card-title">VIP List</h3>
                             <div class="card-tools">
-                                <a href="{{ route('admin.vip_subscriptions.create') }}" class="btn btn-primary btn-sm">
+                                <a href="{{ route('admin.vip_users.create') }}" class="btn btn-primary btn-sm">
                                     <i class="fas fa-plus"></i> Add New VIP Subscription
                                 </a>
                             </div>

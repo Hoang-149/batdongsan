@@ -35,29 +35,16 @@ Route::get('/', function () {
     return view('pages.index');
 });
 
-// Route::get('/nha-dat-ban', function () {
-//     return view('pages.nha_dat_ban');
-// });
-Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'index'])->name('properties.index');
-
-Route::get('/nha-dat-thue', function () {
-    return view('pages.nha_dat_thue');
-});
+Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
+Route::get('/nha-dat/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
+Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::class, 'indexThue'])->name('properties.indexThue');
 
 Route::get('/du-an', function () {
-    return view('pages.du_an');
+    return view('pages.frontend.du_an');
 });
 
 Route::get('/tin-tuc', function () {
-    return view('pages.tin_tuc');
-});
-
-Route::get('/wiki', function () {
-    return view('pages.wiki');
-});
-
-Route::get('/thong-tin-ca-nhan', function () {
-    return view('pages.profile');
+    return view('pages.frontend.tin_tuc');
 });
 
 

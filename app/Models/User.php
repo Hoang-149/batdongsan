@@ -13,7 +13,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'Users'; // Table name is 'Users' (case-sensitive)
+    protected $table = 'users'; // Table name is 'Users' (case-sensitive)
     protected $primaryKey = 'user_id'; // Primary key is 'user_id'
     public $incrementing = true; // Auto-incrementing primary key
     // public $timestamps = false; // Disable Laravel's default timestamps

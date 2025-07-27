@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -88,7 +90,9 @@ class LoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Vui lòng kiểm tra thông tin đăng nhập.');
         }
 
-        $identifier = $request->input('identifier');
+        $identifier = trim($request->input('identifier') ?? '');
+        $identifier = preg_replace('/\s+/', '', $identifier);
+
         $password = $request->input('password');
         $remember = $request->has('remember');
 
@@ -99,9 +103,10 @@ class LoginController extends Controller
 
         if ($user && Hash::check($password, $user->password_hash)) {
             Auth::login($user, $remember);
-            // return redirect()->intended($user->is_admin ? route('admin.properties.index') : route('home'))
-            //     ->with('success', 'Đăng nhập thành công!');
-            return redirect()->intended()->with('success', 'Đăng nhập thành công!');
+
+            Log::info('success!');
+
+            return view('pages.frontend.profile')->with('success', 'Đăng nhập thành công!');
         }
 
         return redirect()->back()
