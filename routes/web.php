@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PropertyController;
+use App\Http\Controllers\Admin\TypicalBusinessController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\VipUserController;
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,9 +33,7 @@ Route::get('/password/reset', function () {
 })->name('password.request');
 
 
-Route::get('/', function () {
-    return view('pages.index');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
 Route::get('/nha-dat/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
@@ -50,6 +50,14 @@ Route::get('/tin-tuc', function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    // Typical Business routes
+    Route::get('/typical-business', [TypicalBusinessController::class, 'index'])->name('admin.typical_business.index');
+    Route::get('/typical-business/create', [TypicalBusinessController::class, 'create'])->name('admin.typical_business.create');
+    Route::post('/typical-business', [TypicalBusinessController::class, 'store'])->name('admin.typical_business.store');
+    Route::get('/typical-business/{id}/edit', [TypicalBusinessController::class, 'edit'])->name('admin.typical_business.edit');
+    Route::put('/typical-business/{id}', [TypicalBusinessController::class, 'update'])->name('admin.typical_business.update');
+    Route::delete('/typical-business/{id}', [TypicalBusinessController::class, 'destroy'])->name('admin.typical_business.destroy');
 
     // Users route
     Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');

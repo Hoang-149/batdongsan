@@ -3,7 +3,9 @@
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-6">
                 <!-- Logo and Brand -->
                 <div class="flex items-center gap-4">
-                    <a href="/"><img src="assets/img/logo.png" alt="" class="w-[160px]"></a>
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="w-[160px]">
+                    </a>
                 </div>
 
                 <!-- Contact Info -->

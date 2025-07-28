@@ -71,9 +71,16 @@
 
         <!-- Featured Properties Section -->
         <div class="container mx-auto px-4 py-8">
-            <h2 class="text-2xl font-bold mb-6">Bất động sản nổi bật</h2>
+            <div class="mb-6 flex justify-between items-center">
+                <h2 class="text-2xl font-bold">Bất động sản nổi bật</h2>
+                <span class="re__content-container-link">
+                    <a class="text-base hover:text-red-700" href="/nha-dat-ban">Tin nhà đất bán mới nhất</a>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a class="text-base hover:text-red-700" href="/nha-dat-thue">Tin nhà đất cho thuê mới nhất</a>
+                </span>
+            </div>
             <div class="grid grid-cols-4 gap-6">
-                @for ($i = 1; $i <= 8; $i++)
+                {{-- @for ($i = 1; $i <= 8; $i++)
                     <div class="border rounded-lg overflow-hidden">
                         <img src="assets/img/Anh-3.webp" class="w-full h-48 object-cover">
                         <div class="p-4">
@@ -82,12 +89,32 @@
                             <p class="text-gray-600 text-sm mt-2">Quận 7, TP HCM</p>
                             <div class="flex gap-4 mt-2 text-sm text-gray-500">
                                 <span>80m²</span>
-                                <span>2 PN</span>
-                                <span>2 WC</span>
                             </div>
                         </div>
                     </div>
-                @endfor
+                @endfor --}}
+                @forelse ($properties as $property)
+                    <div
+                        class="border rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                        <a href="{{ route('properties.show', $property->property_id) }}">
+                            <img src="{{ $property->images->first() ? asset($property->images->first()->image_url) : asset('assets/img/placeholder.jpg') }}"
+                                class="w-full h-48 object-cover" alt="{{ $property->title }}">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 line-clamp-2">{{ $property->title }}</h3>
+                                <p class="text-[#E03C31] font-bold">{{ number_format($property->price, 0, ',', '.') }} VNĐ
+                                </p>
+                                <p class="text-gray-600 text-sm mt-2">{{ $property->location ?? 'N/A' }}</p>
+                                <div class="flex gap-4 mt-2 text-sm text-gray-500">
+                                    <span>{{ $property->area }}m²</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500">
+                        No featured properties found.
+                    </div>
+                @endforelse
             </div>
         </div>
 
@@ -186,30 +213,22 @@
         <div class="bg-gray-100 py-8">
             <h2 class="container mx-auto text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
             <div class="slider-section1-home ">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
+                {{-- <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                     <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
                             class="w-full h-40 object-contain"></a>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div>
+                </div> --}}
+                @forelse ($businesses as $business)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
+                        <a href="#">
+                            <img src="{{ asset($business->image_url) }}" alt="Business Image"
+                                class="w-full h-40 object-contain">
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-gray-500">
+                        No typical businesses found.
+                    </div>
+                @endforelse
             </div>
         </div>
 

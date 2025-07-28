@@ -22,10 +22,10 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
-                        <input type="text" placeholder="Trên toàn quốc"
+                        <input type="text" id="search-text" placeholder="Trên toàn quốc"
                             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700">
                     </div>
-                    <button
+                    <button id="search-button"
                         class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                         Tìm kiếm
                     </button>
@@ -47,11 +47,11 @@
 
                     <!-- Property Type Dropdown -->
                     <div class="relative">
-                        <select class="w-full border rounded-lg p-2.5 appearance-none bg-white">
-                            <option>Loại nhà đất</option>
-                            <option>Căn hộ chung cư</option>
-                            <option>Nhà riêng</option>
-                            <option>Đất nền</option>
+                        <select class="w-full border rounded-lg p-2.5 appearance-none bg-white" id="property-type">
+                            <option value="">Loại nhà đất</option>
+                            <option value="1">Căn hộ chung cư</option>
+                            <option value="2">Nhà riêng</option>
+                            <option value="3">Đất nền</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,11 +63,11 @@
 
                     <!-- Price Range Dropdown -->
                     <div class="relative">
-                        <select class="w-36 border rounded-lg p-2.5 appearance-none bg-white">
-                            <option>Chọn mức giá</option>
-                            <option>Dưới 1 tỷ</option>
-                            <option>1 - 2 tỷ</option>
-                            <option>2 - 3 tỷ</option>
+                        <select class="w-36 border rounded-lg p-2.5 appearance-none bg-white" id="price-filter">
+                            <option value="">Chọn mức giá</option>
+                            <option value="under_1b">Dưới 1 tỷ</option>
+                            <option value="1b_3b">1 - 3 tỷ</option>
+                            <option value="over_3b">Trên 3 tỷ</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
                             <i class="fas fa-check-circle text-green-500"></i>
                             <span class="text-gray-700 font-medium">Tin xác thực</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer" checked>
+                                <input type="checkbox" class="sr-only peer" id="is-verified" name="is_verified">
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500">
                                 </div>
@@ -96,7 +96,8 @@
                         <div class="flex items-center gap-2">
                             <i class="fas fa-user-tie text-blue-500"></i>
                             <span class="text-gray-700 font-medium">Môi giới chuyên nghiệp</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
+                            <label class="relative inline-flex items-center cursor-pointer" id="professional-agent"
+                                name="professional_agent" checked>
                                 <input type="checkbox" class="sr-only peer">
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500">
@@ -108,7 +109,6 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <!-- Main Content -->
         <div class="container mx-auto y-4 pb-8">
             <div class="flex gap-6">
@@ -136,19 +136,19 @@
                                 <span class="ml-2">Dưới 1 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="1b_2b"
+                                <input type="checkbox" name="price_ranges[]" value="1b_5b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">1 - 2 tỷ</span>
+                                <span class="ml-2">1 - 5 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="2b_3b"
+                                <input type="checkbox" name="price_ranges[]" value="5b_10b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">2 - 3 tỷ</span>
+                                <span class="ml-2">5 - 10 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="3b_5b"
+                                <input type="checkbox" name="price_ranges[]" value="above_10b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">3 - 5 tỷ</span>
+                                <span class="ml-2">Trên 10 tỷ</span>
                             </label>
                         </div>
                     </div>
@@ -167,14 +167,14 @@
                                 <span class="ml-2">30 - 50 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="area_ranges[]" value="50_80"
+                                <input type="checkbox" name="area_ranges[]" value="50_100"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">50 - 80 m²</span>
+                                <span class="ml-2">50 - 100 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="area_ranges[]" value="80_100"
+                                <input type="checkbox" name="area_ranges[]" value="above_100"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">80 - 100 m²</span>
+                                <span class="ml-2">Trên 100 m²</span>
                             </label>
                         </div>
                     </div>
@@ -204,6 +204,12 @@
                     areaRanges.push($(this).val());
                 });
 
+                let searchText = $('#search-text').val();
+                let propertyType = $('#property-type').val();
+                let priceFilter = $('#price-filter').val();
+                let isVerified = $('#is-verified').is(':checked');
+                // let professionalAgent = $('#professional-agent').is(':checked');
+
                 $.ajax({
                     url: '{{ route('properties.indexThue') }}',
                     type: 'GET',
@@ -211,11 +217,17 @@
                         page: page,
                         price_ranges: priceRanges,
                         area_ranges: areaRanges,
+                        search: searchText,
+                        property_type: propertyType,
+                        price_filter: priceFilter,
+                        is_verified: isVerified,
+                        // professional_agent: professionalAgent,
                     },
                     success: function(response) {
                         // Cập nhật danh sách bất động sản
                         $('#property-list').html(response.properties.map(property => `
                     <div class="bg-white rounded-lg p-4 gap-4">
+                        <a href="${ route('properties.show', property->property_id) }">
                         <div class="w-full mb-4">
                             <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
                                 <div class="row-span-2 col-span-2">
@@ -253,6 +265,7 @@
                                 <a href="{{ route('properties.show', '') }}/${property.property_id}" class="text-blue-600 hover:underline">Chi tiết</a>
                             </div>
                         </div>
+                        </a>
                     </div>
                 `).join('') || '<p class="text-gray-600">Không tìm thấy bất động sản nào.</p>');
 
@@ -277,6 +290,11 @@
 
             // Xử lý thay đổi bộ lọc
             $('.filter-checkbox').on('change', function() {
+                loadProperties();
+            });
+
+            $('#search-button').on('click', function(e) {
+                e.preventDefault();
                 loadProperties();
             });
         });

@@ -83,7 +83,7 @@
                             <i class="fas fa-check-circle text-green-500"></i>
                             <span class="text-gray-700 font-medium">Tin xác thực</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer" checked>
+                                <input type="checkbox" class="sr-only peer" id="is-verified" name="is_verified">
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500">
                                 </div>
@@ -96,7 +96,8 @@
                         <div class="flex items-center gap-2">
                             <i class="fas fa-user-tie text-blue-500"></i>
                             <span class="text-gray-700 font-medium">Môi giới chuyên nghiệp</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
+                            <label class="relative inline-flex items-center cursor-pointer" id="professional-agent"
+                                name="professional_agent" checked>
                                 <input type="checkbox" class="sr-only peer">
                                 <div
                                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500">
@@ -135,19 +136,19 @@
                                 <span class="ml-2">Dưới 1 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="1b_2b"
+                                <input type="checkbox" name="price_ranges[]" value="1b_5b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">1 - 2 tỷ</span>
+                                <span class="ml-2">1 - 5 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="2b_3b"
+                                <input type="checkbox" name="price_ranges[]" value="5b_10b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">2 - 3 tỷ</span>
+                                <span class="ml-2">5 - 10 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="3b_5b"
+                                <input type="checkbox" name="price_ranges[]" value="above_10b"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">3 - 5 tỷ</span>
+                                <span class="ml-2">Trên 10 tỷ</span>
                             </label>
                         </div>
                     </div>
@@ -166,14 +167,14 @@
                                 <span class="ml-2">30 - 50 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="area_ranges[]" value="50_80"
+                                <input type="checkbox" name="area_ranges[]" value="50_100"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">50 - 80 m²</span>
+                                <span class="ml-2">50 - 100 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="area_ranges[]" value="80_100"
+                                <input type="checkbox" name="area_ranges[]" value="above_100"
                                     class="rounded border-gray-300 filter-checkbox">
-                                <span class="ml-2">80 - 100 m²</span>
+                                <span class="ml-2">Trên 100 m²</span>
                             </label>
                         </div>
                     </div>
@@ -206,6 +207,8 @@
                 let searchText = $('#search-text').val();
                 let propertyType = $('#property-type').val();
                 let priceFilter = $('#price-filter').val();
+                let isVerified = $('#is-verified').is(':checked');
+                // let professionalAgent = $('#professional-agent').is(':checked');
 
                 $.ajax({
                     url: '{{ route('properties.indexBan') }}',
@@ -217,11 +220,14 @@
                         search: searchText,
                         property_type: propertyType,
                         price_filter: priceFilter,
+                        is_verified: isVerified,
+                        // professional_agent: professionalAgent,
                     },
                     success: function(response) {
                         // Cập nhật danh sách bất động sản
                         $('#property-list').html(response.properties.map(property => `
                     <div class="bg-white rounded-lg p-4 gap-4">
+                        <a href="${ route('properties.show', property->property_id) }">
                         <div class="w-full mb-4">
                             <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
                                 <div class="row-span-2 col-span-2">
@@ -259,6 +265,7 @@
                                 <a href="{{ route('properties.show', '') }}/${property.property_id}" class="text-blue-600 hover:underline">Chi tiết</a>
                             </div>
                         </div>
+                        </a>
                     </div>
                 `).join('') || '<p class="text-gray-600">Không tìm thấy bất động sản nào.</p>');
 
