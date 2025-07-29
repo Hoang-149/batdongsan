@@ -106,7 +106,8 @@ class LoginController extends Controller
 
             Log::info('success!');
 
-            return view('pages.frontend.profile')->with('success', 'Đăng nhập thành công!');
+            return redirect()->route('profile')
+                ->with('success', 'Login successfully.');
         }
 
         return redirect()->back()

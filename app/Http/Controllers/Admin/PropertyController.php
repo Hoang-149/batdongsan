@@ -119,7 +119,11 @@ class PropertyController extends Controller
                 }
             }
 
-            return redirect()->route('admin.properties.create')->with('success', 'Property created successfully.');
+            if (auth()->user()->role == 'admin') {
+                return redirect()->route('admin.properties.create')->with('success', 'Property created successfully.');
+            } else {
+                return redirect()->route('profile')->with('success', 'Property created successfully.');
+            }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create property. Please try again.' . $e->getMessage())->withInput();
         }

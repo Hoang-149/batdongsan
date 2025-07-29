@@ -3,8 +3,8 @@
     <div class="bg-white rounded-xl shadow-lg flex w-full max-w-4xl overflow-hidden">
         <!-- Left illustration -->
         <div class="hidden md:flex flex-col justify-center items-center bg-[#ffeaea] w-1/2 p-8 relative">
-            <img src="assets/img/logo.png" alt="Login Illustration" class="w-40 mb-6 absolute top-2 left-2">
-            <img src="assets/img/ill.png" alt="Login Illustration" class="w-40 mb-6">
+            <img src="{{ asset('assets/img/logo.png') }}" alt="Login Illustration" class="w-40 mb-6 absolute top-2 left-2">
+            <img src="{{ asset('assets/img/ill.png') }}" alt="Login Illustration" class="w-40 mb-6">
             <div class="text-gray-700 font-semibold text-lg mb-2">Tìm nhà đất<br>Cafebizland.com dẫn lối</div>
         </div>
         <!-- Right form -->

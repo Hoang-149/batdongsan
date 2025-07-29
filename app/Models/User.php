@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->password_hash;
     }
 
+    public function getPhoneNumberAttribute($value)
+    {
+        return strlen($value) >= 8 ? substr($value, 0, 8) . '***' : $value;
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'userroles', 'user_id', 'role_id');
@@ -57,5 +62,10 @@ class User extends Authenticatable
     public function broker()
     {
         return $this->hasOne(Broker::class, 'user_id', 'user_id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class, 'user_id', 'user_id');
     }
 }

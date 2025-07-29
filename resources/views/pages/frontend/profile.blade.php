@@ -64,7 +64,8 @@
                                     </svg>
                                 </button>
                                 <ul class="ml-7 mt-2 space-y-1 text-sm text-gray-600">
-                                    <li><a href="#" class="hover:text-[#E03C31]">Đăng mới</a></li>
+                                    <li><a href="{{ route('createProperty') }}" class="hover:text-[#E03C31]">Đăng mới</a>
+                                    </li>
                                     <li><a href="#" class="hover:text-[#E03C31]">Danh sách tin</a></li>
                                     <li><a href="#" class="hover:text-[#E03C31]">Tin nháp</a></li>
                                     <li><a href="#" class="hover:text-[#E03C31]">Danh sách tin tài trợ</a></li>

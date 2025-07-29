@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -294,5 +295,18 @@ class PropertyController extends Controller
         }
 
         return view('pages.frontend.nha_dat_thue', compact('properties'));
+    }
+
+    public function createProperty()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để đăng tin.');
+        }
+
+        Log::info('success!  ' . auth()->user()->username);
+        $propertyTypes = PropertyType::all();
+        $user = auth()->user();
+        $properties = $user->properties()->with(['images'])->get();
+        return view('pages.frontend.create_property', compact('user', 'properties', 'propertyTypes'));
     }
 }

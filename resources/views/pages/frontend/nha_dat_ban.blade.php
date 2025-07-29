@@ -227,7 +227,7 @@
                         // Cập nhật danh sách bất động sản
                         $('#property-list').html(response.properties.map(property => `
                     <div class="bg-white rounded-lg p-4 gap-4">
-                        <a href="${ route('properties.show', property->property_id) }">
+                       <a href="/properties/${property.property_id}">
                         <div class="w-full mb-4">
                             <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
                                 <div class="row-span-2 col-span-2">

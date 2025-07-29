@@ -34,10 +34,13 @@ Route::get('/password/reset', function () {
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
 Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
 Route::get('/nha-dat/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
 Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::class, 'indexThue'])->name('properties.indexThue');
+
+Route::get('/dang-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'createProperty'])->name('createProperty');
 
 Route::get('/du-an', function () {
     return view('pages.frontend.du_an');
