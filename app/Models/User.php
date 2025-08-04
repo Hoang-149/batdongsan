@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -32,6 +33,7 @@ class User extends Authenticatable
         'is_verified',
         'created_at',
         'updated_at',
+        'avatar',
     ];
 
     /**
@@ -51,6 +53,9 @@ class User extends Authenticatable
 
     public function getPhoneNumberAttribute($value)
     {
+        if (Auth::check() && Auth::user()->user_id === $this->user_id) {
+            return $value; // Show full phone number to the owner
+        }
         return strlen($value) >= 8 ? substr($value, 0, 8) . '***' : $value;
     }
 

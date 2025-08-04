@@ -14,7 +14,7 @@
     @include('modals.loginModal')
     @include('modals.logupModal')
 
-    <div id="app" class="w-full max-w-[1140px] mx-auto mt-24">@yield('content')</div>
+    <div id="app" class="@yield('app-container-class', 'w-full max-w-[1140px] mx-auto mt-24')">@yield('content')</div>
 
     <footer class="bg-gray-200 py-12">@include('includes.footer')</footer>
 </body>

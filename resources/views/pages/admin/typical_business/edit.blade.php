@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Create New Property</h3>
+                            <h3 class="card-title">Tạo mới</h3>
                         </div>
                         <div class="card-body">
                             @if (session('success'))
@@ -41,7 +41,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Image</label>
+                                    <label for="image" class="form-label">Hình ảnh</label>
                                     <input type="file" name="image" id="image" class="form-control"
                                         accept="image/*">
                                     <div class="mt-2">
@@ -49,8 +49,8 @@
                                             style="max-width: 200px;">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('admin.typical_business.index') }}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                <a href="{{ route('admin.typical_business.index') }}" class="btn btn-secondary">Hủy</a>
                             </form>
                         </div>
                     </div>

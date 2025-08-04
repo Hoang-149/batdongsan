@@ -1,5 +1,13 @@
 $(document).ready(function (e) {
-    console.log("Test");
+    $(".slider-projects").slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: false,
+        autoplay: true, // Auto chạy
+        autoplaySpeed: 3000,
+    });
 
     $(".slider-section1-home").slick({
         infinite: true,
@@ -23,6 +31,15 @@ $(document).ready(function (e) {
                 },
             },
         ],
+    });
+
+    ClassicEditor.create(document.querySelector("#content"), {
+        ckfinder: {
+            uploadUrl:
+                "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+        },
+    }).catch((error) => {
+        console.error(error);
     });
 
     $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm", function (data_tinh) {

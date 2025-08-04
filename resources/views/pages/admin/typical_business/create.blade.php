@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Create New Property</h3>
+                            <h3 class="card-title">Tạo mới doanh nghiệp</h3>
                         </div>
                         <div class="card-body">
                             @if (session('success'))
@@ -40,12 +40,12 @@
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Image</label>
+                                    <label for="image" class="form-label">Hình ảnh</label>
                                     <input type="file" name="image" id="image" class="form-control"
                                         accept="image/*" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
-                                <a href="{{ route('admin.typical_business.index') }}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <a href="{{ route('admin.typical_business.index') }}" class="btn btn-secondary">Hủy</a>
                             </form>
                         </div>
                     </div>

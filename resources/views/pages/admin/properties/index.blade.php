@@ -9,10 +9,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Property List</h3>
+                            <h3 class="card-title">Danh sách bài đăng</h3>
                             <div class="card-tools">
                                 <a href="{{ route('admin.properties.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> Add New Property
+                                    <i class="fas fa-plus"></i> Tạo mới
                                 </a>
                             </div>
                         </div>
@@ -35,20 +35,18 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Title</th>
-                                        <th>User</th>
-                                        <th>Type</th>
-                                        <th>Location</th>
-                                        <th>Project</th>
-                                        <th>Images</th>
-                                        <th>Price</th>
-                                        <th>Area</th>
-                                        <th>For Sale</th>
-                                        <th>Verified</th>
+                                        <th>Tiêu đề</th>
+                                        {{-- <th>Người đăng</th> --}}
+                                        {{-- <th>Loại</th> --}}
+                                        <th>Địa chỉ</th>
+                                        {{-- <th>Images</th> --}}
+                                        {{-- <th>Mức giá</th> --}}
+                                        <th>Diện tích</th>
+                                        {{-- <th>For Sale</th> --}}
+                                        <th>Xác thực</th>
                                         {{-- <th>VIP Status</th> --}}
-                                        <th>Demande</th>
-                                        <th>Created At</th>
-                                        <th>Actions</th>
+                                        <th>Nhu cầu</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,12 +54,11 @@
                                         <tr>
                                             <td>{{ $property->property_id }}</td>
                                             <td>{{ $property->title }}</td>
-                                            <td>{{ $property->user->username ?? 'N/A' }}</td>
-                                            <td>{{ implode(', ', $property->propertyTypes->pluck('type_name')->toArray()) }}
+                                            {{-- <td>{{ $property->user->username ?? 'N/A' }}</td> --}}
+                                            {{-- <td>{{ implode(', ', $property->propertyTypes->pluck('type_name')->toArray()) }} --}}
                                             </td>
                                             <td>{{ $property->location ?? 'N/A' }}</td>
-                                            <td>{{ $property->project->project_name ?? 'N/A' }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <div class="flex flex-wrap gap-2">
                                                     @if ($property->images->isNotEmpty())
                                                         @foreach ($property->images as $image)
@@ -76,19 +73,19 @@
                                                         <span class="text-gray-500">No images available</span>
                                                     @endif
                                                 </div>
-                                            </td>
-                                            <td>{{ $property->price ? number_format($property->price, 2) : 'N/A' }}</td>
+                                            </td> --}}
+                                            {{-- <td>{{ $property->price ? number_format($property->price, 2) : 'N/A' }}</td> --}}
                                             <td>{{ $property->area ? number_format($property->area, 2) : 'N/A' }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <span
                                                     class="badge {{ $property->is_for_sale ? 'bg-success' : 'bg-warning' }}">
                                                     {{ $property->is_for_sale ? 'Yes' : 'No' }}
                                                 </span>
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <span
                                                     class="badge {{ $property->is_verified ? 'bg-success' : 'bg-warning' }}">
-                                                    {{ $property->is_verified ? 'Yes' : 'No' }}
+                                                    {{ $property->is_verified ? 'Có' : 'Không' }}
                                                 </span>
                                             </td>
                                             <td>
@@ -102,24 +99,10 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                            {{-- <td> --}}
-                                            {{-- @if ($property->isVipActive()) --}}
-                                            {{-- <span class="badge bg-primary">VIP (Expires: --}}
-                                            {{-- {{ $property->vip_expires_at->format('Y-m-d') }})</span> --}}
-                                            {{-- @else --}}
-                                            {{-- <form action="#" action="{{ route('admin.properties.markAsVip', $property->property_id) }}" method="POST" --}}
-                                            {{-- style="display:inline;"> --}}
-                                            {{-- @csrf --}}
-                                            {{-- <button type="submit" class="btn btn-primary btn-sm">Mark as --}}
-                                            {{-- VIP</button> --}}
-                                            {{-- </form> --}}
-                                            {{-- @endif --}}
-                                            {{-- </td> --}}
-                                            <td>{{ $property->created_at->format('Y-m-d H:i:s') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.properties.edit', $property->property_id) }}"
-                                                    class="btn btn-info btn-sm">
-                                                    <i class="fas fa-edit"></i> Edit
+                                                    class="btn btn-info btn-sm" style="margin-bottom: 8px;">
+                                                    <i class="fas fa-eye"></i> Hiển thị
                                                 </a>
                                                 <form
                                                     action="{{ route('admin.properties.destroy', $property->property_id) }}"
@@ -128,14 +111,14 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
+                                                        <i class="fas fa-trash"></i> Xóa
                                                     </button>
                                                 </form>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="13" class="text-center">No properties found.</td>
+                                            <td colspan="13" class="text-center">Không tìm thấy.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

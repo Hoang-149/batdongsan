@@ -9,10 +9,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Property List</h3>
+                            <h3 class="card-title">Danh sách doanh nghiệp</h3>
                             <div class="card-tools">
                                 <a href="{{ route('admin.typical_business.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> Add New Property
+                                    <i class="fas fa-plus"></i> Tạo mới
                                 </a>
                             </div>
                         </div>
@@ -35,8 +35,8 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Image</th>
-                                        <th>Actions</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,19 +49,19 @@
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.typical_business.edit', $business->id) }}"
-                                                    class="btn btn-warning btn-sm">Edit</a>
+                                                    class="btn btn-warning btn-sm">Sửa</a>
                                                 <form action="{{ route('admin.typical_business.destroy', $business->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                        onclick="return confirm('Are you sure you want to delete this item?')">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="3" class="text-center">No records found.</td>
+                                            <td colspan="3" class="text-center">Không tìm thấy.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

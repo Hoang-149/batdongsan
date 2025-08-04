@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Edit User: {{ $user->username }}</h3>
+                            <h3 class="card-title">Sửa người dùng: {{ $user->username }}</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -62,7 +62,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">Password <small>(leave blank to keep unchanged)</small></label>
+                                    <label for="password">Mật khẩu <small>(để trống để giữ không thay đổi)</small></label>
                                     <input type="password" name="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror">
                                     @error('password')
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password_confirmation">Confirm Password</label>
+                                    <label for="password_confirmation">Xác nhận mật khẩu</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation"
                                         class="form-control @error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation')
@@ -90,7 +90,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="phone_number">Phone Number</label>
+                                    <label for="phone_number">Số điện thoại</label>
                                     <input type="text" name="phone_number" id="phone_number"
                                         class="form-control @error('phone_number') is-invalid @enderror"
                                         value="{{ old('phone_number', $user->phone_number) }}">
@@ -100,13 +100,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="is_verified">Verified</label>
+                                    <label for="is_verified">Xác thực</label>
                                     <select name="is_verified" id="is_verified"
                                         class="form-control @error('is_verified') is-invalid @enderror">
                                         <option value="0"
-                                            {{ old('is_verified', $user->is_verified) == 0 ? 'selected' : '' }}>No</option>
+                                            {{ old('is_verified', $user->is_verified) == 0 ? 'selected' : '' }}>Không
+                                        </option>
                                         <option value="1"
-                                            {{ old('is_verified', $user->is_verified) == 1 ? 'selected' : '' }}>Yes
+                                            {{ old('is_verified', $user->is_verified) == 1 ? 'selected' : '' }}>Có
                                         </option>
                                     </select>
                                     @error('is_verified')
@@ -115,8 +116,8 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Update User</button>
-                                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Hủy</a>
                                 </div>
                             </form>
                         </div>

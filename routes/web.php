@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CKEditorController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\TypicalBusinessController;
 use App\Http\Controllers\Admin\UserController;
@@ -35,20 +38,18 @@ Route::get('/password/reset', function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+Route::get('/du-an', [HomeController::class, 'projects'])->name('projects');
+Route::get('/tin-tuc', [HomeController::class, 'news'])->name('news');
 
 Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
+
 Route::get('/nha-dat/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
+
 Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::class, 'indexThue'])->name('properties.indexThue');
 
 Route::get('/dang-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'createProperty'])->name('createProperty');
 
-Route::get('/du-an', function () {
-    return view('pages.frontend.du_an');
-});
-
-Route::get('/tin-tuc', function () {
-    return view('pages.frontend.tin_tuc');
-});
+Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 
 
 Route::prefix('admin')->group(function () {
@@ -78,6 +79,22 @@ Route::prefix('admin')->group(function () {
     Route::put('/properties/{id}', [PropertyController::class, 'update'])->name('admin.properties.update');
     Route::delete('/properties/{id}', [PropertyController::class, 'destroy'])->name('admin.properties.destroy');
 
+    // Project routes
+    Route::get('/project', [ProjectController::class, 'index'])->name('admin.project.index');
+    Route::get('/project/create', [ProjectController::class, 'create'])->name('admin.project.create');
+    Route::post('/project', [ProjectController::class, 'store'])->name('admin.project.store');
+    Route::get('/project/{id}/edit', [ProjectController::class, 'edit'])->name('admin.project.edit');
+    Route::put('/project/{id}', [ProjectController::class, 'update'])->name('admin.project.update');
+    Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('admin.project.destroy');
+
+    // News routes
+    Route::get('/news', [NewsController::class, 'index'])->name('admin.news.index');
+    Route::get('/news/create', [NewsController::class, 'create'])->name('admin.news.create');
+    Route::post('/news', [NewsController::class, 'store'])->name('admin.news.store');
+    Route::get('/news/{id}/edit', [NewsController::class, 'edit'])->name('admin.news.edit');
+    Route::put('/news/{id}', [NewsController::class, 'update'])->name('admin.news.update');
+    Route::delete('/news/{id}', [NewsController::class, 'destroy'])->name('admin.news.destroy');
+
     // VIP Subscription routes
     Route::get('/vip-list-levels', [VipUserController::class, 'indexListLevel'])->name('admin.vip_users.indexListLevel');
     Route::get('/vip-users', [VipUserController::class, 'index'])->name('admin.vip_users.index');
@@ -87,3 +104,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/vip-users/{id}', [VipUserController::class, 'update'])->name('admin.vip_users.update');
     Route::delete('/vip-users/{id}', [VipUserController::class, 'destroy'])->name('admin.vip_users.destroy');
 });
+
+
+// php artisan config:clear
+// php artisan route:clear
+// php artisan cache:clear
+// php artisan view:clear

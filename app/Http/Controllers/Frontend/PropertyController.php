@@ -91,6 +91,7 @@ class PropertyController extends Controller
         //     });
 
         $query = Property::with('images')
+            ->where('is_verified', 1)
             ->whereIn('demande', [0, 1]);
 
         // Xử lý bộ lọc giá
@@ -199,6 +200,7 @@ class PropertyController extends Controller
     {
 
         $query = Property::with('images')
+            ->where('is_verified', 1)
             ->whereIn('demande', [1, 2]);
 
         // Xử lý bộ lọc giá
@@ -303,7 +305,7 @@ class PropertyController extends Controller
             return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để đăng tin.');
         }
 
-        Log::info('success!  ' . auth()->user()->username);
+        // Log::info('success!  ' . auth()->user()->username);
         $propertyTypes = PropertyType::all();
         $user = auth()->user();
         $properties = $user->properties()->with(['images'])->get();

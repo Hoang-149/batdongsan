@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Create New Property</h3>
+                            <h3 class="card-title">Tạo mới bài đăng</h3>
                         </div>
                         <div class="card-body">
                             @if (session('success'))
@@ -42,10 +42,10 @@
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="user_id">User <span class="text-danger">*</span></label>
+                                    <label for="user_id">Người đăng <span class="text-danger">*</span></label>
                                     <select name="user_id" id="user_id"
                                         class="form-control @error('user_id') is-invalid @enderror" required>
-                                        <option value="">Select User</option>
+                                        <option value="">Lựa chọn</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->user_id }}"
                                                 {{ old('user_id') == $user->user_id ? 'selected' : '' }}>
@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="type_id">Property Type <span class="text-danger">*</span></label>
+                                    <label for="type_id">Loại bất động sản<span class="text-danger">*</span></label>
                                     <select name="type_id[]" id="type_id" multiple
                                         class="form-control @error('type_id.*') is-invalid @enderror" required>
                                         @foreach ($propertyTypes as $type)
@@ -75,7 +75,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="demande">Demande</label>
+                                    <label for="demande">Nhu cầu</label>
                                     <select name="demande" id="demande"
                                         class="form-control @error('demande') is-invalid @enderror" required>
                                         <option value="0">Thuê
@@ -91,7 +91,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="location">Location <span class="text-danger">*</span></label>
+                                    <label for="location">Địa chỉ <span class="text-danger">*</span></label>
                                     <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
                                         <option value="0">Tỉnh Thành</option>
                                     </select>
@@ -116,7 +116,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="project_id">Project</label>
+                                    <label for="project_id">Dự án</label>
                                     <select name="project_id" id="project_id"
                                         class="form-control @error('project_id') is-invalid @enderror">
                                         <option value="">Select Project (Optional)</option>
@@ -132,7 +132,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="title">Title <span class="text-danger">*</span></label>
+                                    <label for="title">Tiêu đề <span class="text-danger">*</span></label>
                                     <input type="text" name="title" id="title"
                                         class="form-control @error('title') is-invalid @enderror"
                                         value="{{ old('title') }}" required>
@@ -142,8 +142,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                                    <label for="description">Mô tả</label>
+                                    <textarea name="description" id="content" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -164,7 +164,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price">Price(VND)</label>
+                                    <label for="price">Mức giá(VND)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price') }}">
@@ -174,7 +174,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="area">Area</label>
+                                    <label for="area">Diện tích</label>
                                     <input type="number" name="area" id="area" step="0.01"
                                         class="form-control @error('area') is-invalid @enderror"
                                         value="{{ old('area') }}">
@@ -184,12 +184,12 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="is_for_sale">For Sale</label>
+                                    <label for="is_for_sale">Giảm giá</label>
                                     <select name="is_for_sale" id="is_for_sale"
                                         class="form-control @error('is_for_sale') is-invalid @enderror" required>
-                                        <option value="1" {{ old('is_for_sale', 1) == 1 ? 'selected' : '' }}>Yes
+                                        <option value="1" {{ old('is_for_sale', 1) == 1 ? 'selected' : '' }}>Có
                                         </option>
-                                        <option value="0" {{ old('is_for_sale', 1) == 0 ? 'selected' : '' }}>No
+                                        <option value="0" {{ old('is_for_sale', 1) == 0 ? 'selected' : '' }}>Không
                                         </option>
                                     </select>
                                     @error('is_for_sale')
@@ -198,12 +198,12 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="is_verified">Verified</label>
+                                    <label for="is_verified">Xác thực</label>
                                     <select name="is_verified" id="is_verified"
                                         class="form-control @error('is_verified') is-invalid @enderror" required>
-                                        <option value="0" {{ old('is_verified', 0) == 0 ? 'selected' : '' }}>No
+                                        <option value="0" {{ old('is_verified', 0) == 0 ? 'selected' : '' }}>Không
                                         </option>
-                                        <option value="1" {{ old('is_verified', 0) == 1 ? 'selected' : '' }}>Yes
+                                        <option value="1" {{ old('is_verified', 0) == 1 ? 'selected' : '' }}>Có
                                         </option>
                                     </select>
                                     @error('is_verified')
@@ -212,8 +212,8 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Create Property</button>
-                                    <a href="{{ route('admin.properties.index') }}" class="btn btn-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">Tạo</button>
+                                    <a href="{{ route('admin.properties.index') }}" class="btn btn-secondary">Hủy</a>
                                 </div>
                             </form>
                         </div>

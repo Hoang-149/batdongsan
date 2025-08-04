@@ -42,7 +42,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <label for="user_id">User <span class="text-danger">*</span></label>
+                                    <label for="user_id">Người đăng <span class="text-danger">*</span></label>
                                     <select name="user_id" id="user_id"
                                         class="form-control @error('user_id') is-invalid @enderror">
                                         <option value="">Select User</option>
@@ -58,11 +58,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="type_id" class="block text-sm font-medium text-gray-700">Property Type
+                                    <label for="type_id" class="block text-sm font-medium text-gray-700">Loại bất động sản
                                         <span class="text-red-500">*</span></label>
                                     <select name="type_id[]" id="type_id" multiple
-                                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md @error('type_id.*') border-red-500 @enderror"
-                                        required>
+                                        class="form-control  @error('type_id.*') border-red-500 @enderror" required>
                                         @foreach ($propertyTypes as $type)
                                             <option value="{{ $type->type_id }}"
                                                 {{ in_array($type->type_id, old('type_id', $property->propertyTypes->pluck('type_id')->toArray())) ? 'selected' : '' }}>
@@ -76,7 +75,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="demande">Demande</label>
+                                    <label for="demande">Nhu cầu</label>
                                     <select name="demande" id="demande"
                                         class="form-control @error('demande') is-invalid @enderror" required>
                                         <option value="0"
@@ -95,7 +94,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="location">Location <span class="text-danger">*</span></label>
+                                    <label for="location">Địa chỉ <span class="text-danger">*</span></label>
                                     <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
                                         <option value="0">Tỉnh Thành</option>
                                     </select>
@@ -120,7 +119,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="project_id">Project</label>
+                                    <label for="project_id">Dự án</label>
                                     <select name="project_id" id="project_id"
                                         class="form-control @error('project_id') is-invalid @enderror">
                                         <option value="">Select Project (Optional)</option>
@@ -136,7 +135,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="title">Title <span class="text-danger">*</span></label>
+                                    <label for="title">Tiêu đề <span class="text-danger">*</span></label>
                                     <input type="text" name="title" id="title"
                                         class="form-control @error('title') is-invalid @enderror"
                                         value="{{ old('title', $property->title) }}">
@@ -146,8 +145,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $property->description) }}</textarea>
+                                    <label for="description">Mô tả</label>
+                                    <textarea name="description" id="content" class="form-control @error('description') is-invalid @enderror">{{ old('description', $property->description) }}</textarea>
                                     @error('description')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -189,7 +188,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price">Price</label>
+                                    <label for="price">Mức giá(VND)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price', $property->price) }}">
@@ -199,7 +198,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="area">Area</label>
+                                    <label for="area">Diện tích</label>
                                     <input type="number" name="area" id="area" step="0.01"
                                         class="form-control @error('area') is-invalid @enderror"
                                         value="{{ old('area', $property->area) }}">
@@ -209,14 +208,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="is_for_sale">For Sale</label>
+                                    <label for="is_for_sale">Giảm giá</label>
                                     <select name="is_for_sale" id="is_for_sale"
                                         class="form-control @error('is_for_sale') is-invalid @enderror" required>
                                         <option value="1"
-                                            {{ old('is_for_sale', $property->is_for_sale) == 1 ? 'selected' : '' }}>Yes
+                                            {{ old('is_for_sale', $property->is_for_sale) == 1 ? 'selected' : '' }}>Có
                                         </option>
                                         <option value="0"
-                                            {{ old('is_for_sale', $property->is_for_sale) == 0 ? 'selected' : '' }}>No
+                                            {{ old('is_for_sale', $property->is_for_sale) == 0 ? 'selected' : '' }}>Không
                                         </option>
                                     </select>
                                     @error('is_for_sale')
@@ -225,14 +224,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="is_verified">Verified</label>
+                                    <label for="is_verified">Xác thực</label>
                                     <select name="is_verified" id="is_verified"
                                         class="form-control @error('is_verified') is-invalid @enderror" required>
                                         <option value="0"
-                                            {{ old('is_verified', $property->is_verified) == 0 ? 'selected' : '' }}>No
+                                            {{ old('is_verified', $property->is_verified) == 0 ? 'selected' : '' }}>Không
                                         </option>
                                         <option value="1"
-                                            {{ old('is_verified', $property->is_verified) == 1 ? 'selected' : '' }}>Yes
+                                            {{ old('is_verified', $property->is_verified) == 1 ? 'selected' : '' }}>Có
                                         </option>
                                     </select>
                                     @error('is_verified')
