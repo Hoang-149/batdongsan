@@ -128,22 +128,22 @@
 </div>
 
 <script>
-    // Toggle password visibility
-    document.querySelectorAll('.toggle-password').forEach(button => {
-        button.addEventListener('click', function() {
-            const input = this.closest('.relative').querySelector('input');
-            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-            input.setAttribute('type', type);
-            this.querySelector('svg').classList.toggle('fa-eye');
-            this.querySelector('svg').classList.toggle('fa-eye-slash');
-        });
-    });
-
     // Show modal if there's an error or input to preserve
     @if (session('error') && old('identifier'))
         document.getElementById('loginModal').classList.remove('hidden');
         console.log("Vo day 2");
     @endif
+
+    @if (session('register_success'))
+        document.getElementById('loginModal').classList.remove('hidden');
+        alert("{{ session('register_success') }}");
+    @endif
+
+    @if (session('login_success'))
+        document.getElementById('loginModal').classList.add('hidden');
+        alert("{{ session('login_success') }}");
+    @endif
+
 
     $.ajaxSetup({
         headers: {

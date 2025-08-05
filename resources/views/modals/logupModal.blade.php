@@ -33,9 +33,9 @@
                 @csrf
                 <div class="mb-4">
                     <div class="relative">
-                        <input type="text" name="sdt" placeholder="Nhập số điện thoại"
-                            class="w-full border rounded-lg py-3 pl-12 pr-4 focus:ring-2 focus:ring-red-400 outline-none text-gray-700 @error('sdt') is-invalid @enderror"
-                            value="{{ old('sdt') }}">
+                        <input type="text" name="phone_number" placeholder="Nhập số điện thoại"
+                            class="w-full border rounded-lg py-3 pl-12 pr-4 focus:ring-2 focus:ring-red-400 outline-none"
+                            value="{{ old('phone_number') }}">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                             <svg font-size="24px" width="1em" height="1em" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -45,14 +45,52 @@
                                     stroke-linejoin="round"></path>
                             </svg>
                         </span>
-                        @error('sdt')
-                            <span class="invalid-feedback">{{ $message }}</span>
+                    </div>
+
+                    <div>
+                        @error('phone_number')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="password" name="password" placeholder="Mật khẩu"
+                            class="w-full border rounded-lg py-3 pl-12 pr-10 focus:ring-2 focus:ring-red-400 outline-none text-gray-700">
+
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" font-size="24px">
+                                <path
+                                    d="M18.7691 21H5.23076C4.90434 21 4.59129 20.8712 4.36048 20.642C4.12967 20.4128 4 20.1019 4 19.7778V11.2222C4 10.8981 4.12967 10.5872 4.36048 10.358C4.59129 10.1288 4.90434 10 5.23076 10H18.7691C19.0955 10 19.4086 10.1288 19.6394 10.358C19.8702 10.5872 19.9999 10.8981 19.9999 11.2222V19.7778C19.9999 20.1019 19.8702 20.4128 19.6394 20.642C19.4086 20.8712 19.0955 21 18.7691 21Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                                <path
+                                    d="M7.42859 9.85709V6.99997C7.42859 5.93911 7.91022 4.9217 8.76752 4.17156C9.62482 3.42142 10.7876 3 12 3C13.2124 3 14.3751 3.42142 15.2324 4.17156C16.0897 4.9217 16.5714 5.93911 16.5714 6.99997V9.85709"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                        <button type="button"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                <path
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div>
+                        @error('password')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
                 <button type="submit"
-                    class="w-full bg-[#E03C31] hover:bg-red-600 text-white font-semibold py-3 rounded-lg mb-2 transition">Tiếp
-                    tục</button>
+                    class="w-full bg-[#E03C31] hover:bg-red-600 text-white font-semibold py-3 rounded-lg mb-2 transition">Đăng
+                    ký</button>
                 <div class="flex items-center my-4">
                     <div class="flex-grow border-t border-gray-200"></div>
                     <span class="mx-3 text-gray-400 text-sm">Hoặc</span>
@@ -92,8 +130,7 @@
 
 <script>
     // Show modal if there's an error or input to preserve
-    @if (session('error') && old('sdt'))
+    @if (session('error') && old('phone_number'))
         document.getElementById('logupModal').classList.remove('hidden');
-        console.log("Vo day 1");
     @endif
 </script>

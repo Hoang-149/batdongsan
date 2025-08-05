@@ -15,7 +15,16 @@
         <!-- Main Content -->
         <div class="container mx-auto px-4 py-6 max-w-7xl">
             <!-- Title -->
-            <h1 class="text-3xl font-bold mb-6">Tin tức bất động sản</h1>
+            <h1 class="text-3xl font-bold mb-6 justify-center text-center">Tin tức bất động sản mới nhất</h1>
+            <p class="text-center text-xl max-w-3xl justify-center m-auto mb-8">Thông tin mới, đầy đủ, hấp dẫn về thị trường
+                bất
+                động sản
+                Việt Nam thông
+                qua
+                dữ
+                liệu lớn
+                về giá, giao dịch, nguồn cung - cầu và khảo sát thực tế của đội ngũ phóng viên, biên tập của
+                CafeBizLandGroup.</p>
 
             <!-- News Highlight -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

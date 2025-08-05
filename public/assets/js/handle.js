@@ -1,4 +1,13 @@
 $(document).ready(function (e) {
+    $(".toggle-password").on("click", function () {
+        const $input = $(this).closest(".relative").find("input");
+        const type = $input.attr("type") === "password" ? "text" : "password";
+        $input.attr("type", type);
+
+        const $icon = $(this).find("svg");
+        $icon.toggleClass("fa-eye fa-eye-slash");
+    });
+
     $(".slider-projects").slick({
         infinite: true,
         slidesToShow: 1,

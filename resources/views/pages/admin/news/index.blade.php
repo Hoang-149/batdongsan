@@ -16,6 +16,7 @@
                     <th>Tiêu đề</th>
                     <th>Tác giả</th>
                     <th>Ngày tạo</th>
+                    <th>Xác thực</th>
                     <th>Hành động</th>
                 </tr>
             </thead>
@@ -25,6 +26,11 @@
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->author }}</td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            <span class="badge {{ $item->is_verified ? 'bg-success' : 'bg-warning' }}">
+                                {{ $item->is_verified ? 'Có' : 'Không' }}
+                            </span>
+                        </td>
                         <td>
                             <a href="{{ route('admin.news.edit', $item->id) }}" class="btn btn-sm btn-warning">Sửa</a>
                             <form action="{{ route('admin.news.destroy', $item->id) }}" method="POST"

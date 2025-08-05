@@ -5,8 +5,8 @@
         <h2>Chỉnh sửa bài viết</h2>
 
         @include('pages.admin.news._form', [
-            'action' => route('admin.news.store'),
-            'method' => 'POST',
+            'action' => route('admin.news.update', $news->id),
+            'method' => 'PUT',
             'button' => 'Lưu',
         ])
     </div>
