@@ -39,7 +39,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Chăm sóc khách hàng</p>
-                            <p class="font-semibold text-gray-800">horro@Cafebizland.com</p>
+                            <p class="font-semibold text-gray-800">hotro@Cafebizland.com</p>
                         </div>
                     </div>
                 </div>
@@ -49,16 +49,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
                 <!-- Company Info -->
                 <div class="lg:col-span-2">
-                    <h4 class="font-bold text-gray-800 mb-4 uppercase text-sm">CÔNG TY CỔ PHẦN PROPERTYGURU VIỆT NAM
+                    <h4 class="font-bold text-gray-800 mb-4 uppercase text-sm">CÔNG TY CỔ PHẦN CAFEBIZLAND
                     </h4>
                     <div class="space-y-3 text-sm text-gray-600">
                         <div class="flex items-start gap-2">
                             <i class="fas fa-map-marker-alt text-gray-500 mt-1"></i>
-                            <p>Tầng 31, Keangnam Hanoi Landmark, Phạm Hùng, Nam Từ Liêm, Hà Nội</p>
+                            <p>Phạm Hùng, Nam Từ Liêm, Hà Nội</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-phone text-gray-500"></i>
-                            <p>(024) 3562 5939 - (024) 3562 5940</p>
+                            <p>(024) 1234 1234 - (024) 1234 1233</p>
                         </div>
                     </div>
 

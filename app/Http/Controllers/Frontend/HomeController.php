@@ -19,7 +19,12 @@ class HomeController extends Controller
             ->orderBy('price', 'desc')
             ->take(8)
             ->get();
-        return view('pages.index', compact('businesses', 'properties'));
+        $news = News::where('is_verified', true)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        return view('pages.index', compact('businesses', 'properties', 'news'));
     }
     public function profile()
     {
@@ -41,8 +46,20 @@ class HomeController extends Controller
 
     public function news()
     {
-        // Assuming you have a News model and a corresponding view
-        $news = News::all(); // Replace with actual news fetching logic
+        $news = News::where('is_verified', true)
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
         return view('pages.frontend.tin_tuc', compact('news'));
+    }
+
+    public function newsDetail($id)
+    {
+        $news = News::findOrFail($id);
+        $allNews = News::where('is_verified', true)
+            ->where('id', '!=', $id)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+        return view('pages.frontend.chi_tiet_tin_tuc', compact('news', 'allNews'));
     }
 }

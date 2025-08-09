@@ -1,6 +1,6 @@
 @extends('layouts.adminlte')
 
-@section('title', 'Edit Property')
+@section('title', 'Create Project')
 
 @section('content')
     <section class="content">
@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Edit Property: {{ $property->title }}</h3>
+                            <h3 class="card-title">Tạo mới dự án</h3>
                         </div>
                         <div class="card-body">
                             @if (session('success'))
@@ -37,18 +37,17 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.properties.update', $property->property_id) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('admin.project.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
+
                                 <div class="form-group">
                                     <label for="user_id">Người đăng <span class="text-danger">*</span></label>
                                     <select name="user_id" id="user_id"
-                                        class="form-control @error('user_id') is-invalid @enderror">
-                                        <option value="">Select User</option>
+                                        class="form-control @error('user_id') is-invalid @enderror" required>
+                                        <option value="">Lựa chọn</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->user_id }}"
-                                                {{ old('user_id', $property->user_id) == $user->user_id ? 'selected' : '' }}>
+                                                {{ old('user_id') == $user->user_id ? 'selected' : '' }}>
                                                 {{ $user->username }}</option>
                                         @endforeach
                                     </select>
@@ -58,40 +57,23 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="type_id" class="block text-sm font-medium text-gray-700">Loại bất động sản
-                                        <span class="text-red-500">*</span></label>
-                                    <select name="type_id[]" id="type_id" multiple
-                                        class="form-control  @error('type_id.*') border-red-500 @enderror" required>
-                                        @foreach ($propertyTypes as $type)
-                                            <option value="{{ $type->type_id }}"
-                                                {{ in_array($type->type_id, old('type_id', $property->propertyTypes->pluck('type_id')->toArray())) ? 'selected' : '' }}>
-                                                {{ $type->type_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('type_id.*')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <label for="project_name">Tên dự án <span class="text-danger">*</span></label>
+                                    <input type="text" name="project_name" id="project_name"
+                                        class="form-control @error('project_name') is-invalid @enderror"
+                                        value="{{ old('project_name') }}" required>
+                                    @error('project_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="demande">Nhu cầu</label>
-                                    <select name="demande" id="demande"
-                                        class="form-control @error('demande') is-invalid @enderror" required>
-                                        <option value="0"
-                                            {{ old('demande', $property->demande) == 0 ? 'selected' : '' }}>Thuê
-                                        </option>
-                                        <option value="1"
-                                            {{ old('demande', $property->demande) == 1 ? 'selected' : '' }}>Bán
-                                        </option>
-                                        <option value="2"
-                                            {{ old('demande', $property->demande) == 2 ? 'selected' : '' }}>Thuê và Bán
-                                        </option>
-                                    </select>
-                                    @error('demande')
+                                    <label for="description">Mô tả</label>
+                                    <textarea name="description" id="content" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                                    @error('description')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
+
 
                                 <div class="form-group">
                                     <label for="location">Địa chỉ <span class="text-danger">*</span></label>
@@ -119,69 +101,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="project_id">Dự án</label>
-                                    <select name="project_id" id="project_id"
-                                        class="form-control @error('project_id') is-invalid @enderror">
-                                        <option value="">Select Project (Optional)</option>
-                                        @foreach ($projects as $project)
-                                            <option value="{{ $project->project_id }}"
-                                                {{ old('project_id', $property->project_id) == $project->project_id ? 'selected' : '' }}>
-                                                {{ $project->project_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('project_id')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="title">Tiêu đề <span class="text-danger">*</span></label>
-                                    <input type="text" name="title" id="title"
-                                        class="form-control @error('title') is-invalid @enderror"
-                                        value="{{ old('title', $property->title) }}">
-                                    @error('title')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description">Mô tả</label>
-                                    <textarea name="description" id="content" class="form-control @error('description') is-invalid @enderror">{{ old('description', $property->description) }}</textarea>
-                                    @error('description')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Hình ảnh hiện tại (Tối thiểu 4 hình ảnh sau khi chỉnh sửa)</label>
-                                    <div class="flex flex-wrap gap-2 mb-2" id="current-images">
-                                        @foreach ($property->images as $image)
-                                            <div class="relative image-container">
-                                                <div class="mt-2 flex flex-wrap gap-2">
-                                                    <img src="{{ asset($image->image_url) }}"
-                                                        class="w-24 h-24 object-cover rounded" alt="Property image"
-                                                        style="width: 80px; height: 80px; object-fit: cover;">
-                                                </div>
-                                                <label
-                                                    class="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 cursor-pointer">
-                                                    <input type="checkbox" name="delete_images[]"
-                                                        value="{{ $image->image_id }}" class="hidden delete-checkbox">
-                                                    <i class="fas fa-trash"></i>
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="images">Thêm hình ảnh mới</label>
+                                    <label for="images">Hình ảnh (Tối thiểu 4 hình)</label>
                                     <input type="file" id="images" name="images[]"
                                         class="form-control-file @error('images.*') is-invalid @enderror" multiple
                                         accept="image/jpeg,image/png,image/jpg">
                                     <div id="image-preview" class="mt-2 flex flex-wrap gap-2"></div>
-                                    <div id="image-error" class="text-danger mt-2" style="display: none;">
-                                        Tổng số hình ảnh (hiện tại trừ đi số bị xóa + mới thêm) phải ít nhất là 4.
-                                    </div>
+                                    <div id="image-error" class="text-danger mt-2" style="display: none;">Vui lòng chọn
+                                        ít
+                                        nhất 4 hình ảnh.</div>
                                     @error('images.*')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -191,7 +118,7 @@
                                     <label for="price">Mức giá(VND)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
-                                        value="{{ old('price', $property->price) }}">
+                                        value="{{ old('price') }}">
                                     @error('price')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -201,24 +128,8 @@
                                     <label for="area">Diện tích</label>
                                     <input type="number" name="area" id="area" step="0.01"
                                         class="form-control @error('area') is-invalid @enderror"
-                                        value="{{ old('area', $property->area) }}">
+                                        value="{{ old('area') }}">
                                     @error('area')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="is_for_sale">Giảm giá</label>
-                                    <select name="is_for_sale" id="is_for_sale"
-                                        class="form-control @error('is_for_sale') is-invalid @enderror" required>
-                                        <option value="1"
-                                            {{ old('is_for_sale', $property->is_for_sale) == 1 ? 'selected' : '' }}>Có
-                                        </option>
-                                        <option value="0"
-                                            {{ old('is_for_sale', $property->is_for_sale) == 0 ? 'selected' : '' }}>Không
-                                        </option>
-                                    </select>
-                                    @error('is_for_sale')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -227,11 +138,9 @@
                                     <label for="is_verified">Xác thực</label>
                                     <select name="is_verified" id="is_verified"
                                         class="form-control @error('is_verified') is-invalid @enderror" required>
-                                        <option value="0"
-                                            {{ old('is_verified', $property->is_verified) == 0 ? 'selected' : '' }}>Không
+                                        <option value="0" {{ old('is_verified', 0) == 0 ? 'selected' : '' }}>Không
                                         </option>
-                                        <option value="1"
-                                            {{ old('is_verified', $property->is_verified) == 1 ? 'selected' : '' }}>Có
+                                        <option value="1" {{ old('is_verified', 0) == 1 ? 'selected' : '' }}>Có
                                         </option>
                                     </select>
                                     @error('is_verified')
@@ -240,8 +149,8 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                    <a href="{{ route('admin.properties.index') }}" class="btn btn-secondary">Hủy</a>
+                                    <button type="submit" class="btn btn-primary">Tạo</button>
+                                    <a href="{{ route('admin.project.index') }}" class="btn btn-secondary">Hủy</a>
                                 </div>
                             </form>
                         </div>
@@ -250,7 +159,6 @@
             </div>
         </div>
     </section>
-
     <style type="text/css">
         .css_select_div {
             text-align: center;
@@ -265,7 +173,6 @@
             border-radius: 5px;
         }
     </style>
-
     <script>
         jQuery(document).ready(function($) {
             // Lấy tỉnh thành
@@ -339,6 +246,7 @@
                 }
             });
 
+
             // Xử lý hiển thị ảnh
             $('input[name="images[]"]').on('change', function(e) {
                 var files = e.target.files;
@@ -400,4 +308,5 @@
             });
         });
     </script>
+
 @endsection

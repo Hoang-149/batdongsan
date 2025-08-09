@@ -27,7 +27,7 @@
                 CafeBizLandGroup.</p>
 
             <!-- News Highlight -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {{-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="md:col-span-2 bg-white rounded-lg shadow p-4 flex flex-col md:flex-row gap-4">
                     <img src="assets/img/phuyen.jpg" alt="Tin nổi bật" class="w-full md:w-2/5 h-56 object-cover rounded-lg">
                     <div class="flex-1 flex flex-col justify-between">
@@ -46,6 +46,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Tin phụ nổi bật -->
                 <div class="flex flex-col gap-4">
                     <div class="bg-white rounded-lg shadow p-3 flex gap-3">
@@ -73,44 +74,38 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <!-- Danh sách tin tức -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @for ($i = 1; $i <= 9; $i++)
+                @foreach ($news as $item)
                     <div class="bg-white rounded-lg shadow p-4 flex flex-col h-full">
                         <a href="#">
-                            <img src="assets/img/phuyen.jpg" class="w-full h-44 object-cover rounded mb-3" alt="">
+                            <img src="{{ asset($item->thumbnail) }}" class="w-full h-44 object-cover rounded mb-3"
+                                alt="">
                         </a>
                         <h3 class="font-semibold text-lg mb-2 hover:underline cursor-pointer">
-                            Tiêu đề tin tức bất động sản {{ $i }}
+                            <a href="{{ route('news.detail', $item->id) }}" class="hover:underline">
+                                {{ $item->title }}
+                            </a>
                         </h3>
                         <p class="text-gray-600 flex-1 mb-2">
-                            Mô tả ngắn về tin tức bất động sản số {{ $i }}. Thông tin nổi bật, cập nhật mới nhất
-                            về thị trường...
+                            {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 100) }}
                         </p>
                         <div class="flex items-center text-gray-400 text-xs gap-2">
-                            <span>15/06/2025</span>
+                            <span>{{ $item->created_at->format('d/m/Y') }}</span>
                             <span>|</span>
-                            <span>Chuyên mục: Tin tức</span>
+                            <span>Tác giả: {{ $item->author }}</span>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
 
-            <!-- Pagination -->
             <div class="flex justify-center mt-8">
-                <nav class="inline-flex rounded-md shadow-sm" aria-label="Pagination">
-                    <a href="#"
-                        class="px-4 py-2 border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">Trước</a>
-                    <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-[#E03C31] text-white">1</a>
-                    <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</a>
-                    <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</a>
-                    <span class="px-4 py-2 border border-gray-300 bg-white text-gray-400">...</span>
-                    <a href="#"
-                        class="px-4 py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Sau</a>
-                </nav>
+                {{ $news->links('pagination::tailwind') }}
             </div>
+
+
+
         </div>
     </div>
 

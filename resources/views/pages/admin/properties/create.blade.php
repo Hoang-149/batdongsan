@@ -116,10 +116,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="project_id">Dự án</label>
+                                    <label for="project_id">Dự án(Tùy chọn)</label>
                                     <select name="project_id" id="project_id"
                                         class="form-control @error('project_id') is-invalid @enderror">
-                                        <option value="">Select Project (Optional)</option>
+                                        <option value="">Lựa chọn dự án</option>
                                         @foreach ($projects as $project)
                                             <option value="{{ $project->project_id }}"
                                                 {{ old('project_id') == $project->project_id ? 'selected' : '' }}>

@@ -21,12 +21,6 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        // $properties = Property::with(['user', 'propertyType', 'location', 'project', 'images'])
-        //     ->orderByRaw('vip_expires_at IS NOT NULL DESC')
-        //     ->orderBy('vip_expires_at', 'desc')
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
-        // return view('pages.admin.properties.index', compact('properties'));
         $properties = Property::with('user', 'project', 'propertyTypes', 'images')->paginate(10);
         return view('pages.admin.properties.index', compact('properties'));
     }
@@ -120,12 +114,12 @@ class PropertyController extends Controller
             }
 
             if (auth()->user()->role == 'admin') {
-                return redirect()->route('admin.properties.create')->with('success', 'Property created successfully.');
+                return redirect()->route('admin.properties.create')->with('success', 'Tạo bài đăng thành công.');
             } else {
-                return redirect()->route('profile')->with('success', 'Property created successfully.');
+                return redirect()->route('profile')->with('success', 'Tạo bài đăng thành công.');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create property. Please try again.' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Lỗi tạo bài đăng' . $e->getMessage())->withInput();
         }
     }
 
@@ -230,11 +224,11 @@ class PropertyController extends Controller
                 }
             }
 
-            return redirect()->route('admin.properties.edit', $property->property_id)
-                ->with('success', 'Property updated successfully.');
+            return redirect()->route('admin.properties.index')
+                ->with('success', 'Đã cập nhật bài đăng thành công.');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Failed to update property: ' . $e->getMessage())
+                ->with('error', 'Lỗi cập nhật: ' . $e->getMessage())
                 ->withInput();
         }
     }
@@ -250,47 +244,9 @@ class PropertyController extends Controller
                 $image->delete();
             }
             $property->delete();
-            return redirect()->route('admin.properties.index')->with('success', 'Property deleted successfully.');
+            return redirect()->route('admin.properties.index')->with('success', 'Xóa bài đăng thành công.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.properties.index')->with('error', 'Failed to delete property. Please try again.');
+            return redirect()->route('admin.properties.index')->with('error', 'Lỗi khi xóa bài đăng: ' . $e->getMessage());
         }
     }
-
-    // /**
-    //  * Mark a property as VIP.
-    //  */
-    // public function markAsVip(Request $request, $id)
-    // {
-    //     $property = Property::findOrFail($id);
-    //     $user = auth()->user();
-
-    //     // Check if user has enough credits
-    //     $subscription = VipSubscription::where('user_id', $user->user_id)
-    //         ->where('credits', '>=', 1)
-    //         ->where(function ($query) {
-    //             $query->whereNull('expires_at')
-    //                 ->orWhere('expires_at', '>=', now());
-    //         })
-    //         ->first();
-
-    //     if (!$subscription) {
-    //         return redirect()->back()->with('error', 'You do not have enough credits or an active VIP subscription.');
-    //     }
-
-    //     try {
-    //         // Determine VIP duration based on level
-    //         $durationDays = $subscription->level <= 5 ? 3 : 10;
-    //         $property->update([
-    //             'vip_expires_at' => now()->addDays($durationDays),
-    //             'updated_at' => now(),
-    //         ]);
-
-    //         // Deduct 1 credit
-    //         $subscription->decrement('credits');
-
-    //         return redirect()->back()->with('success', 'Property marked as VIP successfully.');
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()->with('error', 'Failed to mark property as VIP. Please try again.');
-    //     }
-    // }
 }

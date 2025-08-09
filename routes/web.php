@@ -40,6 +40,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::get('/du-an', [HomeController::class, 'projects'])->name('projects');
 Route::get('/tin-tuc', [HomeController::class, 'news'])->name('news');
+Route::get('/tin-tuc/{id}', [HomeController::class, 'newsDetail'])->name('news.detail');
 
 Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
 

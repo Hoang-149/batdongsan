@@ -48,13 +48,23 @@
                 </div>
             </div>
         @endif
-        <a href="{{ route('createProperty') }}"
+        <a href="{{ auth()->check() ? route('createProperty') : '#' }}" id="btnPost"
             class="border border-gray-700 font-semibold text-gray-700 px-4 py-2 rounded hover:text-red-800">Đăng tin</a>
     </div>
 </div>
 
 <script>
     jQuery(document).ready(function($) {
+
+        const isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+
+        $('#btnPost').on('click', function(e) {
+            if (!isAuthenticated) {
+                e.preventDefault();
+                alert('Vui lòng đăng nhập để đăng tin!');
+            }
+        });
+
         $('a.login').click(function() {
             $('#loginModal').toggleClass('hidden');
         });

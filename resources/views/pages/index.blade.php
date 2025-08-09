@@ -80,19 +80,6 @@
                 </span>
             </div>
             <div class="grid grid-cols-4 gap-6">
-                {{-- @for ($i = 1; $i <= 8; $i++)
-                    <div class="border rounded-lg overflow-hidden">
-                        <img src="assets/img/Anh-3.webp" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="font-semibold text-lg mb-2">Căn hộ chung cư cao cấp</h3>
-                            <p class="text-[#E03C31] font-bold">2.5 tỷ</p>
-                            <p class="text-gray-600 text-sm mt-2">Quận 7, TP HCM</p>
-                            <div class="flex gap-4 mt-2 text-sm text-gray-500">
-                                <span>80m²</span>
-                            </div>
-                        </div>
-                    </div>
-                @endfor --}}
                 @forelse ($properties as $property)
                     <div
                         class="border rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
@@ -121,18 +108,37 @@
         <!-- News Section -->
         <div class="bg-gray-100 py-8">
             <div class="container mx-auto px-4">
-                <h2 class="text-2xl font-bold mb-6">Tin tức bất động sản</h2>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Tin tức bất động sản</h2>
+                    <a href="{{ route('news') }}"
+                        class="inline-flex items-center text-[#E03C31] hover:underline text-sm font-medium">
+                        Xem thêm
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
                 <div class="grid grid-cols-3 gap-6">
-                    @for ($i = 1; $i <= 3; $i++)
-                        <div class="bg-white rounded-lg overflow-hidden">
-                            <img src="assets/img/Anh-3.webp" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-2">Thị trường bất động sản 2025</h3>
-                                <p class="text-gray-600 text-sm">Cập nhật thông tin mới nhất về thị trường BĐS...</p>
-                                <p class="text-gray-500 text-sm mt-2">18/06/2025</p>
-                            </div>
+                    @forelse ($news as $nws)
+                        <div
+                            class="border rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                            <a href="{{ route('news.detail', $nws->id) }}">
+                                <img src="{{ $nws->thumbnail ? asset($nws->thumbnail) : asset('assets/img/placeholder.jpg') }}"
+                                    class="w-full h-48 object-cover">
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-2 hover:underline">{{ $nws->title }}</h3>
+                                    <p class="text-gray-600 text-sm">
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($nws->content), 100) }}</p>
+                                    <p class="text-gray-500 text-sm mt-2">{{ $nws->create_ad }}</p>
+                                </div>
+                            </a>
                         </div>
-                    @endfor
+                    @empty
+                        <div class="col-span-full text-center text-gray-500">
+                            No news found.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -143,47 +149,62 @@
             <div class="grid grid-cols-3 gap-6">
                 <!-- TP. Hồ Chí Minh Card -->
                 <div class="relative rounded-lg overflow-hidden col-span-2">
-                    <img src="assets/img/Anh-3.webp" class="w-full h-[250px] object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                        <h3 class="text-xl font-bold text-white">TP. Hồ Chí Minh</h3>
-                        <p class="text-white">68.230 tin đăng</p>
-                    </div>
+                    <a href="#">
+                        <img src="assets/img/hcmcity.webp" class="w-full h-[250px] object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
+                            <h3 class="text-xl font-bold text-white">TP. Hồ Chí Minh</h3>
+                            <p class="text-white">68.230 tin đăng</p>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Hà Nội Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <img src="assets/img/Anh-3.webp" class="w-full h-[250px] object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                        <h3 class="text-xl font-bold text-white">Hà Nội</h3>
-                        <p class="text-white">62.007 tin đăng</p>
-                    </div>
+                    <a href="#">
+                        <img src="assets/img/HN.jpg" class="w-full h-[250px] object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
+                            <h3 class="text-xl font-bold text-white">Hà Nội</h3>
+                            <p class="text-white">62.007 tin đăng</p>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Đà Nẵng Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <img src="assets/img/Anh-3.webp" class="w-full h-[250px] object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                        <h3 class="text-xl font-bold text-white">Đà Nẵng</h3>
-                        <p class="text-white">10.593 tin đăng</p>
-                    </div>
+                    <a href="#">
+                        <img src="assets/img/DN.jpg" class="w-full h-[250px] object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
+                            <h3 class="text-xl font-bold text-white">Đà Nẵng</h3>
+                            <p class="text-white">10.593 tin đăng</p>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Bình Dương Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <img src="assets/img/Anh-3.webp" class="w-full h-[250px] object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                        <h3 class="text-xl font-bold text-white">Bình Dương</h3>
-                        <p class="text-white">8.551 tin đăng</p>
-                    </div>
+                    <a href="#">
+                        <img src="assets/img/BD.jpg" class="w-full h-[250px] object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
+                            <h3 class="text-xl font-bold text-white">Bình Dương</h3>
+                            <p class="text-white">8.551 tin đăng</p>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Đồng Nai Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <img src="assets/img/Anh-3.webp" class="w-full h-[250px] object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                        <h3 class="text-xl font-bold text-white">Đồng Nai</h3>
-                        <p class="text-white">3.979 tin đăng</p>
-                    </div>
+                    <a href="#">
+                        <img src="assets/img/DNN.jpg" class="w-full h-[250px] object-cover">
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
+                            <h3 class="text-xl font-bold text-white">Đồng Nai</h3>
+                            <p class="text-white">3.979 tin đăng</p>
+                        </div>
+                    </a>
                 </div>
             </div>
 

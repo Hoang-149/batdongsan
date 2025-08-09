@@ -45,7 +45,7 @@
             required>
             <option value="0" {{ old('is_verified', 0) == 0 ? 'selected' : '' }}>Không
             </option>
-            <option value="1" {{ old('is_verified', 0) == 1 ? 'selected' : '' }}>Có
+            <option value="1" {{ old('is_verified', 1) == 1 ? 'selected' : '' }}>Có
             </option>
         </select>
         @error('is_verified')
