@@ -86,7 +86,7 @@ class ProjectController extends Controller
             }
 
             // if (auth()->user()->role == 'admin') {
-            return redirect()->route('admin.properties.create')->with('success', 'Project created successfully.');
+            return redirect()->route('admin.project.create')->with('success', 'Project created successfully.');
             // } else {
             //     return redirect()->route('profile')->with('success', 'Project created successfully.');
             // }

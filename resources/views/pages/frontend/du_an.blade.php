@@ -3,97 +3,137 @@
 @section('app-container-class', 'w-full')
 @section('content')
 
-
     <section class="w-full">
-        <div class="w-full">
-            <div class="slider-projects">
-                <div>
-                    <img src="https://mdbootstrap.com/img/new/slides/054.jpg" class="w-full h-auto object-cover rounded-lg"
-                        alt="Banner 1">
-                </div>
-                <div>
-                    <img src="https://mdbootstrap.com/img/new/slides/043.jpg" class="w-full h-auto object-cover rounded-lg"
-                        alt="Banner 2">
-                </div>
-                <div>
-                    <img src="https://mdbootstrap.com/img/new/slides/052.jpg" class="w-full h-auto object-cover rounded-lg"
-                        alt="Banner 3">
-                </div>
+        <div class="slider-projects">
+            <div>
+                <img src="https://mdbootstrap.com/img/new/slides/054.jpg" class="w-full h-auto object-cover rounded-lg"
+                    alt="Banner 1">
+            </div>
+            <div>
+                <img src="https://mdbootstrap.com/img/new/slides/043.jpg" class="w-full h-auto object-cover rounded-lg"
+                    alt="Banner 2">
+            </div>
+            <div>
+                <img src="https://mdbootstrap.com/img/new/slides/052.jpg" class="w-full h-auto object-cover rounded-lg"
+                    alt="Banner 3">
             </div>
         </div>
     </section>
 
     <div class="w-full max-w-[1140px] mx-auto">
-
         <div class="container mx-auto px-4">
             <div class="bg-gray-100 py-6">
                 <!-- Bộ lọc -->
                 <div class="bg-white rounded-lg shadow p-4 mb-6">
-                    <form method="GET" action="#" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <!-- Tỉnh/Thành -->
+                    <form id="filterForm"
+                        class="grid grid-cols-1 md:grid-cols-5 gap-8 items-end bg-white p-4 rounded-lg shadow">
+                        <!-- Location -->
                         <div>
-                            <label class="block mb-1 text-sm font-medium text-gray-700">Tỉnh/Thành phố</label>
-                            <select name="location" class="w-full border-gray-300 rounded-lg">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-map-marker-alt text-red-500 mr-1"></i> Khu vực
+                            </label>
+                            <select
+                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                id="tinh" name="location" title="Chọn Tỉnh Thành">
+                                <option value="0">Tỉnh Thành</option>
+                            </select>
+                            <input type="hidden" name="tinh_name" id="tinh_name" />
+                        </div>
+
+                        <!-- Area -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-ruler-combined text-green-500 mr-1"></i> Diện tích
+                            </label>
+                            <select name="area_range"
+                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
                                 <option value="">Tất cả</option>
-                                <option value="hanoi">Hà Nội</option>
-                                <option value="hcm">TP.HCM</option>
-                                <!-- Add more options -->
+                                <option value="0-50">Dưới 50m²</option>
+                                <option value="50-100">50 - 100m²</option>
+                                <option value="100-200">100 - 200m²</option>
+                                <option value="200-+">Trên 200m²</option>
                             </select>
                         </div>
 
-                        <!-- Loại hình -->
+                        <!-- Price -->
                         <div>
-                            <label class="block mb-1 text-sm font-medium text-gray-700">Loại hình</label>
-                            <select name="type" class="w-full border-gray-300 rounded-lg">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-dollar-sign text-yellow-500 mr-1"></i> Giá (triệu)
+                            </label>
+                            <select name="price_range"
+                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-yellow-500 focus:border-yellow-500">
                                 <option value="">Tất cả</option>
-                                <option value="apartment">Căn hộ</option>
-                                <option value="land">Đất nền</option>
-                                <!-- Add more -->
+                                <option value="0-500">Dưới 500</option>
+                                <option value="500-1000">500 - 1000</option>
+                                <option value="1000-2000">1000 - 2000</option>
+                                <option value="2000-+">Trên 2000</option>
                             </select>
                         </div>
 
-                        <!-- Giá -->
+                        <!-- Filter Button -->
                         <div>
-                            <label class="block mb-1 text-sm font-medium text-gray-700">Mức giá</label>
-                            <select name="price" class="w-full border-gray-300 rounded-lg">
-                                <option value="">Tất cả</option>
-                                <option value="duoi-1-ty">Dưới 1 tỷ</option>
-                                <option value="1-2-ty">1 - 2 tỷ</option>
-                                <!-- More -->
-                            </select>
+                            <button type="button" id="btnFilter"
+                                class="w-full flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 active:scale-95 transition-transform duration-150 text-white font-bold py-2 px-4 rounded-lg shadow">
+                                <i class="fas fa-filter"></i>
+                                <span>Lọc</span>
+                                <!-- Loading Spinner -->
+                                <i id="filterLoading" class="hidden fas fa-spinner fa-spin ml-2"></i>
+                            </button>
                         </div>
 
-                        <!-- Button -->
-                        <div class="flex items-end">
-                            <button type="submit"
-                                class="w-full bg-[#E03C31] text-white py-2 px-4 rounded-lg hover:bg-[#c53028] transition">
-                                Tìm kiếm
+                        <!-- Reset Button -->
+                        <div>
+                            <button type="button" id="btnReset"
+                                class="w-full flex items-center justify-center space-x-2 bg-gray-200 hover:bg-gray-300 active:scale-95 transition-transform duration-150 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Reset</span>
                             </button>
                         </div>
                     </form>
                 </div>
 
                 <!-- Danh sách dự án -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    @foreach ($projects as $project)
-                        <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition">
-                            <a href="#">
-                                <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="{{ $project->title }}"
-                                    class="w-full h-48 object-cover">
-                                <div class="p-4">
-                                    <h3 class="text-lg font-semibold text-gray-800 truncate">{{ $project->title }}</h3>
-                                    <p class="text-sm text-gray-500 mt-1">{{ $project->location }}</p>
-                                    <p class="text-[#E03C31] font-bold mt-2">{{ number_format($project->price) }} đ</p>
-                                </div>
-                            </a>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 flex flex-col space-y-6">
+
+                        <div id="loadingSpinner"
+                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center z-50">
+                            <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin">
+                            </div>
                         </div>
-                    @endforeach
+
+                        <div class="" id="projectList">
+                            @include('partials.project_list', ['projects' => $projects])
+                        </div>
+
+                        <div id="projectPagination">
+                            @include('partials.pagination', ['paginator' => $projects])
+                        </div>
+                    </div>
+
+
+                    <aside class="space-y-8">
+                        <aside class="space-y-8">
+                            {{-- Tin nổi bật --}}
+                            <div class="bg-white rounded-lg shadow-md p-4">
+                                <h2 class="text-lg font-bold mb-4 border-b pb-2">Tin tức</h2>
+                                <ul class="space-y-4">
+                                    @foreach ($allNews as $item)
+                                        <li class="flex items-start space-x-3">
+                                            <div>
+                                                <a href="{{ route('news.detail', $item->id) }}"
+                                                    class="text-sm font-semibold text-gray-800 hover:text-red-600">
+                                                    {{ Str::words($item->title, 10, '...') }}
+                                                </a>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </aside>
+                    </aside>
                 </div>
 
-                <!-- Phân trang -->
-                {{-- <div class="mt-6">
-                {{ $projects->links('pagination::tailwind') }}
-            </div> --}}
             </div>
         </div>
     </div>
@@ -103,4 +143,59 @@
             margin: 0;
         }
     </style>
+
+    <script>
+        $(document).ready(function() {
+            const route = "{{ route('projects') }}";
+
+            function showLoading() {
+                $("#loadingSpinner").removeClass("hidden");
+            }
+
+            function hideLoading() {
+                $("#loadingSpinner").addClass("hidden");
+            }
+
+            function fetchProjects(url = route) {
+                showLoading();
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: $("#filterForm").serialize(),
+                    dataType: "json",
+                    success: function(data) {
+                        $("#projectList").html(data.html);
+                        $("#projectPagination").html(data.pagination);
+                        bindPaginationLinks();
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    },
+                    complete: function() {
+                        hideLoading();
+                    }
+                });
+            }
+
+            $("#btnFilter").on("click", function() {
+                fetchProjects();
+            });
+
+            $("#btnReset").on("click", function() {
+                $("#filterForm")[0].reset();
+                fetchProjects();
+            });
+
+            function bindPaginationLinks() {
+                $("#projectPagination").find("a").on("click", function(e) {
+                    e.preventDefault();
+                    let url = $(this).attr("href");
+                    if (url) fetchProjects(url);
+                });
+            }
+
+            bindPaginationLinks();
+        });
+    </script>
+
 @endsection

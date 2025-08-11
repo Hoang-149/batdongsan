@@ -119,7 +119,8 @@
                         class="text-[#E03C31] underline">Chính sách</a> của chúng tôi.
                 </div>
                 <div class="text-center mt-4 text-sm">
-                    Chưa là thành viên? <a href="#" class="text-[#E03C31] font-semibold hover:underline">Đăng ký
+                    Chưa là thành viên? <a href="#"
+                        class="text-[#E03C31] font-semibold hover:underline linkRegister">Đăng ký
                         tại đây</a>
                 </div>
             </form>
@@ -131,7 +132,6 @@
     // Show modal if there's an error or input to preserve
     @if (session('error') && old('identifier'))
         document.getElementById('loginModal').classList.remove('hidden');
-        console.log("Vo day 2");
     @endif
 
     @if (session('register_success'))
@@ -149,5 +149,13 @@
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
+    });
+
+    jQuery(document).ready(function($) {
+        $('.linkRegister').on('click', function(e) {
+            e.preventDefault();
+            $('#loginModal').addClass('hidden');
+            $('#registerModal').removeClass('hidden');
+        });
     });
 </script>

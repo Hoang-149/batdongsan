@@ -1,5 +1,5 @@
 <!-- Modal Overlay -->
-<div id="logupModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+<div id="registerModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-xl shadow-lg flex w-full max-w-4xl overflow-hidden">
         <!-- Left illustration -->
         <div class="hidden md:flex flex-col justify-center items-center bg-[#ffeaea] w-1/2 p-8 relative">
@@ -9,7 +9,7 @@
         </div>
         <!-- Right form -->
         <div class="flex-1 p-8">
-            <button onclick="document.getElementById('logupModal').classList.add('hidden')"
+            <button onclick="document.getElementById('registerModal').classList.add('hidden')"
                 class="float-right text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
             <div class="mb-6 mt-2">
                 <div class="text-gray-600 text-sm">Xin chào bạn</div>
@@ -120,7 +120,8 @@
                         class="text-[#E03C31] underline">Chính sách</a> của chúng tôi.
                 </div>
                 <div class="text-center mt-4 text-sm">
-                    Đã là thành viên? <a href="#" class="text-[#E03C31] font-semibold hover:underline">Đăng
+                    Đã là thành viên? <a href="#"
+                        class="text-[#E03C31] font-semibold hover:underline linkLogin">Đăng
                         nhập</a>
                 </div>
             </form>
@@ -131,6 +132,14 @@
 <script>
     // Show modal if there's an error or input to preserve
     @if (session('error') && old('phone_number'))
-        document.getElementById('logupModal').classList.remove('hidden');
+        document.getElementById('registerModal').classList.remove('hidden');
     @endif
+
+    jQuery(document).ready(function($) {
+        $('.linkLogin').on('click', function(e) {
+            e.preventDefault();
+            $('#registerModal').addClass('hidden');
+            $('#loginModal').removeClass('hidden');
+        });
+    });
 </script>

@@ -39,6 +39,7 @@ Route::get('/password/reset', function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::get('/du-an', [HomeController::class, 'projects'])->name('projects');
+Route::get('/du-an/{id}', [HomeController::class, 'projectDetail'])->name('project.detail');
 Route::get('/tin-tuc', [HomeController::class, 'news'])->name('news');
 Route::get('/tin-tuc/{id}', [HomeController::class, 'newsDetail'])->name('news.detail');
 
@@ -50,7 +51,20 @@ Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::c
 
 Route::get('/dang-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'createProperty'])->name('createProperty');
 
+Route::get('/danh-sach-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'listProperties'])
+    ->name('user.properties.index')
+    ->middleware('auth');
+
+
+Route::get('/tin-dang/{id}/edit', [App\Http\Controllers\Frontend\PropertyController::class, 'edit'])->name('user.properties.edit');
+Route::put('/tin-dang/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'update'])->name('user.properties.update');
+
+Route::delete('/properties/images/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'deleteImage'])
+    ->name('properties.images.delete');
+
+
 Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
+
 
 
 Route::prefix('admin')->group(function () {

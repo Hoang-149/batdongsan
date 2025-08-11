@@ -39,11 +39,11 @@
                 <!-- Filter Options -->
                 <div class="flex items-center gap-4 flex-wrap">
                     <!-- Filter Button -->
-                    <button
+                    {{-- <button
                         class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         <i class="fas fa-filter text-gray-600"></i>
                         <span class="text-gray-700 font-medium">Lọc</span>
-                    </button>
+                    </button> --}}
 
                     <!-- Property Type Dropdown -->
                     <div class="relative">
@@ -92,7 +92,7 @@
                     </div>
 
                     <!-- Professional Agent Toggle -->
-                    <div class="flex items-center gap-3">
+                    {{-- <div class="flex items-center gap-3">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-user-tie text-blue-500"></i>
                             <span class="text-gray-700 font-medium">Môi giới chuyên nghiệp</span>
@@ -104,7 +104,7 @@
                                 </div>
                             </label>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

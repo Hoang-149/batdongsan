@@ -34,6 +34,7 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'avatar',
+        'msThue'
     ];
 
     /**

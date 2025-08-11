@@ -12,7 +12,7 @@
     </header>
 
     @include('modals.loginModal')
-    @include('modals.logupModal')
+    @include('modals.registerModal')
 
     <div id="app" class="@yield('app-container-class', 'w-full max-w-[1140px] mx-auto mt-24')">@yield('content')</div>
 

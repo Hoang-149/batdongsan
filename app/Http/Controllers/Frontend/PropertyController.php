@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
+use App\Models\PropertyImage;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PropertyController extends Controller
 {
@@ -231,6 +234,121 @@ class PropertyController extends Controller
         $propertyTypes = PropertyType::all();
         $user = auth()->user();
         $properties = $user->properties()->with(['images'])->get();
-        return view('pages.frontend.create_property', compact('user', 'properties', 'propertyTypes'));
+        return view('pages.frontend.nha_dat.create', compact('user', 'properties', 'propertyTypes'));
+    }
+
+    public function listProperties()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem danh sách tin.');
+        }
+
+        $user = auth()->user();
+        $properties = $user->properties()
+            ->with(['images', 'propertyTypes']) // load quan hệ cần thiết
+            ->latest()
+            ->paginate(6); // mỗi trang 6 item
+
+        return view('pages.frontend.nha_dat.index', compact('user', 'properties'));
+    }
+
+    public function edit($id)
+    {
+        $user = auth()->user();
+        $property = Property::findOrFail($id);
+        $propertyTypes = PropertyType::all();
+
+        list($tinhName, $quanName, $phuongName) = array_map('trim', explode(',', $property->location));
+
+        return view('pages.frontend.nha_dat.edit', compact('property', 'user', 'propertyTypes', 'tinhName', 'quanName', 'phuongName'));
+    }
+
+    public function deleteImage($id)
+    {
+        $image = PropertyImage::findOrFail($id);
+
+        if ($image) {
+            Storage::disk('public')->delete($image->image_url);
+            $image->delete();
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $property = Property::findOrFail($id);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'type_id' => 'required|array|min:1',
+                'type_id.*' => 'exists:propertytypes,type_id',
+                'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
+                'quan_name' => 'required|string|not_in:0', // Validate quận
+                'tinh_name' => 'required|string|not_in:0', // Validate phường
+                'project_id' => 'nullable|exists:Projects,project_id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'nullable|numeric|min:0|max:99999999999999999.99',
+                'area' => 'nullable|numeric|min:0',
+                'demande' => 'required',
+                'is_for_sale' => 'required|boolean',
+                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:10240',
+                'images' => 'nullable|array',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+            // $location = 'Thành phố Hồ Chí Minh, Quận Tân Phú, Phường Tây Thạnh';
+
+            $property->update([
+                'user_id' => auth()->id(),
+                'location' => $location,
+                'project_id' => $request->project_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'price' => $request->price,
+                'area' => $request->area,
+                'demande' => $request->demande,
+                'is_for_sale' => $request->is_for_sale,
+                'updated_at' => now(),
+            ]);
+
+            if (!empty($request->type_id)) {
+                $property->propertyTypes()->sync($request->type_id);
+            }
+
+            if ($files = $request->file('images')) {
+                $path = 'uploads/property/';
+                if (!file_exists(public_path($path))) {
+                    mkdir(public_path($path), 0755, true);
+                }
+
+                foreach ($files as $file) {
+                    $ex = $file->getClientOriginalExtension();
+                    $filename = time() . '_' . uniqid() . '.' . $ex;
+                    $file->move($path, $filename);
+
+                    PropertyImage::create([
+                        'property_id' => $property->property_id,
+                        'image_url' => $path . $filename,
+                    ]);
+                }
+            }
+
+            return redirect()->back()
+                ->with('success', 'Đã cập nhật bài đăng thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Lỗi cập nhật: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 }
