@@ -16,24 +16,24 @@
     <!-- Navigation -->
     <nav class="hidden md:flex space-x-6 flex-1 ml-8">
         <a href="/nha-dat-ban"
-            class="text-gray-700 font-semibold hover:text-red-800 {{ request()->is('nha-dat-ban*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Nhà
+            class="text-gray-700 font-semibold hover:text-red-600 {{ request()->is('nha-dat-ban*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Nhà
             đất bán</a>
         <a href="/nha-dat-thue"
-            class="text-gray-700 font-semibold hover:text-red-800 {{ request()->is('nha-dat-thue*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Nhà
+            class="text-gray-700 font-semibold hover:text-red-600 {{ request()->is('nha-dat-thue*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Nhà
             đất thuê</a>
         <a href="/du-an"
-            class="text-gray-700 font-semibold hover:text-red-800 {{ request()->is('du-an*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Dự
+            class="text-gray-700 font-semibold hover:text-red-600 {{ request()->is('du-an*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Dự
             án</a>
         <a href="/tin-tuc"
-            class="text-gray-700 font-semibold hover:text-red-800 {{ request()->is('tin-tuc*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Tin
+            class="text-gray-700 font-semibold hover:text-red-600 {{ request()->is('tin-tuc*') ? 'text-red-800 border-b-2 border-red-800 pb-1' : '' }}">Tin
             tức</a>
     </nav>
 
     <!-- User Actions (desktop) -->
     <div class="hidden md:flex items-center space-x-4">
         @if (!auth()->check())
-            <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng nhập</a>
-            <a href="#" class="text-red-600 font-semibold hover:text-red-800 register">Đăng ký</a>
+            <a href="#" class="text-red-800 font-semibold hover:text-red-600 login">Đăng nhập</a>
+            <a href="#" class="text-red-800 font-semibold hover:text-red-600 register">Đăng ký</a>
         @else
             <div class="relative group p-4">
                 <div class="flex items-center space-x-1 cursor-pointer">
@@ -81,14 +81,14 @@
         <a href="/tin-tuc" class="text-gray-700 font-semibold hover:text-red-800">Tin tức</a>
         <hr>
         @if (!auth()->check())
-            <a href="#" class="text-red-600 font-semibold hover:text-red-800 login">Đăng nhập</a>
-            <a href="#" class="text-red-600 font-semibold hover:text-red-800 register">Đăng ký</a>
+            <a href="#" class="text-red-800 font-semibold hover:text-red-800 login">Đăng nhập</a>
+            <a href="#" class="text-red-800 font-semibold hover:text-red-800 register">Đăng ký</a>
         @else
-            <a href="{{ route('profile') }}" class="text-red-600 font-semibold hover:text-red-800">Thông tin cá
+            <a href="{{ route('profile') }}" class="text-red-800 font-semibold hover:text-red-800">Thông tin cá
                 nhân</a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="w-full text-left text-red-600 font-semibold hover:text-red-800">Đăng
+                <button type="submit" class="w-full text-left text-red-800 font-semibold hover:text-red-800">Đăng
                     xuất</button>
             </form>
         @endif

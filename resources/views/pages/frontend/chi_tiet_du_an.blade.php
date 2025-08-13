@@ -5,7 +5,7 @@
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <section class="bg-gray-100 py-12">
+    <section class="bg-gray-100 py-8">
         <div class="container mx-auto px-4">
             {{-- Breadcrumb --}}
             <nav class="text-sm text-gray-500 mb-6">

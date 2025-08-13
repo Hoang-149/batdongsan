@@ -20,36 +20,66 @@
                     <div class="content acive" id="nha-dat-ban">
                         <div class="grid grid-cols-4 gap-4">
                             <input type="text" placeholder="Tìm kiếm địa điểm, khu vực" class="border p-2 rounded">
-                            <select class="border p-2 rounded">
-                                <option>Loại bất động sản</option>
+                            <select class="border p-2 rounded" id="property-type">
+                                <option value="">Loại nhà đất</option>
+                                <option value="1">Căn hộ chung cư</option>
+                                <option value="2">Nhà riêng</option>
+                                <option value="3">Đất nền</option>
                             </select>
-                            <select class="border p-2 rounded">
-                                <option>Khoảng giá</option>
+                            <select class="border p-2 rounded" id="price-filter">
+                                <option value="">Chọn mức giá</option>
+                                <option value="under_1b">Dưới 1 tỷ</option>
+                                <option value="1b_5b">1 - 5 tỷ</option>
+                                <option value="over_5b">Trên 5 tỷ</option>
                             </select>
-                            <select class="border p-2 rounded">
-                                <option>Diện tích</option>
+                            <select class="border p-2 rounded" id="area-filter">
+                                <option value="">Diện tích</option>
+                                <option value="under_30">Dưới 30 m²</option>
+                                <option value="30_50">30 - 50 m²</option>
+                                <option value="50_100">50 - 100 m²</option>
+                                <option value="over_100">Trên 100 m²</option>
                             </select>
                         </div>
                     </div>
                     <div class="content hidden" id="nha-dat-thue">
                         <div class="grid grid-cols-4 gap-4">
                             <input type="text" placeholder="Tìm kiếm địa điểm, khu vực" class="border p-2 rounded">
-                            <select class="border p-2 rounded">
-                                <option>Khoảng giá</option>
+                            <select class="border p-2 rounded" id="property-type">
+                                <option value="">Loại nhà đất</option>
+                                <option value="1">Căn hộ chung cư</option>
+                                <option value="2">Nhà riêng</option>
+                                <option value="3">Đất nền</option>
                             </select>
-                            <select class="border p-2 rounded">
-                                <option>Diện tích</option>
+                            <select class="border p-2 rounded" id="price-filter">
+                                <option value="">Chọn mức giá</option>
+                                <option value="under_1b">Dưới 1 tỷ</option>
+                                <option value="1b_5b">1 - 5 tỷ</option>
+                                <option value="over_5b">Trên 5 tỷ</option>
+                            </select>
+                            <select class="border p-2 rounded" id="area-filter">
+                                <option value="">Diện tích</option>
+                                <option value="under_30">Dưới 30 m²</option>
+                                <option value="30_50">30 - 50 m²</option>
+                                <option value="50_100">50 - 100 m²</option>
+                                <option value="over_100">Trên 100 m²</option>
                             </select>
                         </div>
                     </div>
                     <div class="content hidden" id="du-an">
                         <div class="grid grid-cols-4 gap-4"> <input type="text" placeholder="Tìm kiếm địa điểm, khu vực"
                                 class="border p-2 rounded">
-                            <select class="border p-2 rounded">
-                                <option>Loại bất động sản</option>
+                            <select class="border p-2 rounded" id="price-filter">
+                                <option value="">Chọn mức giá</option>
+                                <option value="under_1b">Dưới 1 tỷ</option>
+                                <option value="1b_5b">1 - 5 tỷ</option>
+                                <option value="over_5b">Trên 5 tỷ</option>
                             </select>
-                            <select class="border p-2 rounded">
-                                <option>Diện tích</option>
+                            <select class="border p-2 rounded" id="area-filter">
+                                <option value="">Diện tích</option>
+                                <option value="under_30">Dưới 30 m²</option>
+                                <option value="30_50">30 - 50 m²</option>
+                                <option value="50_100">50 - 100 m²</option>
+                                <option value="over_100">Trên 100 m²</option>
                             </select>
                         </div>
                     </div>
@@ -113,7 +143,8 @@
                     <a href="{{ route('news') }}"
                         class="inline-flex items-center text-[#E03C31] hover:underline text-sm font-medium">
                         Xem thêm
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>

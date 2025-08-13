@@ -17,24 +17,38 @@
             <!-- Main Search Container -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
                 <!-- Search Bar -->
-                <div class="flex items-center gap-4 mb-4">
+                <div class="flex items-center gap-4 mb-6">
                     <div class="flex-1 relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
+                            <i class="fas fa-search text-gray-600"></i>
                         </div>
-                        <input type="text" id="search-text" placeholder="Trên toàn quốc"
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-gray-700">
+                        <div
+                            class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
+
+                            <input type="text" id="search-text" placeholder="Tìm kiếm trên toàn quốc..."
+                                class="w-72 pl-12 pr-8 py-3.5 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
+                            <div id="selected-quans" class="flex flex-wrap items-center pr-40 py-2 bg-transparent w-full">
+                            </div>
+                            <select id="tinh-select"
+                                class="absolute right-0 top-0 h-full px-4 py-3.5 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-100">
+                                <option value="all">Tất cả</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
+                            </div>
+                        </div>
+                        <div id="quan-dropdown"
+                            class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto hidden">
+                            <ul id="quan-list" class="text-gray-700 text-base"></ul>
+                        </div>
                     </div>
+
                     <button id="search-button"
-                        class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                        class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
                         Tìm kiếm
                     </button>
-                    {{-- <button
-                        class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-3 rounded-lg font-medium transition-colors flex items-center gap-2">
-                        <i class="fas fa-map"></i>
-                        Xem bản đồ
-                    </button> --}}
                 </div>
+
 
                 <!-- Filter Options -->
                 <div class="flex items-center gap-4 flex-wrap">
@@ -66,8 +80,8 @@
                         <select class="w-36 border rounded-lg p-2.5 appearance-none bg-white" id="price-filter">
                             <option value="">Chọn mức giá</option>
                             <option value="under_1b">Dưới 1 tỷ</option>
-                            <option value="1b_3b">1 - 3 tỷ</option>
-                            <option value="over_3b">Trên 3 tỷ</option>
+                            <option value="1b_5b">1 - 5 tỷ</option>
+                            <option value="over_5b">Trên 5 tỷ</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,6 +128,13 @@
             <div class="flex gap-6">
                 <!-- Main Content Area -->
                 <div class="flex-1">
+
+                    <div id="loadingSpinner"
+                        class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center z-50">
+                        <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin">
+                        </div>
+                    </div>
+
                     <!-- Property Listings -->
                     <div class="space-y-4" id="property-list">
                         @include('partials.property-list', ['properties' => $properties])
@@ -192,9 +213,27 @@
         });
 
         $(document).ready(function() {
+            const defaultTinhId = 48;
+            const maxSelections = 3;
+            let selectedQuans = [];
+
+            let propertyType = '';
+            let priceFilter = '';
+            let isVerified = false;
+            let searchTinh = '';
+            let searchQuan = '';
+
+            function showLoading() {
+                $("#loadingSpinner").removeClass("hidden");
+            }
+
+            function hideLoading() {
+                $("#loadingSpinner").addClass("hidden");
+            }
+
             // Hàm lấy dữ liệu bất động sản
             function loadProperties(page = 1) {
-                // Thu thập giá trị bộ lọc
+
                 let priceRanges = [];
                 let areaRanges = [];
                 $('.filter-checkbox[name="price_ranges[]"]:checked').each(function() {
@@ -204,12 +243,14 @@
                     areaRanges.push($(this).val());
                 });
 
-                let searchText = $('#search-text').val();
-                let propertyType = $('#property-type').val();
-                let priceFilter = $('#price-filter').val();
-                let isVerified = $('#is-verified').is(':checked');
+                // let propertyType = $('#property-type').val();
+                // let priceFilter = $('#price-filter').val();
+                // let isVerified = $('#is-verified').is(':checked');
                 // let professionalAgent = $('#professional-agent').is(':checked');
 
+                // let searchTinh = $('#tinh-select').find("option:selected").data("name");
+                // let searchQuan = selectedQuans.map(q => q.name).join(', ');
+                showLoading();
                 $.ajax({
                     url: '{{ route('properties.indexBan') }}',
                     type: 'GET',
@@ -217,13 +258,16 @@
                         page: page,
                         price_ranges: priceRanges,
                         area_ranges: areaRanges,
-                        search: searchText,
+
                         property_type: propertyType,
                         price_filter: priceFilter,
                         is_verified: isVerified,
+                        search_tinh: searchTinh,
+                        search_quan: searchQuan,
                         // professional_agent: professionalAgent,
                     },
                     success: function(response) {
+                        hideLoading();
                         // Cập nhật danh sách bất động sản
                         $('#property-list').html(response.properties.map(property => `
                     <div class="bg-white rounded-lg p-4 gap-4">
@@ -295,7 +339,112 @@
 
             $('#search-button').on('click', function(e) {
                 e.preventDefault();
-                loadProperties();
+
+                propertyType = $('#property-type').val();
+                priceFilter = $('#price-filter').val();
+                isVerified = $('#is-verified').is(':checked');
+                // let professionalAgent = $('#professional-agent').is(':checked');
+
+                searchTinh = $('#tinh-select').find("option:selected").data("name");
+                searchQuan = selectedQuans.map(q => q.name).join(', ');
+                loadProperties(1);
+            });
+
+            // Load tỉnh
+            $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm")
+                .done(function(data_tinh) {
+                    if (data_tinh.error === 0) {
+                        $.each(data_tinh.data, function(_, t) {
+                            $('#tinh-select').append(
+                                `<option value="${t.id}" data-name="${t.full_name}">${t.full_name}</option>`
+                            );
+                        });
+
+                        // Chọn sẵn tỉnh
+                        $('#tinh-select').val(defaultTinhId).trigger('change');
+                    }
+                });
+
+            // $("#tinh_name").val($('#tinh-select').find("option:selected").data("name"));
+
+            // Xử lý khi click vào input để hiển thị dropdown quận/huyện
+            $('#search-text').on('click', function() {
+                const tinhId = $('#tinh-select').val();
+                if (tinhId && tinhId !== 'all') {
+                    // Gọi API để lấy danh sách quận/huyện
+                    $.getJSON(`https://esgoo.net/api-tinhthanh/2/${tinhId}.htm`)
+                        .done(function(data_quan) {
+                            if (data_quan.error === 0) {
+                                $('#quan-list').empty(); // Xóa danh sách cũ
+                                $.each(data_quan.data, function(_, q) {
+                                    const isSelected = selectedQuans.some(s => s.id === q.id);
+                                    const isDisabled = selectedQuans.length >= maxSelections &&
+                                        !isSelected;
+                                    $('#quan-list').append(
+                                        `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer ${isSelected ? 'bg-gray-100' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed' : ''}" data-id="${q.id}" data-name="${q.full_name}" ${isDisabled ? 'data-disabled="true"' : ''}>${q.full_name}</li>`
+                                    );
+                                });
+                                $('#quan-dropdown').removeClass('hidden');
+                            }
+                        });
+                } else {
+                    $('#quan-list').empty();
+                    $('#quan-dropdown').addClass('hidden'); // Ẩn dropdown nếu không có tỉnh
+                }
+            });
+
+            // Xử lý khi chọn quận/huyện
+            $('#quan-list').on('click', 'li', function() {
+                if ($(this).data('disabled')) return;
+                const quanId = $(this).data('id');
+                const quanName = $(this).data('name');
+                if (!selectedQuans.some(s => s.id === quanId) && selectedQuans.length < maxSelections) {
+                    selectedQuans.push({
+                        id: quanId,
+                        name: quanName
+                    });
+                    updateSelectedQuans();
+                }
+                $('#quan-dropdown').addClass('hidden');
+            });
+
+            // Cập nhật giao diện các quận đã chọn
+            function updateSelectedQuans() {
+                $('#selected-quans').empty();
+                selectedQuans.forEach(quan => {
+                    $('#selected-quans').append(`
+                <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1 mr-2">
+                    ${quan.name}
+                    <button class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none" data-id="${quan.id}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>
+            `);
+                });
+                // $('#search-text').val(selectedQuans.map(q => q.name).join(', ')); // Cập nhật input
+            }
+
+            // Xử lý xóa quận đã chọn
+            $('#selected-quans').on('click', 'button', function() {
+                const quanId = $(this).data('id');
+                selectedQuans = selectedQuans.filter(q => q.id !== quanId);
+                updateSelectedQuans();
+            });
+
+            // Ẩn dropdown khi click ra ngoài
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#search-text, #quan-dropdown').length) {
+                    $('#quan-dropdown').addClass('hidden');
+                }
+            });
+
+            // Xử lý khi thay đổi tỉnh
+            $('#tinh-select').on('change', function() {
+                selectedQuans = [];
+                $('#quan-list').empty();
+                $('#selected-quans').empty();
+                $('#search-text').val('');
+                $('#quan-dropdown').addClass('hidden');
             });
         });
     </script>

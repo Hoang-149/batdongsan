@@ -17,9 +17,8 @@ class PropertyController extends Controller
     {
         $query = Property::with('images')
             ->where('is_verified', 1)
-            ->whereIn('demande', [0, 1]);
+            ->whereIn('demande', [1, 2]);
 
-        // Xử lý bộ lọc giá
         if ($request->has('price_ranges')) {
             $priceRanges = $request->input('price_ranges', []);
             $query->where(function ($q) use ($priceRanges) {
@@ -38,7 +37,6 @@ class PropertyController extends Controller
             });
         }
 
-        // Xử lý bộ lọc diện tích
         if ($request->has('area_ranges')) {
             $areaRanges = $request->input('area_ranges', []);
             $query->where(function ($q) use ($areaRanges) {
@@ -57,9 +55,20 @@ class PropertyController extends Controller
             });
         }
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('location', 'like', "%{$search}%");
+        if ($request->filled('search_tinh')) {
+            $search_tinh = $request->input('search_tinh');
+            $query->where('location', 'like', "%{$search_tinh}%");
+        }
+
+        if ($request->filled('search_quan')) {
+            $searchQuans = explode(', ', $request->input('search_quan'));
+            $query->where(function ($q) use ($searchQuans) {
+                foreach ($searchQuans as $quan) {
+                    if (trim($quan) !== '') {
+                        $q->orWhere('location', 'LIKE', '%' . trim($quan) . '%');
+                    }
+                }
+            });
         }
 
         if ($request->filled('property_type')) {
@@ -75,15 +84,15 @@ class PropertyController extends Controller
                 case 'under_1b':
                     $query->where('price', '<', 1000000000);
                     break;
-                case '1b_3b':
-                    $query->whereBetween('price', [1000000000, 3000000000]);
+                case '1b_5b':
+                    $query->whereBetween('price', [1000000000, 5000000000]);
                     break;
-                case 'over_3b':
-                    $query->where('price', '>', 3000000000);
+                case 'over_5b':
+                    $query->where('price', '>', 5000000000);
                     break;
             }
         }
-        // Log::info($request->boolean('is_verified') ? 1 : 0);
+
         if ($request->boolean('is_verified')) {
             $query->where('is_verified', true);
         }
@@ -97,7 +106,7 @@ class PropertyController extends Controller
 
 
         // Phân trang
-        $perPage = 2; // Số bất động sản mỗi trang
+        $perPage = 2;
         $properties = $query->paginate($perPage);
 
         // Trả về JSON nếu là yêu cầu AJAX
@@ -126,7 +135,7 @@ class PropertyController extends Controller
 
         $query = Property::with('images')
             ->where('is_verified', 1)
-            ->whereIn('demande', [1, 2]);
+            ->whereIn('demande', [0, 2]);
 
         // Xử lý bộ lọc giá
         if ($request->has('price_ranges')) {
@@ -166,9 +175,21 @@ class PropertyController extends Controller
             });
         }
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('location', 'like', "%{$search}%");
+        if ($request->filled('search_tinh')) {
+            $search_tinh = $request->input('search_tinh');
+            $query->where('location', 'like', "%{$search_tinh}%");
+        }
+
+        if ($request->filled('search_quan')) {
+            $searchQuans = explode(', ', $request->input('search_quan'));
+
+            $query->where(function ($q) use ($searchQuans) {
+                foreach ($searchQuans as $quan) {
+                    if (trim($quan) !== '') {
+                        $q->orWhere('location', 'LIKE', '%' . trim($quan) . '%');
+                    }
+                }
+            });
         }
 
         if ($request->filled('property_type')) {
@@ -184,11 +205,11 @@ class PropertyController extends Controller
                 case 'under_1b':
                     $query->where('price', '<', 1000000000);
                     break;
-                case '1b_3b':
-                    $query->whereBetween('price', [1000000000, 3000000000]);
+                case '1b_5b':
+                    $query->whereBetween('price', [1000000000, 5000000000]);
                     break;
-                case 'over_3b':
-                    $query->where('price', '>', 3000000000);
+                case 'over_5b':
+                    $query->where('price', '>', 5000000000);
                     break;
             }
         }
