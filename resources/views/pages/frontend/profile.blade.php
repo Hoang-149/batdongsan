@@ -11,6 +11,14 @@
             <!-- Main Content -->
             <main class="flex-1">
                 <div class="bg-white rounded-xl shadow p-8">
+                    @if (session('success'))
+                        <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-r-lg flex items-center justify-between"
+                            role="alert">
+                            <span class="font-medium">{{ session('success') }}</span>
+                            <button type="button" class="text-green-700 hover:text-green-900 text-lg font-bold"
+                                data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                    @endif
                     <h1 class="text-2xl font-bold mb-6">Quản lý tài khoản</h1>
                     <!-- Tabs -->
                     <div class="flex border-b mb-8">
@@ -43,18 +51,38 @@
                     </div> --}}
 
                     <!-- Form -->
-                    <form>
+                    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <h3 class="text-xl font-semibold mb-4">Thông tin cá nhân</h3>
+                        <div class="flex justify-center mb-4">
+                            <div class="avatar-upload">
+                                <label for="avatar" class="avatar-label ">
+                                    <i class="fas fa-camera"></i>
+                                    <input type="file" id="avatar" name="avatar" accept="image/*" hidden>
+                                </label>
+                                <img id="avatarPreview"
+                                    src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://via.placeholder.com/120' }}"
+                                    alt="avatar" class="avatar-img" />
+
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-gray-700 font-medium mb-1">Họ và tên</label>
-                                <input type="text" value="{{ $user->full_name }}"
+                                <input type="text" name="full_name" value="{{ $user->full_name }}"
                                     class="w-full border rounded-lg px-4 py-2 bg-gray-50" />
+                                @error('full_name')
+                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div>
                                 <label class="block text-gray-700 font-medium mb-1">Mã số thuế cá nhân</label>
-                                <input type="text" placeholder="Ví dụ: 1234567890 hoặc 1234567890-123"
-                                    class="w-full border rounded-lg px-4 py-2 bg-gray-50" />
-                                <div class="text-xs text-gray-400 mt-1">MST gồm 10 hoặc 13 chữ số</div>
+                                <input type="text" name="msThue" placeholder="Ví dụ: 1234567890 hoặc 1234567890-123"
+                                    value="{{ $user->msThue }}" class="w-full border rounded-lg px-4 py-2 bg-gray-50" />
+                                @error('msThue')
+                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <hr class="my-8">
@@ -62,13 +90,20 @@
                             <h2 class="text-lg font-semibold mb-4">Thông tin liên hệ</h2>
                             <div class="block w-full gap-4 mb-4">
                                 <label class="block text-gray-700 font-medium mb-1">Số điện thoại chính</label>
-                                <input type="phone" class="w-full border rounded-lg px-4 py-2 bg-gray-50"
+                                <input type="phone" name="phone_number"
+                                    class="w-full border rounded-lg px-4 py-2 bg-gray-50"
                                     value="{{ $user->phone_number }}" />
+                                @error('phone_number')
+                                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                @enderror
 
-                                <div class="flex-1">
+                                <div class="flex-1 mt-4">
                                     <label class="block text-gray-700 font-medium mb-1">Email</label>
-                                    <input type="email" class="w-full border rounded-lg px-4 py-2 bg-gray-50"
-                                        value="{{ $user->email }}" />
+                                    <input type="email" name="email"
+                                        class="w-full border rounded-lg px-4 py-2 bg-gray-50" value="{{ $user->email }}" />
+                                    @error('email')
+                                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -82,4 +117,51 @@
             </main>
         </div>
     </div>
+
+    <style>
+        .avatar-upload {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px dashed #ddd;
+        }
+
+        .avatar-label {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-label i {
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+
+    <script>
+        jQuery(document).ready(function($) {
+            $("#avatar").on("change", function(e) {
+                let file = e.target.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        $("#avatarPreview").attr("src", e.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
 @endsection

@@ -71,12 +71,13 @@ class NewsController extends Controller
         $news = News::findOrFail($id);
         $data = $request->only(['title', 'content', 'author', 'is_verified']);
 
+        $path = 'uploads/news/';
         if ($file = $request->file('thumbnail')) {
-            $path = 'uploads/news/';
             if (!file_exists(public_path($path))) {
                 mkdir(public_path($path), 0755, true);
             }
-
+        }
+        if ($file = $request->file('thumbnail')) {
             // Xóa ảnh cũ nếu có
             if ($news->thumbnail && file_exists(public_path($news->thumbnail))) {
                 unlink(public_path($news->thumbnail));

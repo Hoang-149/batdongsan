@@ -265,13 +265,11 @@
                 }
             });
 
-            let tinhFromDB = "{{ $tinhName ?? '' }}";
-            let quanFromDB = "{{ $quanName ?? '' }}";
-            let phuongFromDB = "{{ $phuongName ?? '' }}";
-
-            console.log(tinhFromDB, quanFromDB, phuongFromDB);
-
-
+            window.locationDefault = {
+                tinh: "{{ $property->location ? explode(', ', $property->location)[0] : '' }}",
+                quan: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}",
+                phuong: "{{ $property->location ? explode(', ', $property->location)[2] : '' }}"
+            };
 
         });
     </script>

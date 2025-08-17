@@ -1,6 +1,6 @@
 @forelse ($properties as $property)
     <div class="bg-white rounded-lg p-4 gap-4">
-        <a href="{{ route('properties.show', $property->property_id) }}">
+        <a href="{{ route('properties.show', $property->slug) }}">
             <div class="w-full mb-4">
                 <div class="grid grid-cols-3 grid-rows-2 gap-2 h-[234px]">
                     @php
@@ -40,15 +40,14 @@
                     {{ $property->propertyTypes->pluck('type_name')->implode(', ') ?? 'N/A' }}
                 </p>
                 <p class="text-gray-500 text-sm mb-4">
-                    {{ Str::limit($property->description, 100) }}
+                    {{ \Illuminate\Support\Str::limit(strip_tags($property->description), 200) }}
                 </p>
                 <div class="flex justify-between items-end">
                     <div class="text-gray-500 text-sm">
                         <p>{{ $property->created_at->format('d/m/Y') }}</p>
                         <p>{{ $property->location ?? 'N/A' }}</p>
                     </div>
-                    <a href="{{ route('properties.show', $property->property_id) }}"
-                        class="text-blue-600 hover:underline">
+                    <a href="{{ route('properties.show', $property->slug) }}" class="text-blue-600 hover:underline">
                         Chi tiết
                     </a>
                 </div>

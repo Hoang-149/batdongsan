@@ -51,6 +51,117 @@ $(document).ready(function (e) {
         console.error(error);
     });
 
+    function loadQuan(idtinh) {
+        return new Promise((resolve) => {
+            $.getJSON(
+                "https://esgoo.net/api-tinhthanh/2/" + idtinh + ".htm",
+                function (data_quan) {
+                    if (data_quan.error == 0) {
+                        $("#quan").html(
+                            '<option value="0">Quận Huyện</option>'
+                        );
+                        $("#phuong").html(
+                            '<option value="0">Phường Xã</option>'
+                        );
+                        $.each(data_quan.data, function (key_quan, val_quan) {
+                            $("#quan").append(
+                                '<option value="' +
+                                    val_quan.id +
+                                    '" data-name="' +
+                                    val_quan.full_name +
+                                    '">' +
+                                    val_quan.full_name +
+                                    "</option>"
+                            );
+                        });
+                    }
+                    resolve();
+                }
+            );
+        });
+    }
+
+    function loadPhuong(idquan) {
+        return new Promise((resolve) => {
+            $.getJSON(
+                "https://esgoo.net/api-tinhthanh/3/" + idquan + ".htm",
+                function (data_phuong) {
+                    if (data_phuong.error == 0) {
+                        $("#phuong").html(
+                            '<option value="0">Phường Xã</option>'
+                        );
+                        $.each(
+                            data_phuong.data,
+                            function (key_phuong, val_phuong) {
+                                $("#phuong").append(
+                                    '<option value="' +
+                                        val_phuong.id +
+                                        '" data-name="' +
+                                        val_phuong.full_name +
+                                        '">' +
+                                        val_phuong.full_name +
+                                        "</option>"
+                                );
+                            }
+                        );
+                    }
+                    resolve();
+                }
+            );
+        });
+    }
+
+    // Hàm này gọi sau khi đã render option tỉnh
+    async function setLocationDefault(tinhName, quanName, phuongName) {
+        // Set tỉnh
+        let tinhId = null;
+        $("#tinh option").each(function () {
+            if (
+                ($(this).data("name") || "").toString().trim() ===
+                tinhName.trim()
+            ) {
+                tinhId = $(this).val();
+                $("#tinh").val(tinhId).trigger("change");
+                $("#tinh_name").val(tinhName);
+                return false;
+            }
+        });
+        if (!tinhId) return;
+
+        // Đợi quận load xong
+        await loadQuan(tinhId);
+
+        // Set quận
+        let quanId = null;
+        $("#quan option").each(function () {
+            if (
+                ($(this).data("name") || "").toString().trim() ===
+                quanName.trim()
+            ) {
+                quanId = $(this).val();
+                $("#quan").val(quanId).trigger("change");
+                $("#quan_name").val(quanName);
+                return false;
+            }
+        });
+        if (!quanId) return;
+
+        // Đợi phường load xong
+        await loadPhuong(quanId);
+
+        // Set phường
+        $("#phuong option").each(function () {
+            if (
+                ($(this).data("name") || "").toString().trim() ===
+                phuongName.trim()
+            ) {
+                $("#phuong").val($(this).val());
+                $("#phuong_name").val(phuongName);
+                return false;
+            }
+        });
+    }
+
     $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm", function (data_tinh) {
         if (data_tinh.error == 0) {
             $.each(data_tinh.data, function (key_tinh, val_tinh) {
@@ -146,6 +257,13 @@ $(document).ready(function (e) {
                     }
                 );
             });
+            if (window.locationDefault) {
+                setLocationDefault(
+                    window.locationDefault.tinh,
+                    window.locationDefault.quan,
+                    window.locationDefault.phuong
+                );
+            }
         }
     });
 });

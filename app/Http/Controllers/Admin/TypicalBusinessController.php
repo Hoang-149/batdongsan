@@ -49,7 +49,7 @@ class TypicalBusinessController extends Controller
         ]);
 
         return redirect()->route('admin.typical_business.index')
-            ->with('success', 'Typical business created successfully.');
+            ->with('success', 'Tạo logo doanh nghiệp tiêu biểu thành công.');
     }
 
     /**

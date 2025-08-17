@@ -138,7 +138,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price">Mức giá(VND)</label>
+                                    <label for="price">Mức giá(triệu/m2)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price', $project->price) }}">
@@ -153,6 +153,22 @@
                                         class="form-control @error('area') is-invalid @enderror"
                                         value="{{ old('area', $project->area) }}">
                                     @error('area')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status">Trạng thái</label>
+                                    <select name="status" id="status"
+                                        class="form-control @error('status') is-invalid @enderror" required>
+                                        <option value="0" {{ old('status', 0) == 0 ? 'selected' : '' }}>Sắp mở bán
+                                        </option>
+                                        <option value="1" {{ old('status', 0) == 1 ? 'selected' : '' }}>Đang mở bán
+                                        </option>
+                                        <option value="2" {{ old('status', 0) == 2 ? 'selected' : '' }}>Đã bàn giao
+                                        </option>
+                                    </select>
+                                    @error('status')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -174,7 +190,7 @@
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Tạo</button>
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
                                     <a href="{{ route('admin.project.index') }}" class="btn btn-secondary">Hủy</a>
                                 </div>
                             </form>
@@ -201,65 +217,13 @@
     <script>
         jQuery(document).ready(function($) {
 
-            // Xử lý hiển thị ảnh
-            $('input[name="images[]"]').on('change', function(e) {
-                var files = e.target.files;
-                var $preview = $('#image-preview');
-                var $errorDiv = $('#image-error');
-                $preview.html(''); // Xóa ảnh cũ
+            window.locationDefault = {
+                tinh: "{{ $project->location ? explode(', ', $project->location)[0] : '' }}",
+                quan: "{{ $project->location ? explode(', ', $project->location)[1] : '' }}",
+                phuong: "{{ $project->location ? explode(', ', $project->location)[2] : '' }}"
+            };
 
-                // Kiểm tra số lượng ảnh
-                if (files.length < 4) {
-                    $errorDiv.show();
-                } else {
-                    $errorDiv.hide();
-                }
 
-                $.each(files, function(index, file) {
-                    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-                        return true; // continue
-                    }
-
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var img = new Image();
-                        img.src = e.target.result;
-
-                        $(img).on('load', function() {
-                            var canvas = $('<canvas>')[0];
-                            var ctx = canvas.getContext('2d');
-                            var maxWidth = 100,
-                                maxHeight = 100;
-                            var width = img.width,
-                                height = img.height;
-
-                            // Resize
-                            if (width > height && width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width);
-                                width = maxWidth;
-                            } else if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height);
-                                height = maxHeight;
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            var thumbnail = $('<img>')
-                                .attr('src', canvas.toDataURL('image/jpeg'))
-                                .addClass('rounded object-cover')
-                                .css({
-                                    width: '150px'
-                                });
-
-                            $preview.append(thumbnail);
-                        });
-                    };
-
-                    reader.readAsDataURL(file);
-                });
-            });
         });
     </script>
 

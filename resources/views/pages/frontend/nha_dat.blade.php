@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Nhà đất bán')
+@section('title', $titlePage)
 @section('content')
 
 
@@ -9,7 +9,7 @@
             <div class="flex items-center text-sm">
                 <a href="/" class="text-gray-600 hover:text-[#E03C31]">Trang chủ</a>
                 <span class="mx-2">/</span>
-                <span class="text-[#E03C31]">Nhà đất bán</span>
+                <span class="text-[#E03C31]">{{ $titlePage }}</span>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
                         <div
                             class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
 
-                            <input type="text" id="search-text" placeholder="Tìm kiếm trên toàn quốc..."
+                            <input type="text" id="search-text" placeholder="Nhập tối đa 3 địa điểm..."
                                 class="w-72 pl-12 pr-8 py-3.5 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
                             <div id="selected-quans" class="flex flex-wrap items-center pr-40 py-2 bg-transparent w-full">
                             </div>
@@ -167,7 +167,7 @@
                                 <span class="ml-2">5 - 10 tỷ</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="price_ranges[]" value="above_10b"
+                                <input type="checkbox" name="price_ranges[]" value="over_10b"
                                     class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">Trên 10 tỷ</span>
                             </label>
@@ -193,7 +193,7 @@
                                 <span class="ml-2">50 - 100 m²</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" name="area_ranges[]" value="above_100"
+                                <input type="checkbox" name="area_ranges[]" value="over_100"
                                     class="rounded border-gray-300 filter-checkbox">
                                 <span class="ml-2">Trên 100 m²</span>
                             </label>
@@ -213,7 +213,6 @@
         });
 
         $(document).ready(function() {
-            const defaultTinhId = 48;
             const maxSelections = 3;
             let selectedQuans = [];
 
@@ -243,13 +242,6 @@
                     areaRanges.push($(this).val());
                 });
 
-                // let propertyType = $('#property-type').val();
-                // let priceFilter = $('#price-filter').val();
-                // let isVerified = $('#is-verified').is(':checked');
-                // let professionalAgent = $('#professional-agent').is(':checked');
-
-                // let searchTinh = $('#tinh-select').find("option:selected").data("name");
-                // let searchQuan = selectedQuans.map(q => q.name).join(', ');
                 showLoading();
                 $.ajax({
                     url: '{{ route('properties.indexBan') }}',
@@ -322,8 +314,14 @@
                 });
             }
 
+            function hasQueryParams() {
+                return window.location.search.length > 1; // "?a=1" -> length > 1
+            }
+
             // Gọi loadProperties khi tải trang
-            loadProperties();
+            if (!hasQueryParams) {
+                loadProperties();
+            }
 
             // Xử lý click vào liên kết phân trang
             $(document).on('click', '#pagination a', function(e) {
@@ -349,23 +347,6 @@
                 searchQuan = selectedQuans.map(q => q.name).join(', ');
                 loadProperties(1);
             });
-
-            // Load tỉnh
-            $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm")
-                .done(function(data_tinh) {
-                    if (data_tinh.error === 0) {
-                        $.each(data_tinh.data, function(_, t) {
-                            $('#tinh-select').append(
-                                `<option value="${t.id}" data-name="${t.full_name}">${t.full_name}</option>`
-                            );
-                        });
-
-                        // Chọn sẵn tỉnh
-                        $('#tinh-select').val(defaultTinhId).trigger('change');
-                    }
-                });
-
-            // $("#tinh_name").val($('#tinh-select').find("option:selected").data("name"));
 
             // Xử lý khi click vào input để hiển thị dropdown quận/huyện
             $('#search-text').on('click', function() {
@@ -393,6 +374,75 @@
                 }
             });
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchTinhParam = urlParams.get('search_tinh');
+            const searchQuanParam = urlParams.get('search_quan');
+            const searchQuanIdsParam = urlParams.get('search_quan_ids');
+            const propertyTypeParam = urlParams.get('property_type');
+            const priceRangesParam = urlParams.get('price_filter');
+            const areaRangesParam = urlParams.get('area_ranges');
+
+            if (propertyTypeParam) {
+                $('#property-type').val(propertyTypeParam);
+            }
+            if (priceRangesParam) {
+                $('#price-filter').val(priceRangesParam);
+            }
+
+            // ===== Load tỉnh =====
+            $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm")
+                .done(function(data_tinh) {
+                    if (data_tinh.error === 0) {
+                        $.each(data_tinh.data, function(_, t) {
+                            $('#tinh-select').append(
+                                `<option value="${t.id}" data-name="${t.full_name}">${t.full_name}</option>`
+                            );
+                        });
+
+                        let tinhIdToSelect;
+
+                        // Nếu có search_tinh → tìm ID tỉnh
+                        if (searchTinhParam) {
+                            const foundTinh = data_tinh.data.find(
+                                tinh => tinh.full_name.trim() === searchTinhParam.trim()
+                            );
+                            if (foundTinh) {
+                                tinhIdToSelect = foundTinh.id;
+                            }
+                        }
+
+                        // Set tỉnh và load quận
+                        if (tinhIdToSelect) {
+                            $('#tinh-select').val(tinhIdToSelect).trigger('change');
+                        }
+
+                        // Sau khi set tỉnh → load quận/huyện
+                        loadQuanHuyen(tinhIdToSelect, searchQuanParam);
+                    }
+                });
+
+            // ===== Load quận/huyện =====
+            function loadQuanHuyen(tinhId, quanParam) {
+                $.getJSON(`https://esgoo.net/api-tinhthanh/2/${tinhId}.htm`)
+                    .done(function(data_quan) {
+                        if (data_quan.error === 0) {
+
+                            if (quanParam && searchQuanIdsParam) {
+                                const quanList = quanParam.split(',').map(q => q.trim());
+                                const quanIdsList = searchQuanIdsParam.split(',').map(q => q.trim());
+
+                                for (let i = 0; i < quanList.length; i++) {
+                                    selectedQuans.push({
+                                        id: quanIdsList[i],
+                                        name: quanList[i]
+                                    });
+                                }
+                                updateSelectedQuans();
+                            }
+                        }
+                    });
+            }
+
             // Xử lý khi chọn quận/huyện
             $('#quan-list').on('click', 'li', function() {
                 if ($(this).data('disabled')) return;
@@ -408,7 +458,6 @@
                 $('#quan-dropdown').addClass('hidden');
             });
 
-            // Cập nhật giao diện các quận đã chọn
             function updateSelectedQuans() {
                 $('#selected-quans').empty();
                 selectedQuans.forEach(quan => {
@@ -421,24 +470,20 @@
                 </span>
             `);
                 });
-                // $('#search-text').val(selectedQuans.map(q => q.name).join(', ')); // Cập nhật input
             }
 
-            // Xử lý xóa quận đã chọn
             $('#selected-quans').on('click', 'button', function() {
                 const quanId = $(this).data('id');
                 selectedQuans = selectedQuans.filter(q => q.id !== quanId);
                 updateSelectedQuans();
             });
 
-            // Ẩn dropdown khi click ra ngoài
             $(document).on('click', function(e) {
                 if (!$(e.target).closest('#search-text, #quan-dropdown').length) {
                     $('#quan-dropdown').addClass('hidden');
                 }
             });
 
-            // Xử lý khi thay đổi tỉnh
             $('#tinh-select').on('change', function() {
                 selectedQuans = [];
                 $('#quan-list').empty();

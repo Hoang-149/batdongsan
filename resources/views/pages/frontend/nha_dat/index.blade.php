@@ -44,7 +44,7 @@
                                             {{ number_format($property->price) }} VND
                                         </p>
                                         <div class="flex justify-between items-center text-sm">
-                                            <a href="{{ route('admin.properties.index', $property->property_id) }}"
+                                            <a href="{{ route('properties.show', $property->slug) }}"
                                                 class="text-blue-600 hover:underline">Xem</a>
                                             <a href="{{ route('user.properties.edit', $property->property_id) }}"
                                                 class="text-yellow-600 hover:underline">Sửa</a>

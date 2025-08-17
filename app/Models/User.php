@@ -34,7 +34,10 @@ class User extends Authenticatable
         'created_at',
         'updated_at',
         'avatar',
-        'msThue'
+        'msThue',
+        'title_seo',
+        'content_seo',
+        'description_seo'
     ];
 
     /**
@@ -54,7 +57,7 @@ class User extends Authenticatable
 
     public function getPhoneNumberAttribute($value)
     {
-        if (Auth::check() && Auth::user()->user_id === $this->user_id) {
+        if (Auth::check()) {
             return $value; // Show full phone number to the owner
         }
         return strlen($value) >= 8 ? substr($value, 0, 8) . '***' : $value;

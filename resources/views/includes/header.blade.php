@@ -35,6 +35,13 @@
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 login">Đăng nhập</a>
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 register">Đăng ký</a>
         @else
+            <label class="block text-sm font-semibold text-gray-700 relative">
+                <a href="#">
+                    <i class="fa-regular fa-bell text-red-500 mr-2 text-2xl"></i>
+                    <span
+                        class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full">1</span>
+                </a>
+            </label>
             <div class="relative group p-4">
                 <div class="flex items-center space-x-1 cursor-pointer">
                     @if (auth()->user()->avatar)
@@ -46,7 +53,7 @@
                             {{ substr(auth()->user()->username, 0, 1) }}
                         </div>
                     @endif
-                    <span class="text-red-600 font-semibold hover:text-red-800">{{ auth()->user()->username }}</span>
+                    <span class="text-red-600 font-semibold hover:text-red-800">{{ auth()->user()->full_name }}</span>
                     <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>

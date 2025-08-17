@@ -1,22 +1,28 @@
 @extends('layouts.main')
 @section('title', 'Dự án Bất động sản')
-@section('app-container-class', 'w-full')
+@section('app-container-class', 'w-full mt-24')
 @section('content')
 
     <section class="w-full">
         <div class="slider-projects">
-            <div>
-                <img src="https://mdbootstrap.com/img/new/slides/054.jpg" class="w-full h-auto object-cover rounded-lg"
-                    alt="Banner 1">
-            </div>
-            <div>
-                <img src="https://mdbootstrap.com/img/new/slides/043.jpg" class="w-full h-auto object-cover rounded-lg"
-                    alt="Banner 2">
-            </div>
-            <div>
-                <img src="https://mdbootstrap.com/img/new/slides/052.jpg" class="w-full h-auto object-cover rounded-lg"
-                    alt="Banner 3">
-            </div>
+            <!-- Slide 1 -->
+            @foreach ($allBanner as $item)
+                <div class="relative">
+                    <img src="{{ asset($item->image) }}" class="w-full h-[500px] object-cover rounded-lg"
+                        alt="{{ $item->title }}1">
+
+                    <!-- Overlay -->
+                    <div class="absolute left-28 bottom-10 text-white">
+                        <span class="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded">
+                            Đang mở bán
+                        </span>
+                        <h2 class="mt-3 text-3xl font-bold">{{ $item->title }}</h2>
+                        <p class="text-base opacity-90">
+                            {{ $item->location }}
+                        </p>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </section>
 
@@ -33,40 +39,39 @@
                                 <i class="fas fa-map-marker-alt text-red-500 mr-1"></i> Khu vực
                             </label>
                             <select
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
+                                class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500"
                                 id="tinh" name="location" title="Chọn Tỉnh Thành">
-                                <option value="0">Tỉnh Thành</option>
+                                <option value="">Tỉnh Thành</option>
                             </select>
                             <input type="hidden" name="tinh_name" id="tinh_name" />
-                        </div>
-
-                        <!-- Area -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                <i class="fas fa-ruler-combined text-green-500 mr-1"></i> Diện tích
-                            </label>
-                            <select name="area_range"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
-                                <option value="">Tất cả</option>
-                                <option value="0-50">Dưới 50m²</option>
-                                <option value="50-100">50 - 100m²</option>
-                                <option value="100-200">100 - 200m²</option>
-                                <option value="200-+">Trên 200m²</option>
-                            </select>
                         </div>
 
                         <!-- Price -->
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                <i class="fas fa-dollar-sign text-yellow-500 mr-1"></i> Giá (triệu)
+                                <i class="fas fa-dollar-sign text-yellow-500 mr-1"></i> Giá (triệu/m²)
                             </label>
-                            <select name="price_range"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-yellow-500 focus:border-yellow-500">
+                            <select name="price_filter" id="price_filter"
+                                class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-yellow-500 focus:border-yellow-500">
                                 <option value="">Tất cả</option>
-                                <option value="0-500">Dưới 500</option>
-                                <option value="500-1000">500 - 1000</option>
-                                <option value="1000-2000">1000 - 2000</option>
-                                <option value="2000-+">Trên 2000</option>
+                                <option value="under_5">Dưới 5 triệu/m²</option>
+                                <option value="5m_50m">5 - 50 triệu/m²</option>
+                                <option value="50m_100m">50 - 100 triệu/m²</option>
+                                <option value="over_100">Trên 100 triệu/m²</option>
+                            </select>
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-check text-green-500 mr-1"></i> Trạng thái
+                            </label>
+                            <select name="status" id="status"
+                                class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+                                <option value="">Tất cả</option>
+                                <option value="0">Sắp mở bán</option>
+                                <option value="1">Đang mở bán</option>
+                                <option value="2">Đã bàn giao</option>
                             </select>
                         </div>
 
@@ -102,7 +107,7 @@
                             </div>
                         </div>
 
-                        <div class="" id="projectList">
+                        <div class="!mt-0" id="projectList">
                             @include('partials.project_list', ['projects' => $projects])
                         </div>
 
@@ -146,6 +151,43 @@
 
     <script>
         $(document).ready(function() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchTinhParam = urlParams.get('tinh_name');
+            const priceRangesParam = urlParams.get('price_filter');
+            const statusParam = urlParams.get('status');
+            async function setTinhAsync() {
+                // Đợi option được render (nếu load động, thay 100 thành thời gian phù hợp)
+                await new Promise(resolve => setTimeout(resolve, 100));
+                if (searchTinhParam) {
+                    let found = false;
+                    $('#tinh option').each(function() {
+                        const dataName = ($(this).data('name') || '').toString().trim();
+                        if (dataName === searchTinhParam.trim()) {
+                            $('#tinh').val($(this).val()).trigger('change');
+                            $('#tinh_name').val(dataName);
+                            found = true;
+                            return false; // break
+                        }
+                    });
+                    if (!found) {
+                        $('#tinh').val('');
+                        $('#tinh_name').val('');
+                    }
+                } else {
+                    $('#tinh').val('');
+                    $('#tinh_name').val('');
+                }
+            }
+            setTinhAsync();
+            if (priceRangesParam) {
+                $('#price_filter').val(priceRangesParam);
+            }
+
+            if (statusParam) {
+                $('#status').val(statusParam);
+            }
+
             const route = "{{ route('projects') }}";
 
             function showLoading() {
@@ -183,6 +225,7 @@
 
             $("#btnReset").on("click", function() {
                 $("#filterForm")[0].reset();
+                $('#tinh_name').val('');
                 fetchProjects();
             });
 

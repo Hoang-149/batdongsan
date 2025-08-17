@@ -55,7 +55,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Trang chủ</a>
+                    <a href="/" class="nav-link">Trang chủ</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Liên hệ</a>
@@ -257,6 +257,29 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-image"></i>
+                                <p>
+                                    Banner trang dự án
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.project.createBanner') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Banner</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.project.indexBanner') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh sách Banner</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-user"></i>
                                 <p>
                                     Người dùng
@@ -451,6 +474,81 @@
                 console.error(error);
             });
 
+        function loadQuan(idtinh) {
+            return new Promise(resolve => {
+                $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function(data_quan) {
+                    if (data_quan.error == 0) {
+                        $("#quan").html('<option value="0">Quận Huyện</option>');
+                        $("#phuong").html('<option value="0">Phường Xã</option>');
+                        $.each(data_quan.data, function(key_quan, val_quan) {
+                            $("#quan").append('<option value="' + val_quan.id + '" data-name="' +
+                                val_quan.full_name + '">' + val_quan.full_name + '</option>');
+                        });
+                    }
+                    resolve();
+                });
+            });
+        }
+
+        function loadPhuong(idquan) {
+            return new Promise(resolve => {
+                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function(data_phuong) {
+                    if (data_phuong.error == 0) {
+                        $("#phuong").html('<option value="0">Phường Xã</option>');
+                        $.each(data_phuong.data, function(key_phuong, val_phuong) {
+                            $("#phuong").append('<option value="' + val_phuong.id +
+                                '" data-name="' +
+                                val_phuong.full_name + '">' + val_phuong.full_name + '</option>'
+                            );
+                        });
+                    }
+                    resolve();
+                });
+            });
+        }
+
+        // Hàm này gọi sau khi đã render option tỉnh
+        async function setLocationDefault(tinhName, quanName, phuongName) {
+            // Set tỉnh
+            let tinhId = null;
+            $('#tinh option').each(function() {
+                if (($(this).data('name') || '').toString().trim() === tinhName.trim()) {
+                    tinhId = $(this).val();
+                    $('#tinh').val(tinhId).trigger('change');
+                    $('#tinh_name').val(tinhName);
+                    return false;
+                }
+            });
+            if (!tinhId) return;
+
+            // Đợi quận load xong
+            await loadQuan(tinhId);
+
+            // Set quận
+            let quanId = null;
+            $('#quan option').each(function() {
+                if (($(this).data('name') || '').toString().trim() === quanName.trim()) {
+                    quanId = $(this).val();
+                    $('#quan').val(quanId).trigger('change');
+                    $('#quan_name').val(quanName);
+                    return false;
+                }
+            });
+            if (!quanId) return;
+
+            // Đợi phường load xong
+            await loadPhuong(quanId);
+
+            // Set phường
+            $('#phuong option').each(function() {
+                if (($(this).data('name') || '').toString().trim() === phuongName.trim()) {
+                    $('#phuong').val($(this).val());
+                    $('#phuong_name').val(phuongName);
+                    return false;
+                }
+            });
+        }
+
         jQuery(document).ready(function($) {
             // Lấy tỉnh thành
             $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function(data_tinh) {
@@ -520,7 +618,71 @@
                             }
                         });
                     });
+                    if (window.locationDefault) {
+                        setLocationDefault(window.locationDefault.tinh, window.locationDefault.quan, window
+                            .locationDefault.phuong);
+                    }
                 }
+            });
+
+            // Xử lý hiển thị ảnh
+            $('input[name="images[]"]').on('change', function(e) {
+                var files = e.target.files;
+                var $preview = $('#image-preview');
+                var $errorDiv = $('#image-error');
+                $preview.html(''); // Xóa ảnh cũ
+
+                // Kiểm tra số lượng ảnh
+                if (files.length < 4) {
+                    $errorDiv.show();
+                } else {
+                    $errorDiv.hide();
+                }
+
+                $.each(files, function(index, file) {
+                    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+                        return true; // continue
+                    }
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var img = new Image();
+                        img.src = e.target.result;
+
+                        $(img).on('load', function() {
+                            var canvas = $('<canvas>')[0];
+                            var ctx = canvas.getContext('2d');
+                            var maxWidth = 100,
+                                maxHeight = 100;
+                            var width = img.width,
+                                height = img.height;
+
+                            // Resize
+                            if (width > height && width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            } else if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            var thumbnail = $('<img>')
+                                .attr('src', canvas.toDataURL('image/jpeg'))
+                                .addClass('rounded object-cover')
+                                .css({
+                                    width: '150px'
+                                });
+
+                            $preview.append(thumbnail);
+                        });
+                    };
+
+                    reader.readAsDataURL(file);
+                });
             });
         });
     </script>

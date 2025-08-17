@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price">Mức giá(VND)</label>
+                                    <label for="price">Mức giá(triệu/m2)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price') }}">
@@ -134,6 +134,21 @@
                                     @enderror
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="status">Trạng thái</label>
+                                    <select name="status" id="status"
+                                        class="form-control @error('status') is-invalid @enderror" required>
+                                        <option value="0" {{ old('status', 0) == 0 ? 'selected' : '' }}>Sắp mở bán
+                                        </option>
+                                        <option value="1" {{ old('status', 0) == 1 ? 'selected' : '' }}>Đang mở bán
+                                        </option>
+                                        <option value="2" {{ old('status', 0) == 2 ? 'selected' : '' }}>Đã bàn giao
+                                        </option>
+                                    </select>
+                                    @error('status')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 <div class="form-group">
                                     <label for="is_verified">Xác thực</label>
                                     <select name="is_verified" id="is_verified"

@@ -16,7 +16,9 @@
                        </div>
                        <div>
                            <p class="text-xs md:text-sm text-gray-600">Hotline</p>
-                           <p class="font-semibold text-gray-800 text-sm md:text-base">1900 1881</p>
+                           <a href="tel: 0932363979">
+                               <p class="font-semibold text-gray-800 text-sm md:text-base"> 0932 36 39 79</p>
+                           </a>
                        </div>
                    </div>
 
@@ -26,7 +28,9 @@
                        </div>
                        <div>
                            <p class="text-xs md:text-sm text-gray-600">Hỗ trợ khách hàng</p>
-                           <p class="font-semibold text-gray-800 text-sm md:text-base">trogiup@Cafebizland.com</p>
+                           <a href="mailto:cafebizland@gmail.com">
+                               <p class="font-semibold text-gray-800 text-sm md:text-base">cafebizland@gmail.com</p>
+                           </a>
                        </div>
                    </div>
 
@@ -36,7 +40,9 @@
                        </div>
                        <div>
                            <p class="text-xs md:text-sm text-gray-600">Chăm sóc khách hàng</p>
-                           <p class="font-semibold text-gray-800 text-sm md:text-base">hotro@Cafebizland.com</p>
+                           <a href="mailto:cafebizland@gmail.com">
+                               <p class="font-semibold text-gray-800 text-sm md:text-base">cafebizland@gmail.com</p>
+                           </a>
                        </div>
                    </div>
                </div>
@@ -46,15 +52,18 @@
            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 px-8 md:px-0">
                <!-- Công ty -->
                <div class="lg:col-span-2">
-                   <h4 class="font-bold text-gray-800 mb-4 uppercase text-sm">CÔNG TY CỔ PHẦN CAFEBIZLAND</h4>
+                   <h4 class="font-bold text-gray-800 mb-4 uppercase text-sm">Cafebizland – Hỗ trợ đắc lực cho cộng đồng
+                       kinh doanh BĐS.</h4>
                    <div class="space-y-3 text-sm text-gray-600">
                        <div class="flex items-start gap-2">
                            <i class="fas fa-map-marker-alt text-gray-500 mt-1"></i>
-                           <p>Phạm Hùng, Nam Từ Liêm, Hà Nội</p>
+                           <p>29/06 Hoàng Đình Thương, TT Gia Ray, Xuân Lộc, Đồng Nai</p>
                        </div>
                        <div class="flex items-center gap-2">
                            <i class="fas fa-phone text-gray-500"></i>
-                           <p>(024) 1234 1234 - (024) 1234 1233</p>
+                           <p>Hotline: <a href="tel: 0932363979"> 0932 36 39 79</a> Zalo: <a
+                                   href="https://zalo.me/0794797539">079
+                                   479 7539</a></p>
                        </div>
                    </div>
 

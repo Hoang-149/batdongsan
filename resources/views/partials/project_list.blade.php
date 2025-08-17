@@ -1,6 +1,6 @@
 @forelse ($projects as $project)
     <div class="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition border border-gray-200 mb-4">
-        <a href="{{ route('project.detail', $project->project_id) }}" class="grid grid-cols-1 md:grid-cols-3 gap-0">
+        <a href="{{ route('project.detail', $project->slug) }}" class="grid grid-cols-1 md:grid-cols-3 gap-0">
 
             {{-- Cột ảnh --}}
             <div class="relative flex flex-col">
@@ -9,9 +9,19 @@
                     class="w-full h-32 object-cover" alt="{{ $project->project_name }}">
 
                 {{-- Badge --}}
-                <span
-                    class="absolute top-2 left-2 bg-purple-100 text-purple-700 text-xs font-semibold px-2 py-1 rounded">
-                    Đang cập nhật
+                @if ($project->status == 0)
+                    <span
+                        class="absolute top-2 left-2 bg-purple-100 text-purple-700 text-xs font-semibold px-2 py-1 rounded">
+                        Sắp mở bán
+                    @elseif($project->status == 1)
+                        <span
+                            class="absolute top-2 left-2 bg-purple-100 text-green-500 text-xs font-semibold px-2 py-1 rounded">
+                            Đang mở bán
+                        @elseif($project->status == 2)
+                            <span
+                                class="absolute top-2 left-2 bg-purple-100 text-yellow-500 text-xs font-semibold px-2 py-1 rounded">
+                                Đã bàn giao
+                @endif
                 </span>
 
                 {{-- Ảnh nhỏ bên dưới (2 ảnh) --}}
@@ -32,7 +42,7 @@
                     <h3 class="text-xl font-semibold text-gray-800">{{ $project->project_name }}
                     </h3>
                     <div class="flex items-center text-base text-gray-600 mt-1 space-x-3">
-                        <span>{{ number_format($project->area, 0, ',', '.') }} m²</span>
+                        <span>{{ number_format($project->price, 0, ',', '.') }} triệu/m²</span>
                         {{-- <span>•</span>
                                                 <span>1 🏢</span> --}}
                     </div>

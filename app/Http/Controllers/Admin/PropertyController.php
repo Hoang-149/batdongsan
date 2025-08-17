@@ -51,7 +51,7 @@ class PropertyController extends Controller
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
                 'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
-                'project_id' => 'nullable|exists:Projects,project_id',
+                'project_id' => 'nullable|exists:projects,project_id',
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0|max:99999999999999999.99',
@@ -149,7 +149,7 @@ class PropertyController extends Controller
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
                 'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
-                'project_id' => 'nullable|exists:Projects,project_id',
+                'project_id' => 'nullable|exists:projects,project_id',
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0|max:99999999999999999.99',

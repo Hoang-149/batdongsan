@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\VipUserController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\LocationController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,15 +39,17 @@ Route::get('/password/reset', function () {
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+Route::get('/thong-tin-ca-nhan', [HomeController::class, 'profile'])->name('profile');
+Route::post('/thong-tin-ca-nhan/update', [HomeController::class, 'updateProfile'])->name('profile.update');
+
 Route::get('/du-an', [HomeController::class, 'projects'])->name('projects');
-Route::get('/du-an/{id}', [HomeController::class, 'projectDetail'])->name('project.detail');
+Route::get('/du-an/{slug}', [HomeController::class, 'projectDetail'])->name('project.detail');
 Route::get('/tin-tuc', [HomeController::class, 'news'])->name('news');
-Route::get('/tin-tuc/{id}', [HomeController::class, 'newsDetail'])->name('news.detail');
+Route::get('/tin-tuc/{slug}', [HomeController::class, 'newsDetail'])->name('news.detail');
 
 Route::get('/nha-dat-ban', [App\Http\Controllers\Frontend\PropertyController::class, 'indexBan'])->name('properties.indexBan');
 
-Route::get('/nha-dat/{id}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
+Route::get('/nha-dat/{slug}', [App\Http\Controllers\Frontend\PropertyController::class, 'show'])->name('properties.show');
 
 Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::class, 'indexThue'])->name('properties.indexThue');
 
@@ -102,6 +106,14 @@ Route::prefix('admin')->group(function () {
     Route::put('/project/{id}', [ProjectController::class, 'update'])->name('admin.project.update');
     Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('admin.project.destroy');
 
+    Route::get('/create-banner', [ProjectController::class, 'createBanner'])->name('admin.project.createBanner');
+    Route::post('/projectBanner', [ProjectController::class, 'storeBanner'])->name('admin.project.storeBanner');
+    Route::get('/banner', [ProjectController::class, 'indexBanner'])->name('admin.project.indexBanner');
+    Route::get('/banner/{id}/edit', [ProjectController::class, 'editBanner'])->name('admin.project.editBanner');
+    Route::put('/banner/{id}', [ProjectController::class, 'updateBanner'])->name('admin.project.updateBanner');
+    Route::delete('/banner/{id}', [ProjectController::class, 'destroyBanner'])->name('admin.project.destroyBanner');
+
+
     // News routes
     Route::get('/news', [NewsController::class, 'index'])->name('admin.news.index');
     Route::get('/news/create', [NewsController::class, 'create'])->name('admin.news.create');
@@ -119,6 +131,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/vip-users/{id}', [VipUserController::class, 'update'])->name('admin.vip_users.update');
     Route::delete('/vip-users/{id}', [VipUserController::class, 'destroy'])->name('admin.vip_users.destroy');
 });
+
+Route::get('/api/tinh', [LocationController::class, 'getProvinces']);
+Route::get('/api/quan/{provinceId}', [LocationController::class, 'getDistricts']);
 
 
 // php artisan config:clear

@@ -31,7 +31,7 @@ class PropertyController extends Controller
                 if (in_array('5b_10b', $priceRanges)) {
                     $q->orWhereBetween('price', [5000000000, 10000000000]);
                 }
-                if (in_array('above_10b', $priceRanges)) {
+                if (in_array('over_10b', $priceRanges)) {
                     $q->orWhere('price', '>', 10000000000);
                 }
             });
@@ -39,6 +39,7 @@ class PropertyController extends Controller
 
         if ($request->has('area_ranges')) {
             $areaRanges = $request->input('area_ranges', []);
+            Log::info('area_ranges: ' . json_encode($areaRanges));
             $query->where(function ($q) use ($areaRanges) {
                 if (in_array('under_30', $areaRanges)) {
                     $q->orWhere('area', '<', 30);
@@ -49,7 +50,7 @@ class PropertyController extends Controller
                 if (in_array('50_100', $areaRanges)) {
                     $q->orWhereBetween('area', [50, 100]);
                 }
-                if (in_array('above_100', $areaRanges)) {
+                if (in_array('over_100', $areaRanges)) {
                     $q->orWhere('area', '>', 100);
                 }
             });
@@ -57,6 +58,7 @@ class PropertyController extends Controller
 
         if ($request->filled('search_tinh')) {
             $search_tinh = $request->input('search_tinh');
+            Log::info('search_tinh: ' . $search_tinh);
             $query->where('location', 'like', "%{$search_tinh}%");
         }
 
@@ -106,7 +108,7 @@ class PropertyController extends Controller
 
 
         // Phân trang
-        $perPage = 2;
+        $perPage = 6;
         $properties = $query->paginate($perPage);
 
         // Trả về JSON nếu là yêu cầu AJAX
@@ -121,13 +123,23 @@ class PropertyController extends Controller
             ]);
         }
 
-        return view('pages.frontend.nha_dat_ban', compact('properties'));
+        $titlePage = 'Nhà đất bán';
+
+        return view('pages.frontend.nha_dat', compact('properties', 'titlePage'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $property = Property::with('images')->findOrFail($id);
-        return view('pages.frontend.show_properties', compact('property'));
+        $property = Property::with('images')->where('slug', $slug)->firstOrFail();
+
+        $otherProperty = Property::with('images')
+            ->where('is_verified', true)
+            ->where('property_id', '!=', $property->property_id)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        return view('pages.frontend.chi_tiet_tin_dang', compact('property', 'otherProperty'));
     }
 
     public function indexThue(Request $request)
@@ -137,7 +149,6 @@ class PropertyController extends Controller
             ->where('is_verified', 1)
             ->whereIn('demande', [0, 2]);
 
-        // Xử lý bộ lọc giá
         if ($request->has('price_ranges')) {
             $priceRanges = $request->input('price_ranges', []);
             $query->where(function ($q) use ($priceRanges) {
@@ -150,15 +161,15 @@ class PropertyController extends Controller
                 if (in_array('5b_10b', $priceRanges)) {
                     $q->orWhereBetween('price', [5000000000, 10000000000]);
                 }
-                if (in_array('above_10b', $priceRanges)) {
+                if (in_array('over_10b', $priceRanges)) {
                     $q->orWhere('price', '>', 10000000000);
                 }
             });
         }
 
-        // Xử lý bộ lọc diện tích
         if ($request->has('area_ranges')) {
             $areaRanges = $request->input('area_ranges', []);
+            Log::info('area_ranges: ' . json_encode($areaRanges));
             $query->where(function ($q) use ($areaRanges) {
                 if (in_array('under_30', $areaRanges)) {
                     $q->orWhere('area', '<', 30);
@@ -169,7 +180,7 @@ class PropertyController extends Controller
                 if (in_array('50_100', $areaRanges)) {
                     $q->orWhereBetween('area', [50, 100]);
                 }
-                if (in_array('above_100', $areaRanges)) {
+                if (in_array('over_100', $areaRanges)) {
                     $q->orWhere('area', '>', 100);
                 }
             });
@@ -177,12 +188,12 @@ class PropertyController extends Controller
 
         if ($request->filled('search_tinh')) {
             $search_tinh = $request->input('search_tinh');
+            Log::info('search_tinh: ' . $search_tinh);
             $query->where('location', 'like', "%{$search_tinh}%");
         }
 
         if ($request->filled('search_quan')) {
             $searchQuans = explode(', ', $request->input('search_quan'));
-
             $query->where(function ($q) use ($searchQuans) {
                 foreach ($searchQuans as $quan) {
                     if (trim($quan) !== '') {
@@ -213,21 +224,13 @@ class PropertyController extends Controller
                     break;
             }
         }
-        // Log::info($request->boolean('is_verified') ? 1 : 0);
+
         if ($request->boolean('is_verified')) {
             $query->where('is_verified', true);
         }
 
-        // if ($request->has('professional_agent') && $request->professional_agent) {
-        //     $query->whereHas('user', function ($q) {
-        //         // Giả sử bảng users có cột is_professional_agent để xác định môi giới chuyên nghiệp
-        //         $q->where('is_professional_agent', true);
-        //     });
-        // }
-
-
         // Phân trang
-        $perPage = 2; // Số bất động sản mỗi trang
+        $perPage = 6;
         $properties = $query->paginate($perPage);
 
         // Trả về JSON nếu là yêu cầu AJAX
@@ -242,7 +245,9 @@ class PropertyController extends Controller
             ]);
         }
 
-        return view('pages.frontend.nha_dat_thue', compact('properties'));
+        $titlePage = 'Nhà đất thuê';
+
+        return view('pages.frontend.nha_dat', compact('properties', 'titlePage'));
     }
 
     public function createProperty()

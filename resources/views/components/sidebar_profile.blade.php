@@ -12,7 +12,7 @@
                 {{ substr(auth()->user()->username, 0, 1) }}
             </div>
         @endif
-        <div class="font-semibold text-lg text-gray-800 truncate w-full text-center">{{ $user->username }}</div>
+        <div class="font-semibold text-lg text-gray-800 truncate w-full text-center">{{ $user->full_name }}</div>
         <div class="text-gray-400 text-sm mb-2">0 điểm</div>
         <div class="w-full bg-gray-50 rounded-lg p-4 mb-3">
             <div class="flex justify-between text-sm text-gray-600 mb-1">

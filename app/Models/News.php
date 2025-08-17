@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class News extends Model
 {
@@ -20,6 +21,13 @@ class News extends Model
         'content',
         'thumbnail',
         'author',
-        'is_verified'
+        'is_verified',
+        'slug'
     ];
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value, '-'); // VD: "Dự án ABC" -> "du-an-abc"
+    }
 }

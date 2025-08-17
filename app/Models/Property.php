@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -28,9 +29,19 @@ class Property extends Model
         'updated_at',
         'location',
         'demande',
+        'title_seo',
+        'content_seo',
+        'description_seo'
     ];
 
     protected $dates = ['vip_expires_at', 'created_at', 'updated_at'];
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value, '-'); // VD: "Dự án ABC" -> "du-an-abc"
+    }
+
 
     public function user()
     {

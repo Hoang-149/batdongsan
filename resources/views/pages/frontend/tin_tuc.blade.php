@@ -84,7 +84,7 @@
                                 alt="">
                         </a>
                         <h3 class="font-semibold text-lg mb-2 hover:underline cursor-pointer">
-                            <a href="{{ route('news.detail', $item->id) }}" class="hover:underline">
+                            <a href="{{ route('news.detail', $item->slug) }}" class="hover:underline">
                                 {{ $item->title }}
                             </a>
                         </h3>

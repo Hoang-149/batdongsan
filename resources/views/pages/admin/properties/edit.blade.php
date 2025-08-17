@@ -268,65 +268,12 @@
 
     <script>
         jQuery(document).ready(function($) {
-            // Xử lý hiển thị ảnh
-            $('input[name="images[]"]').on('change', function(e) {
-                var files = e.target.files;
-                var $preview = $('#image-preview');
-                var $errorDiv = $('#image-error');
-                $preview.html(''); // Xóa ảnh cũ
 
-                // Kiểm tra số lượng ảnh
-                if (files.length < 4) {
-                    $errorDiv.show();
-                } else {
-                    $errorDiv.hide();
-                }
-
-                $.each(files, function(index, file) {
-                    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
-                        return true; // continue
-                    }
-
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        var img = new Image();
-                        img.src = e.target.result;
-
-                        $(img).on('load', function() {
-                            var canvas = $('<canvas>')[0];
-                            var ctx = canvas.getContext('2d');
-                            var maxWidth = 100,
-                                maxHeight = 100;
-                            var width = img.width,
-                                height = img.height;
-
-                            // Resize
-                            if (width > height && width > maxWidth) {
-                                height = Math.round((height * maxWidth) / width);
-                                width = maxWidth;
-                            } else if (height > maxHeight) {
-                                width = Math.round((width * maxHeight) / height);
-                                height = maxHeight;
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            var thumbnail = $('<img>')
-                                .attr('src', canvas.toDataURL('image/jpeg'))
-                                .addClass('rounded object-cover')
-                                .css({
-                                    width: '150px'
-                                });
-
-                            $preview.append(thumbnail);
-                        });
-                    };
-
-                    reader.readAsDataURL(file);
-                });
-            });
+            window.locationDefault = {
+                tinh: "{{ $property->location ? explode(', ', $property->location)[0] : '' }}",
+                quan: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}",
+                phuong: "{{ $property->location ? explode(', ', $property->location)[2] : '' }}"
+            };
         });
     </script>
 @endsection

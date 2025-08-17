@@ -17,3 +17,11 @@ nav.nav-search a {
 nav a.navbar {
     @apply hover:text-rose-700 text-rose-500 font-bold;
 }
+
+.active-tab {
+    @apply border-b-2 border-[#E03C31] text-[#E03C31] font-semibold;
+}
+
+nav.nav-search a {
+    @apply text-gray-600 hover:text-[#E03C31] transition-colors;
+}

@@ -38,9 +38,9 @@
                         {{-- Chia sẻ --}}
                         <div class="mt-8 border-t pt-6 flex flex-wrap gap-4">
                             <span class="font-semibold text-gray-600">Chia sẻ:</span>
-                            <a href="#" class="text-blue-600 hover:underline">Facebook</a>
-                            <a href="#" class="text-blue-400 hover:underline">Zalo</a>
-                            <button onclick="copyLink()" class="text-gray-600 hover:underline">Sao chép liên kết</button>
+                            <a href="#" class="text-red-600 hover:underline">Facebook</a>
+                            <a href="#" class="text-red-500 hover:underline">Zalo</a>
+                            <button onclick="copyLink()" class="text-red-400 hover:underline">Sao chép liên kết</button>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                                 @foreach ($allNews as $item)
                                     <li class="flex items-start space-x-3">
                                         <div>
-                                            <a href="{{ route('news.detail', $item->id) }}"
+                                            <a href="{{ route('news.detail', $item->slug) }}"
                                                 class="text-sm font-semibold text-gray-800 hover:text-red-600">
                                                 {{ Str::words($item->title, 10, '...') }}
                                             </a>

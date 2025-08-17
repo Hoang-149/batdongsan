@@ -42,7 +42,7 @@
                             class="flex flex-col sm:flex-row sm:items-center text-gray-500 text-sm mb-6 space-y-2 sm:space-y-0 sm:space-x-4">
                             <span><strong>Diện tích:</strong> {{ number_format($project->area, 0, ',', '.') }} m²</span>
                             <span>•</span>
-                            <span><strong>Giá:</strong> {{ number_format($project->price, 0, ',', '.') }} đ</span>
+                            <span><strong>Giá:</strong> {{ number_format($project->price, 0, ',', '.') }} triệu/m²</span>
                             <span>•</span>
                             <span><strong>Vị trí:</strong> {{ $project->location }}</span>
                         </div>
@@ -57,9 +57,16 @@
                             {{-- <img src="{{ asset('assets/img/company-logo.png') }}" alt="Logo" class="w-8 h-8 mr-3"> --}}
                             <span class="text-sm text-gray-800 font-semibold">Chủ đầu tư: </span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <span class="text-sm text-gray-800 font-medium">
-                                {{ $project->user->full_name ?? '' }}
-                            </span>
+                            <a href="#"> <span class="text-sm text-gray-800 font-medium">
+                                    {{ $project->user->full_name ?? '' }}
+                                </span></a>
+                        </div>
+
+                        <div class="mt-8 border-t pt-6 flex flex-wrap gap-4">
+                            <span class="font-semibold text-gray-600">Chia sẻ:</span>
+                            <a href="#" class="text-red-600 hover:underline">Facebook</a>
+                            <a href="#" class="text-red-500 hover:underline">Zalo</a>
+                            <button onclick="copyLink()" class="text-red-400 hover:underline">Sao chép liên kết</button>
                         </div>
                     </div>
                 </div>
@@ -76,11 +83,12 @@
                                             alt="{{ $item->project_name }}" class="w-full h-full object-cover">
                                     </div>
                                     <div>
-                                        <a href="{{ route('project.detail', $item->project_id) }}"
+                                        <a href="{{ route('project.detail', $item->slug) }}"
                                             class="text-sm font-semibold text-gray-800 hover:text-red-600">
                                             {{ Str::words($item->project_name, 10, '...') }}
                                         </a>
-                                        <p class="text-xs text-gray-500">{{ number_format($item->price, 0, ',', '.') }} đ
+                                        <p class="text-xs text-gray-500">{{ number_format($item->price, 0, ',', '.') }}
+                                            triệu/m²
                                         </p>
                                     </div>
                                 </li>
@@ -139,5 +147,10 @@
                 prevEl: ".swiper-button-prev",
             },
         });
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('Link đã được sao chép!'));
+        }
     </script>
 @endsection

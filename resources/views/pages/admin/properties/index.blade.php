@@ -42,7 +42,6 @@
                                         {{-- <th>Images</th> --}}
                                         {{-- <th>Mức giá</th> --}}
                                         <th>Diện tích</th>
-                                        {{-- <th>For Sale</th> --}}
                                         <th>Xác thực</th>
                                         {{-- <th>VIP Status</th> --}}
                                         <th>Nhu cầu</th>
@@ -53,7 +52,7 @@
                                     @forelse ($properties as $property)
                                         <tr>
                                             <td>{{ $property->property_id }}</td>
-                                            <td>{{ $property->title }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit(strip_tags($property->title), 50) }}</td>
                                             {{-- <td>{{ $property->user->username ?? 'N/A' }}</td> --}}
                                             {{-- <td>{{ implode(', ', $property->propertyTypes->pluck('type_name')->toArray()) }} --}}
                                             </td>
@@ -76,12 +75,7 @@
                                             </td> --}}
                                             {{-- <td>{{ $property->price ? number_format($property->price, 2) : 'N/A' }}</td> --}}
                                             <td>{{ $property->area ? number_format($property->area, 2) : 'N/A' }}</td>
-                                            {{-- <td>
-                                                <span
-                                                    class="badge {{ $property->is_for_sale ? 'bg-success' : 'bg-warning' }}">
-                                                    {{ $property->is_for_sale ? 'Yes' : 'No' }}
-                                                </span>
-                                            </td> --}}
+
                                             <td>
                                                 <span
                                                     class="badge {{ $property->is_verified ? 'bg-success' : 'bg-warning' }}">
@@ -100,9 +94,13 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.properties.edit', $property->property_id) }}"
-                                                    class="btn btn-info btn-sm" style="margin-bottom: 8px;">
+                                                <a href="{{ route('properties.show', $property->slug) }}"
+                                                    class="btn btn-info btn-sm" style="" target="_blank">
                                                     <i class="fas fa-eye"></i> Hiển thị
+                                                </a>
+                                                <a href="{{ route('admin.project.edit', $property->property_id) }}"
+                                                    class="btn btn-warning btn-sm" style="color: white; ">
+                                                    <i class="fas fa-pen"></i> Sửa
                                                 </a>
                                                 <form
                                                     action="{{ route('admin.properties.destroy', $property->property_id) }}"
