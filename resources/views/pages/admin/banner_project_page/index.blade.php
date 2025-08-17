@@ -22,20 +22,27 @@
             <tbody>
                 @foreach ($allBanner as $item)
                     <tr>
-                        <td>{{ $item->title }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit(strip_tags($item->title), 50) }}</td>
                         <td>
                             <img src="{{ asset($item->image) }}" alt="Business Image" style="max-width: 100px;">
                         </td>
                         <td>{{ $item->location }}</td>
                         <td>
-                            <a href="{{ route('admin.project.editBanner', $item->id) }}"
-                                class="btn btn-sm btn-warning">Sửa</a>
+                            <a href="{{ route('projects') }}" class="btn btn-info btn-sm" style="" target="_blank">
+                                <i class="fas fa-eye"></i> Xem
+                            </a>
+                            <a href="{{ route('admin.project.editBanner', $item->id) }}" class="btn btn-warning btn-sm"
+                                style="color: white; ">
+                                <i class="fas fa-pen"></i> Sửa
+                            </a>
                             <form action="{{ route('admin.project.destroyBanner', $item->id) }}" method="POST"
-                                style="display:inline-block;">
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this property?');">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger"
-                                    onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
                             </form>
                         </td>
                     </tr>

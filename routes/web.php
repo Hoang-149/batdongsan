@@ -71,7 +71,7 @@ Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ck
 
 
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('check.admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
 
     // Typical Business routes

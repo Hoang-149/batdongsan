@@ -48,14 +48,23 @@
                                                     style="max-width: 100px;">
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.typical_business.edit', $business->id) }}"
-                                                    class="btn btn-warning btn-sm">Sửa</a>
-                                                <form action="{{ route('admin.typical_business.destroy', $business->id) }}"
-                                                    method="POST" style="display:inline;">
+
+                                                <a href="{{ route('home') }}" class="btn btn-info btn-sm" style=""
+                                                    target="_blank">
+                                                    <i class="fas fa-eye"></i> Xem
+                                                </a>
+                                                <a href="{{ route('admin.typical_business.destroy', $business->id) }}"
+                                                    class="btn btn-warning btn-sm" style="color: white; ">
+                                                    <i class="fas fa-pen"></i> Sửa
+                                                </a>
+                                                <form action="{{ route('admin.project.destroyBanner', $business->id) }}"
+                                                    method="POST" style="display:inline;"
+                                                    onsubmit="return confirm('Are you sure you want to delete this property?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Are you sure you want to delete this item?')">Xóa</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash"></i> Xóa
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>

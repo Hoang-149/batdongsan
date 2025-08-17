@@ -36,17 +36,11 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'username' => 'required|string|max:255|unique:Users,username',
-            // 'email' => 'required|string|email|max:255|unique:Users,email',
             'phone_number' => 'required|string|max:15|unique:Users,phone_number|regex:/^[0-9]{10,15}$/',
             'password' => 'required|string|min:8',
-            // 'full_name' => 'nullable|string|max:255',
         ], [
-            // 'username.unique' => 'Tên người dùng đã được sử dụng.',
-            // 'email.unique' => 'Email đã được sử dụng.',
             'phone_number.unique' => 'Số điện thoại đã được sử dụng.',
             'phone_number.regex' => 'Số điện thoại không hợp lệ.',
-            // 'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ]);
 
@@ -57,19 +51,15 @@ class LoginController extends Controller
         try {
             $user = User::create([
                 'username' => 'User' . rand(1, 999),
-                // 'email' => $request->email,
                 'phone_number' => $request->phone_number,
                 'password_hash' => $request->password,
-                // 'full_name' => $request->full_name,
-                // 'is_verified' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            // Optionally log the user in after registration
-            // Auth::login($user);
+            // Gán role mặc định (ví dụ: role_id = 3 là "member")
+            $user->roles()->attach(3);
 
-            // return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
             return redirect()->back()->with('register_success', 'Đăng ký thành công! Vui lòng đăng nhập.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Đăng ký thất bại. Vui lòng thử lại.')->withInput();
@@ -104,10 +94,12 @@ class LoginController extends Controller
         if ($user && Hash::check($password, $user->password_hash)) {
             Auth::login($user, $remember);
 
-            Log::info('success!');
+            if ($user->roles->first()->role_id == 1) {
+                return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công!');
+            } else {
 
-            // return redirect()->route('profile')->with('success', 'Login successfully.');
-            return redirect()->back()->with('login_success', 'Đăng nhập thành công!');
+                return redirect()->back()->with('login_success', 'Đăng nhập thành công!');
+            }
         }
 
         return redirect()->back()

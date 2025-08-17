@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="p-4">
                                         <h4 class="font-semibold text-lg line-clamp-2">{{ $property->title }}</h4>
-                                        <p class="text-sm text-gray-500 mb-2">
+                                        <p class="text-sm text-gray-500 mb-2 line-clamp-2">
                                             {{ $property->location }}
                                         </p>
                                         <p class="text-red-600 font-bold mb-3">
