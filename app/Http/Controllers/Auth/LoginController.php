@@ -19,7 +19,7 @@ class LoginController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('pages.errors.404');
     }
 
     /**
@@ -27,7 +27,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('pages.errors.404');
     }
 
     /**
@@ -97,7 +97,6 @@ class LoginController extends Controller
             if ($user->roles->first()->role_id == 1) {
                 return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công!');
             } else {
-
                 return redirect()->back()->with('login_success', 'Đăng nhập thành công!');
             }
         }

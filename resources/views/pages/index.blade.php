@@ -251,4 +251,10 @@
 
     @vite('resources/js/index.js')
 
+    @if (session('error_login'))
+        <script>
+            alert("{{ session('error_login') }}");
+        </script>
+    @endif
+
 @endsection

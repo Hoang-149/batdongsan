@@ -95,7 +95,7 @@
                     <span class="mx-3 text-gray-400 text-sm">Hoặc</span>
                     <div class="flex-grow border-t border-gray-200"></div>
                 </div>
-                <button type="button"
+                <button type="button" onclick="window.location.href='{{ route('google.login') }}'"
                     class="w-full border border-gray-300 rounded-lg py-2 flex items-center justify-center gap-2 font-medium hover:bg-gray-50">
                     <svg class="w-5 h-5" viewBox="0 0 48 48">
                         <g>

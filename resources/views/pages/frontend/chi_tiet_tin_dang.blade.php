@@ -7,7 +7,7 @@
             <a href="{{ route('home') }}" class="text-red-600 hover:underline mb-4 inline-block">&larr; Trở về Home</a>
             <h1 class="text-3xl font-bold mb-6">{{ $property->title }}</h1>
 
-            <div class="mb-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="md:col-span-2">
                     <!-- Main Slider -->
                     <div class="main-slider relative">

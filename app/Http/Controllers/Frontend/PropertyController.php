@@ -253,10 +253,9 @@ class PropertyController extends Controller
     public function createProperty()
     {
         if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để đăng tin.');
+            return redirect()->back()->with('error_login', 'Bạn cần đăng nhập để đăng tin.');
         }
 
-        // Log::info('success!  ' . auth()->user()->username);
         $propertyTypes = PropertyType::all();
         $user = auth()->user();
         $properties = $user->properties()->with(['images'])->get();
@@ -266,7 +265,7 @@ class PropertyController extends Controller
     public function listProperties()
     {
         if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem danh sách tin.');
+            return redirect()->back()->with('error_login', 'Bạn cần đăng nhập để xem danh sách tin.');
         }
 
         $user = auth()->user();

@@ -34,7 +34,7 @@ class HomeController extends Controller
     public function profile()
     {
         if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để xem trang cá nhân.');
+            return redirect()->back()->with('error_login', 'Bạn cần đăng nhập để xem trang cá nhân.');
         }
 
         $user = auth()->user();

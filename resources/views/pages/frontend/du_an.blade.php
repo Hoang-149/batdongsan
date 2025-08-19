@@ -126,7 +126,7 @@
                                     @foreach ($allNews as $item)
                                         <li class="flex items-start space-x-3">
                                             <div>
-                                                <a href="{{ route('news.detail', $item->id) }}"
+                                                <a href="{{ route('news.detail', $item->slug) }}"
                                                     class="text-sm font-semibold text-gray-800 hover:text-red-600">
                                                     {{ Str::words($item->title, 10, '...') }}
                                                 </a>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\VipUserController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -27,10 +28,10 @@ use Illuminate\Support\Facades\Route;
 
 // Authentication routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
+
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
 
 Route::get('/password/reset', function () {
@@ -69,7 +70,8 @@ Route::delete('/properties/images/{id}', [App\Http\Controllers\Frontend\Property
 
 Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 
-
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::prefix('admin')->middleware('check.admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
