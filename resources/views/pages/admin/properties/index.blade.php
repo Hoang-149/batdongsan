@@ -98,7 +98,7 @@
                                                     class="btn btn-info btn-sm" style="" target="_blank">
                                                     <i class="fas fa-eye"></i> Hiển thị
                                                 </a>
-                                                <a href="{{ route('admin.project.edit', $property->property_id) }}"
+                                                <a href="{{ route('admin.properties.edit', $property->property_id) }}"
                                                     class="btn btn-warning btn-sm" style="color: white; ">
                                                     <i class="fas fa-pen"></i> Sửa
                                                 </a>

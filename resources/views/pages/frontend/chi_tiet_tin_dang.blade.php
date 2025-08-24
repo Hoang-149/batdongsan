@@ -50,8 +50,14 @@
                                     <span class="font-semibold">Mức giá</span>
                                 </div>
                                 <span class="text-gray-700">
-                                    {{ $property->price ? number_format($property->price, 0, ',', '.') . ' VNĐ' : 'Thỏa thuận' }}
+                                    @if ($property->price)
+                                        {{ number_format($property->price, 0, ',', '.') }} VNĐ
+                                    @else
+                                        Liên hệ <a href="tel:{{ $property->user->phone_number }}"
+                                            class="font-semibold">{{ $property->user->phone_number }}</a>
+                                    @endif
                                 </span>
+
                             </div>
 
                             <!-- Nhu cầu -->
@@ -147,7 +153,7 @@
                                             alt="{{ $item->title }}" class="w-full h-full object-cover">
                                     </div>
                                     <div>
-                                        <a href="{{ route('project.detail', $item->slug) }}"
+                                        <a href="{{ route('properties.show', $item->slug) }}"
                                             class="text-sm font-semibold text-gray-800 hover:text-red-600">
                                             {{ Str::words($item->title, 5, '...') }}
                                         </a>

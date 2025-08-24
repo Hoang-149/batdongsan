@@ -76,6 +76,8 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::prefix('admin')->middleware('check.admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
 
+    // admin@gmail.com admin
+
     // Typical Business routes
     Route::get('/typical-business', [TypicalBusinessController::class, 'index'])->name('admin.typical_business.index');
     Route::get('/typical-business/create', [TypicalBusinessController::class, 'create'])->name('admin.typical_business.create');
