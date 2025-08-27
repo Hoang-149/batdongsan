@@ -262,6 +262,87 @@ class PropertyController extends Controller
         return view('pages.frontend.nha_dat.create', compact('user', 'properties', 'propertyTypes'));
     }
 
+    /**
+     * Store a newly created property in the database.
+     */
+    public function storeProperty(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'type_id' => 'required|array|min:1',
+                'type_id.*' => 'exists:propertytypes,type_id',
+                'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
+                'quan_name' => 'required|string|not_in:0', // Validate quận
+                'tinh_name' => 'required|string|not_in:0', // Validate phường
+                'project_id' => 'nullable|exists:projects,project_id',
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'nullable|numeric|min:0|max:99999999999999999.99',
+                'area' => 'nullable|numeric|min:0',
+                'demande' => 'required',
+                'is_for_sale' => 'required|boolean',
+                'images.*' => 'image|mimes:jpeg,png,jpg|max:10240',
+                'images' => 'required|array|min:4',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            // Tạo chuỗi location từ tỉnh, quận, phường
+            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+
+            // dd($request->all());
+
+            $property = Property::create([
+                'user_id' => auth()->id(),
+                // 'type_id' => $request->type_id,
+                'location' => $location, // Lưu chuỗi location
+                'project_id' => $request->project_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'price' => $request->price,
+                'area' => $request->area,
+                'demande' => $request->demande,
+                'is_for_sale' => $request->is_for_sale,
+                'is_verified' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            if (!empty($request->type_id)) {
+                $property->propertyTypes()->attach($request->type_id);
+            }
+
+            // Handle multiple image uploads
+            if ($files = $request->file('images')) {
+                $path = 'uploads/property/';
+                if (!file_exists(public_path($path))) {
+                    mkdir(public_path($path), 0755, true);
+                }
+
+                foreach ($files as $file) {
+                    $ex = $file->getClientOriginalExtension();
+                    $filename = time() . '_' . uniqid() . '.' . $ex;
+                    $file->move($path, $filename);
+
+                    PropertyImage::create([
+                        'property_id' => $property->property_id,
+                        'image_url' => $path . $filename,
+                    ]);
+                }
+            }
+
+            return redirect()->route('profile')->with('success', 'Tạo bài đăng thành công.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Lỗi tạo bài đăng' . $e->getMessage())->withInput();
+        }
+    }
+
     public function listProperties()
     {
         if (!auth()->check()) {

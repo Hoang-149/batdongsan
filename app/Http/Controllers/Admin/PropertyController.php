@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\PropertyVerified;
 use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\Project;
@@ -113,11 +114,7 @@ class PropertyController extends Controller
                 }
             }
 
-            if (auth()->user()->role == 'admin') {
-                return redirect()->route('admin.properties.create')->with('success', 'Tạo bài đăng thành công.');
-            } else {
-                return redirect()->route('profile')->with('success', 'Tạo bài đăng thành công.');
-            }
+            return redirect()->route('admin.properties.create')->with('success', 'Tạo bài đăng thành công.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Lỗi tạo bài đăng' . $e->getMessage())->withInput();
         }
@@ -186,6 +183,12 @@ class PropertyController extends Controller
                 'is_verified' => $request->is_verified,
                 'updated_at' => now(),
             ]);
+
+            // Gửi thông báo nếu bài đăng được xác thực
+            if ($request->is_verified && !$property->is_verified) {
+                // Bắn event realtime
+                broadcast(new PropertyVerified($property));
+            }
 
             if (!empty($request->type_id)) {
                 $property->propertyTypes()->sync($request->type_id); // Sync để cập nhật hoặc xóa các loại cũ

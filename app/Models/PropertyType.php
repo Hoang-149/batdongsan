@@ -9,7 +9,7 @@ class PropertyType extends Model
 {
     use HasFactory;
 
-    protected $table = 'PropertyTypes';
+    protected $table = 'propertytypes';
     protected $primaryKey = 'type_id';
     public $incrementing = true;
     public $timestamps = false;

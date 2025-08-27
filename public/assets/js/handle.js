@@ -8,6 +8,52 @@ $(document).ready(function (e) {
         $icon.toggleClass("fa-eye fa-eye-slash");
     });
 
+    // Slider featured properties (mobile)
+    $(".slider-featured-properties").slick({
+        infinite: true,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 9999,
+                settings: "unslick",
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    autoplay: true,
+                    autoplaySpeed: 3000,
+                },
+            },
+        ],
+    });
+
+    // Slider news (mobile)
+    $(".slider-news").slick({
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: true,
+        responsive: [
+            {
+                breakpoint: 9999,
+                settings: "unslick",
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    autoplay: true,
+                    autoplaySpeed: 5000,
+                },
+            },
+        ],
+    });
+
     $(".slider-projects").slick({
         infinite: true,
         slidesToShow: 1,

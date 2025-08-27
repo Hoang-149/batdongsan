@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\VipUserController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LocationController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,7 @@ Route::get('/nha-dat/{slug}', [App\Http\Controllers\Frontend\PropertyController:
 Route::get('/nha-dat-thue', [App\Http\Controllers\Frontend\PropertyController::class, 'indexThue'])->name('properties.indexThue');
 
 Route::get('/dang-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'createProperty'])->name('createProperty');
+Route::post('/dang-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'storeProperty'])->name('storeProperty');
 
 Route::get('/danh-sach-tin', [App\Http\Controllers\Frontend\PropertyController::class, 'listProperties'])
     ->name('user.properties.index')
@@ -139,6 +141,7 @@ Route::prefix('admin')->middleware('check.admin')->group(function () {
 Route::get('/api/tinh', [LocationController::class, 'getProvinces']);
 Route::get('/api/quan/{provinceId}', [LocationController::class, 'getDistricts']);
 
+Broadcast::routes();
 
 // php artisan config:clear
 // php artisan route:clear

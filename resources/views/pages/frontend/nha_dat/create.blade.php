@@ -45,12 +45,8 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('admin.properties.store') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('storeProperty') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
-
-                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                <input type="hidden" name="is_verified" value="0">
 
                                 <div class="mb-6">
                                     <label for="type_id" class="block text-sm font-semibold text-gray-800 mb-2">Loại bất
@@ -209,5 +205,36 @@
             </main>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#images").on("change", function() {
+                let files = this.files;
+                let preview = $("#image-preview");
+                let error = $("#image-error");
+
+                preview.empty(); // Xóa preview cũ
+                error.addClass("hidden");
+
+                if (files.length < 4) {
+                    error.removeClass("hidden");
+                }
+
+                // Duyệt qua từng file và tạo preview
+                $.each(files, function(i, file) {
+                    if (file.type.match("image.*")) {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            let img = $("<img>")
+                                .attr("src", e.target.result)
+                                .addClass("w-32 h-32 object-cover rounded-lg shadow");
+                            preview.append(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+        });
+    </script>
 
 @endsection

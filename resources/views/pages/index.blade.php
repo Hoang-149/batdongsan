@@ -4,30 +4,36 @@
 
     <div class="bg-gray-100">
 
-        <div class="container mx-auto py-4">
+        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
         </div>
 
         <!-- Header Search Section -->
         <div class="bg-white rounded-xl shadow-md border border-gray-200 py-6 my-6">
-            <div class="container mx-auto px-4">
-                <div class="bg-white rounded-lg p-6">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-lg p-4 sm:py-6">
 
                     <!-- Search Tabs -->
-                    <nav class="flex gap-2 mb-6 border-b border-gray-200 nav-search">
+                    <nav class="flex flex-wrap justify-between gap-2 mb-6 border-b border-gray-200 nav-search">
                         <a href="#"
-                            class="py-2 px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all active-tab"
+                            class="flex items-center py-2 px-3 sm:px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all active-tab"
                             data-id="ban">
-                            <i class="fas fa-home mr-2"></i>Nhà đất bán
+                            <i class="fas fa-home mr-2"></i>
+                            <span class="hidden sm:inline">Nhà đất bán</span>
+                            <span class="sm:hidden">Bán</span>
                         </a>
                         <a href="#"
-                            class="py-2 px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all"
+                            class="flex items-center py-2 px-3 sm:px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all"
                             data-id="thue">
-                            <i class="fas fa-key mr-2"></i>Nhà đất cho thuê
+                            <i class="fas fa-key mr-2"></i>
+                            <span class="hidden sm:inline">Nhà đất cho thuê</span>
+                            <span class="sm:hidden">Thuê</span>
                         </a>
                         <a href="#"
-                            class="py-2 px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all"
+                            class="flex items-center py-2 px-3 sm:px-6 font-medium text-gray-700 hover:text-red-500 border-b-2 border-transparent hover:border-red-500 transition-all"
                             data-id="du-an">
-                            <i class="fas fa-building mr-2"></i>Dự án
+                            <i class="fas fa-building mr-2"></i>
+                            <span class="hidden sm:inline">Dự án</span>
+                            <span class="sm:hidden">Dự án</span>
                         </a>
                     </nav>
 
@@ -35,16 +41,19 @@
                     <x-search-bar type="thue" />
 
                     <div class="tab-content hidden" id="du-an" data-type="du-an">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 items-end">
+
+                            <!-- Tỉnh thành -->
                             <div class="relative">
                                 <select id="tinh-select-du-an"
                                     class="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-red-500">
                                     <option value="all">Tỉnh thành</option>
                                 </select>
                             </div>
-                            <!-- Price Range Dropdown -->
+
+                            <!-- Giá -->
                             <div class="relative">
-                                <select class="w-full border rounded-lg p-2.5 appearance-none bg-white"
+                                <select class="w-full border border-gray-300 rounded-lg p-2.5 appearance-none bg-white"
                                     id="price-filter-du-an">
                                     <option value="">Chọn mức giá</option>
                                     <option value="under_5">Dưới 5 triệu/m²</option>
@@ -60,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <!-- status filter -->
+                            <!-- Trạng thái -->
                             <div class="relative">
                                 <select id="status"
                                     class="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-red-500">
@@ -70,14 +79,13 @@
                                     <option value="2">Đã bàn giao</option>
                                 </select>
                             </div>
+
+                            <!-- Nút tìm kiếm -->
                             <button id="search-button-du-an"
-                                class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
-                                Tìm kiếm
+                                class="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 sm:px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
+                                <i class="fas fa-search mr-2"></i>
+                                <span>Tìm kiếm</span>
                             </button>
-                        </div>
-                        <div id="quan-dropdown-du-an"
-                            class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto hidden">
-                            <ul id="quan-list-du-an" class="text-gray-700 text-base"></ul>
                         </div>
                     </div>
                 </div>
@@ -86,16 +94,16 @@
 
 
         <!-- Featured Properties Section -->
-        <div class="container mx-auto px-4 py-8">
-            <div class="mb-6 flex justify-between items-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 class="text-2xl font-bold">Bất động sản nổi bật</h2>
-                <span class="re__content-container-link">
-                    <a class="text-base hover:text-red-700" href="/nha-dat-ban">Tin nhà đất bán mới nhất</a>
+                <span class="re__content-container-link text-sm sm:text-base">
+                    <a class="hover:text-red-700" href="/nha-dat-ban">Tin nhà đất bán mới nhất</a>
                     &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a class="text-base hover:text-red-700" href="/nha-dat-thue">Tin nhà đất cho thuê mới nhất</a>
+                    <a class="hover:text-red-700" href="/nha-dat-thue">Tin nhà đất cho thuê mới nhất</a>
                 </span>
             </div>
-            <div class="grid grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 slider-featured-properties">
                 @forelse ($properties as $property)
                     <div
                         class="border rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
@@ -104,7 +112,8 @@
                                 class="w-full h-48 object-cover" alt="{{ $property->title }}">
                             <div class="p-4">
                                 <h3 class="font-semibold text-lg mb-2 line-clamp-2">{{ $property->title }}</h3>
-                                <p class="text-[#E03C31] font-bold">{{ number_format($property->price, 0, ',', '.') }} VNĐ
+                                <p class="text-[#E03C31] font-bold">
+                                    {{ $property->price ? number_format($property->price) . ' ' . ($property->price_type == 0 ? 'triệu' : 'tỷ') : 'Thỏa thuận' }}
                                 </p>
                                 <p class="text-gray-600 text-sm mt-2">{{ $property->location ?? 'N/A' }}</p>
                                 <div class="flex gap-4 mt-2 text-sm text-gray-500">
@@ -123,8 +132,8 @@
 
         <!-- News Section -->
         <div class="bg-gray-100 py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex items-center justify-between mb-6">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-row items-start sm:items-center justify-between mb-6 gap-4">
                     <h2 class="text-2xl font-bold text-gray-800">Tin tức bất động sản</h2>
                     <a href="{{ route('news') }}"
                         class="inline-flex items-center text-[#E03C31] hover:underline text-sm font-medium">
@@ -135,7 +144,7 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 slider-news">
                     @forelse ($news as $nws)
                         <div
                             class="border rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
@@ -160,13 +169,13 @@
         </div>
 
         <!-- Location Properties Section -->
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <h2 class="text-2xl font-bold mb-6">Bất động sản theo địa điểm</h2>
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- TP. Hồ Chí Minh Card -->
-                <div class="relative rounded-lg overflow-hidden col-span-2">
+                <div class="relative rounded-lg overflow-hidden sm:col-span-2">
                     <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Hồ Chí Minh') }}">
-                        <img src="assets/img/hcmcity.webp" class="w-full h-[250px] object-cover">
+                        <img src="assets/img/hcmcity.webp" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
                             <h3 class="text-xl font-bold text-white">TP. Hồ Chí Minh</h3>
@@ -178,7 +187,7 @@
                 <!-- Hà Nội Card -->
                 <div class="relative rounded-lg overflow-hidden">
                     <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Hà Nội') }}">
-                        <img src="assets/img/HN.jpg" class="w-full h-[250px] object-cover">
+                        <img src="assets/img/HN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
                             <h3 class="text-xl font-bold text-white">Hà Nội</h3>
@@ -190,7 +199,7 @@
                 <!-- Đà Nẵng Card -->
                 <div class="relative rounded-lg overflow-hidden">
                     <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Đà Nẵng') }}">
-                        <img src="assets/img/DN.jpg" class="w-full h-[250px] object-cover">
+                        <img src="assets/img/DN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
                             <h3 class="text-xl font-bold text-white">Đà Nẵng</h3>
@@ -202,7 +211,7 @@
                 <!-- Bình Dương Card -->
                 <div class="relative rounded-lg overflow-hidden">
                     <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Bình Dương') }}">
-                        <img src="assets/img/BD.jpg" class="w-full h-[250px] object-cover">
+                        <img src="assets/img/BD.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
                             <h3 class="text-xl font-bold text-white">Bình Dương</h3>
@@ -214,7 +223,7 @@
                 <!-- Đồng Nai Card -->
                 <div class="relative rounded-lg overflow-hidden">
                     <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Đồng Nai') }}">
-                        <img src="assets/img/DNN.jpg" class="w-full h-[250px] object-cover">
+                        <img src="assets/img/DNN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
                             <h3 class="text-xl font-bold text-white">Đồng Nai</h3>
@@ -223,21 +232,17 @@
                     </a>
                 </div>
             </div>
-
         </div>
 
+        <!-- Businesses Section -->
         <div class="bg-gray-100 py-8">
-            <h2 class="container mx-auto text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
-            <div class="slider-section1-home ">
-                {{-- <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
-                    <a href="#"> <img src="assets/img/company.jpg" alt="Manga Cover"
-                            class="w-full h-40 object-contain"></a>
-                </div> --}}
+            <h2 class="container mx-auto px-4 sm:px-6 lg:px-8 text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
+            <div class="slider-section1-home px-4 sm:px-6 lg:px-8">
                 @forelse ($businesses as $business)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                         <a href="#">
                             <img src="{{ asset($business->image_url) }}" alt="Business Image"
-                                class="w-full h-40 object-contain">
+                                class="w-full h-32 sm:h-40 object-contain">
                         </a>
                     </div>
                 @empty
@@ -248,8 +253,6 @@
             </div>
         </div>
     </div>
-
-    @vite('resources/js/index.js')
 
     @if (session('error_login'))
         <script>

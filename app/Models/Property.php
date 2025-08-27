@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Property extends Model
 {
     // use HasFactory;
-    protected $table = 'Properties';
+    protected $table = 'properties';
     protected $primaryKey = 'property_id';
     public $incrementing = true;
     // public $timestamps = false;

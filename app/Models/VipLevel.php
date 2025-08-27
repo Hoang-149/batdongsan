@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VipLevel extends Model
 {
-    protected $table = 'VipLevels';
+    protected $table = 'viplevels';
 
     protected $primaryKey = 'vip_level_id';
 

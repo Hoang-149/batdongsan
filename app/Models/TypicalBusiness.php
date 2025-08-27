@@ -9,7 +9,7 @@ class TypicalBusiness extends Model
 {
     use HasFactory;
 
-    protected $table = 'TypicalBusiness';
+    protected $table = 'typicalbusiness';
     protected $primaryKey = 'id';
     public $incrementing = true;
     // public $timestamps = false;

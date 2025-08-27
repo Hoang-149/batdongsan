@@ -35,13 +35,28 @@
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 login">Đăng nhập</a>
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 register">Đăng ký</a>
         @else
-            <label class="block text-sm font-semibold text-gray-700 relative">
+            {{-- <label class="block text-sm font-semibold text-gray-700 relative">
                 <a href="#">
                     <i class="fa-regular fa-bell text-red-500 mr-2 text-2xl"></i>
                     <span
                         class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full">1</span>
                 </a>
-            </label>
+            </label> --}}
+            <div class="relative inline-block">
+                <button id="notification-btn" class="relative">
+                    <i class="fa-regular fa-bell text-red-500 mr-2 text-2xl"></i>
+                    <span id="notification-count"
+                        class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full hidden">
+                        0
+                    </span>
+                </button>
+
+                <div id="notification-dropdown"
+                    class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50">
+                    <ul id="notification-list"></ul>
+                </div>
+            </div>
+
             <div class="relative group p-4">
                 <div class="flex items-center space-x-1 cursor-pointer">
                     @if (auth()->user()->avatar)
@@ -137,5 +152,7 @@
             }, 300);
             $('#overlay').fadeOut(200);
         });
+
+
     });
 </script>

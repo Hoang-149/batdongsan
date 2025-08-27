@@ -10,7 +10,7 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $table = 'News'; // tên bảng, Laravel sẽ tự suy ra nếu đúng quy tắc số nhiều
+    protected $table = 'news'; // tên bảng, Laravel sẽ tự suy ra nếu đúng quy tắc số nhiều
 
     protected $primaryKey = 'id';
 

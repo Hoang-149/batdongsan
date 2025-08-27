@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Broker extends Model
 {
-    protected $table = 'Brokers';
+    protected $table = 'brokers';
     protected $primaryKey = 'broker_id';
     public $incrementing = true;
     public $timestamps = false;

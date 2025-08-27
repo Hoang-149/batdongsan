@@ -2,41 +2,52 @@
 
 <div class="tab-content hidden" id="{{ $type }}" data-type="{{ $type }}">
     <!-- Search Bar -->
-    <div class="flex items-center gap-4 mb-6">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-28 sm:gap-4 mb-2 sm:mb-10">
         <div class="flex-1 relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <i class="fas fa-search text-gray-600"></i>
             </div>
+
             <div
                 class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
 
-                <input type="text" id="search-text-{{ $type }}" placeholder="Nhập tối đa 3 địa điểm..."
-                    class="w-64 pl-12 pr-8 py-3.5 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
+                <input type="text" id="search-text-{{ $type }}" placeholder="Nhập tối đa 3 quận..."
+                    class="w-full sm:w-64 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
+
+                {{-- <div id="selected-quans-{{ $type }}"
+                    class="flex flex-wrap items-center pr-32 py-2 bg-transparent w-full">
+                </div> --}}
+
                 <div id="selected-quans-{{ $type }}"
-                    class="flex flex-wrap items-center pr-40 py-2 bg-transparent w-full">
+                    class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-50 flex flex-wrap gap-2">
                 </div>
+
                 <select id="tinh-select-{{ $type }}"
-                    class="absolute right-0 top-0 h-full px-4 py-3.5 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-100">
+                    class="absolute right-0 top-0 h-full px-4 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-200 bg-gray-100 z-10">
                     <option value="all">Tất cả</option>
                 </select>
                 <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                     <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                 </div>
             </div>
+
             <div id="quan-dropdown-{{ $type }}"
                 class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto hidden">
                 <ul id="quan-list-{{ $type }}" class="text-gray-700 text-base"></ul>
             </div>
         </div>
 
+        <!-- Nút tìm kiếm -->
         <button id="search-button-{{ $type }}"
-            class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
-            Tìm kiếm
+            class="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center">
+            <i class="fas fa-search mr-2"></i>
+            <span>Tìm kiếm</span>
         </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
+    <!-- Bộ lọc -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <!-- Loại nhà đất -->
         <div class="relative">
             <select class="w-full border rounded-lg p-2.5 appearance-none bg-white"
                 id="property-type-{{ $type }}">
@@ -52,9 +63,9 @@
             </div>
         </div>
 
-        <!-- Price Range Dropdown -->
+        <!-- Giá -->
         <div class="relative">
-            <select class="w-full border rounded-lg p-2.5 appearance-none bg-white"
+            <select class="w-full border border-gray-300 rounded-lg p-2.5 appearance-none bg-white"
                 id="price-filter-{{ $type }}">
                 <option value="">Chọn mức giá</option>
                 <option value="under_1b">Dưới 1 tỷ</option>
@@ -68,7 +79,7 @@
             </div>
         </div>
 
-        <!-- Area filter -->
+        <!-- Diện tích -->
         <div class="relative">
             <select id="area-filter-{{ $type }}"
                 class="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-red-500">
