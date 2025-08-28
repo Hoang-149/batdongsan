@@ -140,6 +140,7 @@ Route::prefix('admin')->middleware('check.admin')->group(function () {
 
 Route::get('/api/tinh', [LocationController::class, 'getProvinces']);
 Route::get('/api/quan/{provinceId}', [LocationController::class, 'getDistricts']);
+Route::get('/api/phuong/{districtId}', [LocationController::class, 'getWards']);
 
 Broadcast::routes();
 

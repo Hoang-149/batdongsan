@@ -12,7 +12,7 @@
                         alt="{{ $item->title }}1">
 
                     <!-- Overlay -->
-                    <div class="absolute left-28 bottom-10 text-white">
+                    <div class="absolute left-12 sm:left-28 bottom-10 text-white">
                         <span class="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded">
                             Đang mở bán
                         </span>

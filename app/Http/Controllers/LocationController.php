@@ -26,4 +26,10 @@ class LocationController extends Controller
         $response = Http::get("https://esgoo.net/api-tinhthanh/2/{$provinceId}.htm");
         return response()->json($response->json());
     }
+    // Lấy danh sách phường/xã theo quận/huyện
+    public function getWards($districtId)
+    {
+        $response = Http::get("https://esgoo.net/api-tinhthanh/3/{$districtId}.htm");
+        return response()->json($response->json());
+    }
 }

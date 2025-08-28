@@ -1,6 +1,6 @@
 <!-- Modal Overlay -->
 <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-lg flex w-full max-w-4xl overflow-hidden">
+    <div class="bg-white rounded-xl shadow-lg flex w-full max-w-4xl overflow-hidden mx-2 sm:mx-0">
         <!-- Left illustration -->
         <div class="hidden md:flex flex-col justify-center items-center bg-[#ffeaea] w-1/2 p-8 relative">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Login Illustration" class="w-40 mb-6 absolute top-2 left-2">

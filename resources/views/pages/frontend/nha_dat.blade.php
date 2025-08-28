@@ -13,45 +13,52 @@
             </div>
         </div>
 
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-4 sm:mx-0">
             <!-- Main Search Container -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+
                 <!-- Search Bar -->
-                <div class="flex items-center gap-4 mb-6">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-28 sm:gap-4 mb-2 sm:mb-10">
                     <div class="flex-1 relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-600"></i>
                         </div>
+
                         <div
                             class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
+                            <input type="text" id="search-text" placeholder="Nhập tối đa 3 quận..."
+                                class="w-full sm:w-64 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
 
-                            <input type="text" id="search-text" placeholder="Nhập tối đa 3 địa điểm..."
-                                class="w-72 pl-12 pr-8 py-3.5 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
-                            <div id="selected-quans" class="flex flex-wrap items-center pr-40 py-2 bg-transparent w-full">
+                            <div id="selected-quans"
+                                class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-10 flex flex-wrap gap-2">
                             </div>
+
                             <select id="tinh-select"
-                                class="absolute right-0 top-0 h-full px-4 py-3.5 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-100">
+                                class="absolute right-0 top-0 h-full px-4 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-200 bg-gray-100 z-10">
                                 <option value="all">Tất cả</option>
                             </select>
                             <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
                                 <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                             </div>
                         </div>
+
                         <div id="quan-dropdown"
                             class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto hidden">
                             <ul id="quan-list" class="text-gray-700 text-base"></ul>
                         </div>
                     </div>
 
+                    <!-- Nút tìm kiếm -->
                     <button id="search-button"
-                        class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300">
-                        Tìm kiếm
+                        class="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 sm:px-8 py-3 rounded-xl font-semibold text-sm shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-search mr-2"></i>
+                        <span>Tìm kiếm</span>
                     </button>
                 </div>
 
 
                 <!-- Filter Options -->
-                <div class="flex items-center gap-4 flex-wrap">
+                <div class="block sm:flex items-center gap-4 flex-wrap">
                     <!-- Filter Button -->
                     {{-- <button
                         class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -76,8 +83,8 @@
                     </div>
 
                     <!-- Price Range Dropdown -->
-                    <div class="relative">
-                        <select class="w-36 border rounded-lg p-2.5 appearance-none bg-white" id="price-filter">
+                    <div class="relative my-4">
+                        <select class="w-full sm:w-36 border rounded-lg p-2.5 appearance-none bg-white" id="price-filter">
                             <option value="">Chọn mức giá</option>
                             <option value="under_1b">Dưới 1 tỷ</option>
                             <option value="1b_5b">1 - 5 tỷ</option>
@@ -92,7 +99,7 @@
                     </div>
 
                     <!-- Verified Toggle -->
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 justify-around sm:justify-normal">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-check-circle text-green-500"></i>
                             <span class="text-gray-700 font-medium">Tin xác thực</span>
@@ -125,9 +132,9 @@
 
         <!-- Main Content -->
         <div class="container mx-auto y-4 pb-8">
-            <div class="flex gap-6">
+            <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Main Content Area -->
-                <div class="flex-1">
+                <div class="flex-1 order-2 lg:order-1 mx-4 sm:mx-0">
 
                     <div id="loadingSpinner"
                         class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center z-50">
@@ -147,8 +154,8 @@
                 </div>
 
                 <!-- Filter Sidebar -->
-                <div class="w-[300px] flex-shrink-0">
-                    <div class="bg-white rounded-lg p-4 mb-4">
+                <div class="w-full lg:w-[300px] flex-shrink-0 order-1 lg:order-2 mb-4 lg:mb-0 ">
+                    <div class="bg-white rounded-lg p-4 mb-4 mx-4 sm:mx-0">
                         <h3 class="font-semibold mb-4">Lọc theo khoảng giá</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
@@ -174,7 +181,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg p-4 mb-4">
+                    <div class="bg-white rounded-lg p-4 mb-4 mx-4 sm:mx-0">
                         <h3 class="font-semibold mb-4">Lọc theo diện tích</h3>
                         <div class="space-y-2">
                             <label class="flex items-center">
@@ -353,7 +360,7 @@
                 const tinhId = $('#tinh-select').val();
                 if (tinhId && tinhId !== 'all') {
                     // Gọi API để lấy danh sách quận/huyện
-                    $.getJSON(`https://esgoo.net/api-tinhthanh/2/${tinhId}.htm`)
+                    $.getJSON(`/api/quan/${tinhId}`)
                         .done(function(data_quan) {
                             if (data_quan.error === 0) {
                                 $('#quan-list').empty(); // Xóa danh sách cũ
@@ -390,7 +397,7 @@
             }
 
             // ===== Load tỉnh =====
-            $.getJSON("https://esgoo.net/api-tinhthanh/1/0.htm")
+            $.getJSON("/api/tinh")
                 .done(function(data_tinh) {
                     if (data_tinh.error === 0) {
                         $.each(data_tinh.data, function(_, t) {
@@ -423,7 +430,7 @@
 
             // ===== Load quận/huyện =====
             function loadQuanHuyen(tinhId, quanParam) {
-                $.getJSON(`https://esgoo.net/api-tinhthanh/2/${tinhId}.htm`)
+                $.getJSON(`/api/quan/${tinhId}`)
                     .done(function(data_quan) {
                         if (data_quan.error === 0) {
 

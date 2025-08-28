@@ -19,7 +19,7 @@
                 </div> --}}
 
                 <div id="selected-quans-{{ $type }}"
-                    class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-50 flex flex-wrap gap-2">
+                    class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-10 flex flex-wrap gap-2">
                 </div>
 
                 <select id="tinh-select-{{ $type }}"
