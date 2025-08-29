@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="bg-gray-100 min-h-screen py-8">
-        <div class="container mx-auto px-4 max-w-7xl flex gap-8">
+        <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row gap-8">
 
             <!-- Sidebar -->
             <x-sidebar_profile :user="$user" />
@@ -17,7 +17,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             @foreach ($properties as $property)
                                 <div
-                                    class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300">
+                                    class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-300 bg-white flex flex-col">
                                     <div class="relative">
                                         @if ($property->images->count())
                                             <img src="{{ $property->images->first() ? asset($property->images->first()->image_url) : asset('assets/img/placeholder.jpg') }}"
@@ -35,21 +35,22 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="p-4">
-                                        <h4 class="font-semibold text-lg line-clamp-2">{{ $property->title }}</h4>
+                                    <div class="p-4 flex-1 flex flex-col">
+                                        <h4 class="font-semibold text-lg line-clamp-2 mb-1">{{ $property->title }}</h4>
                                         <p class="text-sm text-gray-500 mb-2 line-clamp-2">
                                             {{ $property->location }}
                                         </p>
                                         <p class="text-red-600 font-bold mb-3">
-                                            {{ number_format($property->price) }} VND
+                                            {{ $property->price ? number_format($property->price) . ' ' . ($property->price_type == 0 ? 'triệu' : 'tỷ') : 'Thỏa thuận' }}
                                         </p>
-                                        <div class="flex justify-between items-center text-sm">
+                                        <div class="flex justify-between items-center text-sm mt-auto">
                                             <a href="{{ route('properties.show', $property->slug) }}"
                                                 class="text-blue-600 hover:underline">Xem</a>
                                             <a href="{{ route('user.properties.edit', $property->property_id) }}"
                                                 class="text-yellow-600 hover:underline">Sửa</a>
                                             <form action="{{ route('admin.properties.destroy', $property->property_id) }}"
-                                                method="POST" onsubmit="return confirm('Bạn chắc chắn xóa tin này?');">
+                                                method="POST" onsubmit="return confirm('Bạn chắc chắn xóa tin này?');"
+                                                class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:underline">Xóa</button>

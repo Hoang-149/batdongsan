@@ -1,9 +1,10 @@
+{{-- filepath: resources/views/pages/frontend/profile.blade.php --}}
 @extends('layouts.main')
 @section('title', 'Quản lý tài khoản')
 @section('content')
 
     <div class="bg-gray-100 min-h-screen py-8">
-        <div class="container mx-auto px-4 max-w-7xl flex gap-8">
+        <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row gap-8">
 
             <!-- Sidebar -->
             <x-sidebar_profile :user="$user" />
@@ -21,13 +22,14 @@
                     @endif
                     <h1 class="text-2xl font-bold mb-6">Quản lý tài khoản</h1>
                     <!-- Tabs -->
-                    <div class="flex border-b mb-8">
-                        <button
+                    <div class="flex border-b mb-8 flex-wrap">
+                        <button id="tab-info"
                             class="py-2 px-4 border-b-2 border-[#E03C31] text-[#E03C31] font-semibold focus:outline-none">Chỉnh
                             sửa thông tin</button>
-                        <button class="py-2 px-4 text-gray-600 hover:text-[#E03C31] font-semibold focus:outline-none">Cài
+                        <button id="tab-setting"
+                            class="py-2 px-4 text-gray-600 hover:text-[#E03C31] font-semibold focus:outline-none">Cài
                             đặt tài khoản</button>
-                        <button
+                        <button id="tab-pro-agent"
                             class="py-2 px-4 text-gray-600 hover:text-[#E03C31] font-semibold focus:outline-none relative">
                             Đăng ký Môi giới chuyên nghiệp
                             <span
@@ -36,19 +38,19 @@
                     </div>
 
                     <!-- Popup Đăng ký môi giới chuyên nghiệp -->
-                    {{-- <div class="relative mb-8">
-                        <div class="absolute right-0 -top-4 w-96 z-10">
-                            <div class="bg-purple-700 text-white rounded-lg shadow-lg p-5 relative">
-                                <button class="absolute top-2 right-2 text-white text-lg font-bold">&times;</button>
-                                <div class="font-semibold mb-1">Đăng ký Môi giới chuyên nghiệp</div>
-                                <div class="text-sm mb-3">Nâng tầm thương hiệu cá nhân, tiếp cận nhiều khách hàng tiềm năng
-                                    với vị trí hiển thị nổi bật và độc quyền</div>
-                                <button
-                                    class="w-full bg-white text-purple-700 font-semibold py-2 rounded hover:bg-purple-100 transition">Đăng
-                                    ký miễn phí</button>
-                            </div>
+                    <div id="pro-agent-popup"
+                        class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                        <div class="bg-purple-700 text-white rounded-lg shadow-lg p-5 relative w-full max-w-md mx-auto">
+                            <button id="close-pro-agent"
+                                class="absolute top-2 right-2 text-white text-lg font-bold">&times;</button>
+                            <div class="font-semibold mb-1">Đăng ký Môi giới chuyên nghiệp</div>
+                            <div class="text-sm mb-3">Nâng tầm thương hiệu cá nhân, tiếp cận nhiều khách hàng tiềm năng
+                                với vị trí hiển thị nổi bật và độc quyền</div>
+                            <button
+                                class="w-full bg-white text-purple-700 font-semibold py-2 rounded hover:bg-purple-100 transition">Đăng
+                                ký miễn phí</button>
                         </div>
-                    </div> --}}
+                    </div>
 
                     <!-- Form -->
                     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
@@ -63,7 +65,6 @@
                                 <img id="avatarPreview"
                                     src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : 'https://via.placeholder.com/120' }}"
                                     alt="avatar" class="avatar-img" />
-
                             </div>
                         </div>
 
@@ -152,6 +153,7 @@
 
     <script>
         jQuery(document).ready(function($) {
+            // Avatar preview
             $("#avatar").on("change", function(e) {
                 let file = e.target.files[0];
                 if (file) {
@@ -160,6 +162,21 @@
                         $("#avatarPreview").attr("src", e.target.result);
                     }
                     reader.readAsDataURL(file);
+                }
+            });
+
+            // Popup môi giới chuyên nghiệp
+            $("#tab-pro-agent").on("click", function(e) {
+                e.preventDefault();
+                $("#pro-agent-popup").removeClass("hidden");
+            });
+            $("#close-pro-agent").on("click", function() {
+                $("#pro-agent-popup").addClass("hidden");
+            });
+            // Đóng popup khi click nền tối
+            $("#pro-agent-popup").on("click", function(e) {
+                if (e.target === this) {
+                    $(this).addClass("hidden");
                 }
             });
         });

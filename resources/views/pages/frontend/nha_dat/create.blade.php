@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="bg-gray-100 min-h-screen py-8">
-        <div class="container mx-auto px-4 max-w-7xl flex gap-8">
+        <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row gap-8">
             <!-- Sidebar -->
             <x-sidebar_profile :user="$user" />
 
@@ -50,7 +50,7 @@
 
                                 <div class="mb-6">
                                     <label for="type_id" class="block text-sm font-semibold text-gray-800 mb-2">Loại bất
-                                        động sản(Có thể chọn nhiều)<span class="text-red-500">*</span></label>
+                                        động sản (Có thể chọn nhiều)<span class="text-red-500">*</span></label>
                                     <select name="type_id[]" id="type_id" multiple
                                         class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200 @error('type_id.*') border-red-500 @enderror"
                                         required>
@@ -137,17 +137,14 @@
                                 </div>
 
                                 <div class="mb-6">
-                                    <label for="images" class="block text-sm font-semibold text-gray-800 mb-2">Hình
-                                        ảnh (Tối
-                                        thiểu
-                                        4 hình)</label>
+                                    <label for="images" class="block text-sm font-semibold text-gray-800 mb-2">Hình ảnh
+                                        (Tối thiểu 4 hình)</label>
                                     <input type="file" id="images" name="images[]"
                                         class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 transition-colors duration-200 @error('images.*') border-red-500 @enderror"
                                         multiple accept="image/jpeg,image/png,image/jpg">
                                     <div id="image-preview" class="mt-3 flex flex-wrap gap-3"></div>
-                                    <div id="image-error" class="mt-1 text-sm text-red-600 font-medium hidden">Vui
-                                        lòng chọn ít
-                                        nhất 4 hình ảnh.</div>
+                                    <div id="image-error" class="mt-1 text-sm text-red-600 font-medium hidden">Vui lòng
+                                        chọn ít nhất 4 hình ảnh.</div>
                                     @error('images.*')
                                         <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
                                     @enderror
@@ -183,7 +180,7 @@
                                         required>
                                         <option value="1" {{ old('is_for_sale', 1) == 1 ? 'selected' : '' }}>Có
                                         </option>
-                                        <option value="0" {{ old('is_for_sale', 1) == 0 ? 'selected' : '' }}>không
+                                        <option value="0" {{ old('is_for_sale', 1) == 0 ? 'selected' : '' }}>Không
                                         </option>
                                     </select>
                                     @error('is_for_sale')
@@ -213,14 +210,13 @@
                 let preview = $("#image-preview");
                 let error = $("#image-error");
 
-                preview.empty(); // Xóa preview cũ
+                preview.empty();
                 error.addClass("hidden");
 
                 if (files.length < 4) {
                     error.removeClass("hidden");
                 }
 
-                // Duyệt qua từng file và tạo preview
                 $.each(files, function(i, file) {
                     if (file.type.match("image.*")) {
                         let reader = new FileReader();

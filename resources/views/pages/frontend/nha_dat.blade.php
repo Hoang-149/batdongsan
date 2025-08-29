@@ -221,6 +221,10 @@
 
         $(document).ready(function() {
             const maxSelections = 3;
+            let currentMode = '{{ $mode }}'; // 'ban' or 'thue'
+            let url = currentMode === 'thue' ?
+                '{{ route('properties.indexThue') }}' :
+                '{{ route('properties.indexBan') }}';
             let selectedQuans = [];
 
             let propertyType = '';
@@ -239,7 +243,6 @@
 
             // Hàm lấy dữ liệu bất động sản
             function loadProperties(page = 1) {
-
                 let priceRanges = [];
                 let areaRanges = [];
                 $('.filter-checkbox[name="price_ranges[]"]:checked').each(function() {
@@ -251,7 +254,7 @@
 
                 showLoading();
                 $.ajax({
-                    url: '{{ route('properties.indexBan') }}',
+                    url: url,
                     type: 'GET',
                     data: {
                         page: page,
@@ -297,7 +300,13 @@
                         </div>
                         <div>
                             <h3 class="font-semibold text-lg text-[#E03C31] mb-2">${property.title}</h3>
-                            <p class="text-[#E03C31] font-bold text-xl mb-2">${new Intl.NumberFormat('vi-VN').format(property.price)} VND</p>
+                            <p class="text-[#E03C31] font-bold text-xl mb-2">
+                                ${
+                                    property.price
+                                        ? (Number(property.price).toLocaleString('vi-VN') + ' ' + (property.price_type == 0 ? 'triệu' : 'tỷ'))
+                                        : 'Thỏa thuận'
+                                }
+                            </p>
                             <p class="text-gray-600 mb-2">${property.area} m² - ${property.property_types ? property.property_types.map(type => type.type_name).join(', ') : 'N/A'}</p>
                             <p class="text-gray-500 text-sm mb-4">${property.description ? property.description.substring(0, 100) : ''}</p>
                             <div class="flex justify-between items-end">
@@ -344,7 +353,6 @@
 
             $('#search-button').on('click', function(e) {
                 e.preventDefault();
-
                 propertyType = $('#property-type').val();
                 priceFilter = $('#price-filter').val();
                 isVerified = $('#is-verified').is(':checked');

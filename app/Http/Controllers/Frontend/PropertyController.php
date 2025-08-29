@@ -15,6 +15,8 @@ class PropertyController extends Controller
 {
     public function indexBan(Request $request)
     {
+        Log::info('Vo day 1');
+
         $query = Property::with('images')
             ->where('is_verified', 1)
             ->whereIn('demande', [1, 2]);
@@ -116,7 +118,6 @@ class PropertyController extends Controller
             return response()->json([
                 'properties' => $properties->items(), // Danh sách bất động sản
                 'pagination' => view('partials.pagination', ['paginator' => $properties])->render(),
-
                 'total' => $properties->total(), // Tổng số bản ghi
                 'current_page' => $properties->currentPage(), // Trang hiện tại
                 'last_page' => $properties->lastPage(), // Trang cuối
@@ -124,27 +125,14 @@ class PropertyController extends Controller
         }
 
         $titlePage = 'Nhà đất bán';
+        $mode = 'ban';
 
-        return view('pages.frontend.nha_dat', compact('properties', 'titlePage'));
-    }
-
-    public function show($slug)
-    {
-        $property = Property::with('images')->where('slug', $slug)->firstOrFail();
-
-        $otherProperty = Property::with('images')
-            ->where('is_verified', true)
-            ->where('property_id', '!=', $property->property_id)
-            ->orderBy('created_at', 'desc')
-            ->take(6)
-            ->get();
-
-        return view('pages.frontend.chi_tiet_tin_dang', compact('property', 'otherProperty'));
+        return view('pages.frontend.nha_dat', compact('properties', 'titlePage', 'mode'));
     }
 
     public function indexThue(Request $request)
     {
-
+        Log::info('Vo day 2');
         $query = Property::with('images')
             ->where('is_verified', 1)
             ->whereIn('demande', [0, 2]);
@@ -246,8 +234,23 @@ class PropertyController extends Controller
         }
 
         $titlePage = 'Nhà đất thuê';
+        $mode = 'thue';
 
-        return view('pages.frontend.nha_dat', compact('properties', 'titlePage'));
+        return view('pages.frontend.nha_dat', compact('properties', 'titlePage', 'mode'));
+    }
+
+    public function show($slug)
+    {
+        $property = Property::with('images')->where('slug', $slug)->firstOrFail();
+
+        $otherProperty = Property::with('images')
+            ->where('is_verified', true)
+            ->where('property_id', '!=', $property->property_id)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        return view('pages.frontend.chi_tiet_tin_dang', compact('property', 'otherProperty'));
     }
 
     public function createProperty()

@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="bg-gray-100 min-h-screen py-8">
-        <div class="container mx-auto px-4 max-w-7xl flex gap-8">
+        <div class="container mx-auto px-4 max-w-7xl flex flex-col md:flex-row gap-8">
 
             <!-- Sidebar -->
             <x-sidebar_profile :user="$user" />
@@ -57,9 +57,9 @@
                                 class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-red-300">
                         </div>
 
-                        <div class="mb-6">
-                            <label for="type_id" class="block text-sm font-semibold text-gray-800 mb-2">Loại bất
-                                động sản(Có thể chọn nhiều)<span class="text-red-500">*</span></label>
+                        <div>
+                            <label for="type_id" class="block text-sm font-semibold text-gray-800 mb-2">Loại bất động sản
+                                (Có thể chọn nhiều)<span class="text-red-500">*</span></label>
                             <select name="type_id[]" id="type_id" multiple
                                 class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200 @error('type_id.*') border-red-500 @enderror"
                                 required>
@@ -75,9 +75,8 @@
                             @enderror
                         </div>
 
-                        <div class="mb-6">
-                            <label for="demande" class="block text-sm font-semibold text-gray-800 mb-2">Nhu
-                                cầu</label>
+                        <div>
+                            <label for="demande" class="block text-sm font-semibold text-gray-800 mb-2">Nhu cầu</label>
                             <select name="demande" id="demande"
                                 class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200 @error('demande') border-red-500 @enderror"
                                 required>
@@ -86,22 +85,14 @@
                                 <option value="1" {{ old('demande', $property->demande) == 1 ? 'selected' : '' }}>Bán
                                 </option>
                                 <option value="2" {{ old('demande', $property->demande) == 2 ? 'selected' : '' }}>Thuê
-                                    và Bán
-                                </option>
+                                    và Bán</option>
                             </select>
                             @error('demande')
                                 <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        {{-- Địa chỉ --}}
-                        {{-- <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ</label>
-                            <input type="text" name="location" value="{{ old('location', $property->location) }}"
-                                class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-red-300">
-                        </div> --}}
-
-                        <div class="mb-6">
+                        <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">Địa chỉ <span
                                     class="text-red-500">*</span></label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -135,7 +126,6 @@
                             @enderror
                         </div>
 
-                        {{-- Diện tích và Giá --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Diện tích (m²)</label>
@@ -149,7 +139,6 @@
                             </div>
                         </div>
 
-                        {{-- Mô tả --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
                             <textarea name="description" id="content" rows="4"
@@ -161,7 +150,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Ảnh hiện tại</label>
                             <div id="currentImages" class="flex flex-wrap gap-3">
                                 @forelse ($property->images as $image)
-                                    <div class="relative group">
+                                    <div class="relative group" id="image-{{ $image->image_id }}">
                                         <img src="{{ asset($image->image_url) }}"
                                             class="w-24 h-24 rounded-lg object-cover border">
                                         <button type="button" data-id="{{ $image->image_id }}"
@@ -171,7 +160,7 @@
                                     </div>
                                 @empty
                                     <div class="col-span-full text-center text-gray-500">
-                                        No images found.
+                                        Không có ảnh nào.
                                     </div>
                                 @endforelse
                             </div>
@@ -185,26 +174,22 @@
                             <div id="previewImages" class="flex flex-wrap gap-3 mt-3"></div>
                         </div>
 
-                        <div class="mb-6">
+                        <div>
                             <label for="is_for_sale" class="block text-sm font-semibold text-gray-800 mb-2">Giảm
                                 giá</label>
                             <select name="is_for_sale" id="is_for_sale"
                                 class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200 @error('is_for_sale') border-red-500 @enderror"
                                 required>
                                 <option value="1"
-                                    {{ old('is_for_sale', $property->is_for_sale) == 1 ? 'selected' : '' }}>Có
-                                </option>
+                                    {{ old('is_for_sale', $property->is_for_sale) == 1 ? 'selected' : '' }}>Có</option>
                                 <option value="0"
-                                    {{ old('is_for_sale', $property->is_for_sale) == 0 ? 'selected' : '' }}>Không
-                                </option>
+                                    {{ old('is_for_sale', $property->is_for_sale) == 0 ? 'selected' : '' }}>Không</option>
                             </select>
                             @error('is_for_sale')
                                 <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
                             @enderror
                         </div>
 
-
-                        {{-- Nút submit --}}
                         <div class="flex justify-end gap-3">
                             <a href="{{ route('user.properties.index') }}"
                                 class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Hủy</a>
@@ -226,10 +211,9 @@
 
     <script>
         $(document).ready(function($) {
-
+            // Xóa ảnh hiện tại bằng AJAX
             $('body').on('click', '#currentImages button', function() {
                 let imageId = $(this).data('id');
-
                 $.ajax({
                     url: '/properties/images/' + imageId,
                     type: 'DELETE',
@@ -256,21 +240,21 @@
                     Array.from(files).forEach(file => {
                         let reader = new FileReader();
                         reader.onload = function(e) {
-                            $('#previewImages').append(`
-                        <img src="${e.target.result}" class="w-24 h-24 rounded-lg object-cover border">
-                    `);
+                            $('#previewImages').append(
+                                `<img src="${e.target.result}" class="w-24 h-24 rounded-lg object-cover border">`
+                            );
                         }
                         reader.readAsDataURL(file);
                     });
                 }
             });
 
+            // Gán địa chỉ mặc định cho dropdown (nếu có)
             window.locationDefault = {
                 tinh: "{{ $property->location ? explode(', ', $property->location)[0] : '' }}",
                 quan: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}",
                 phuong: "{{ $property->location ? explode(', ', $property->location)[2] : '' }}"
             };
-
         });
     </script>
 @endsection

@@ -1,4 +1,4 @@
-<aside class="w-80 flex-shrink-0">
+<aside class="w-80 flex-shrink-0 mx-auto">
     <div class="bg-white rounded-xl shadow p-6 mb-6 flex flex-col items-center">
         {{-- <div
             class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-3xl font-bold text-gray-500 mb-2">

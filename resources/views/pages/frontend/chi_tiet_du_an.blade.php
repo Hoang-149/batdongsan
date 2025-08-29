@@ -3,6 +3,7 @@
 @section('title', $project->project_name)
 
 @section('content')
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <section class="bg-gray-100 py-8">
@@ -41,9 +42,9 @@
                         <div
                             class="flex flex-col sm:flex-row sm:items-center text-gray-500 text-sm mb-6 space-y-2 sm:space-y-0 sm:space-x-4">
                             <span><strong>Diện tích:</strong> {{ number_format($project->area, 0, ',', '.') }} m²</span>
-                            <span>•</span>
+                            <span class="hidden sm:inline">•</span>
                             <span><strong>Giá:</strong> {{ number_format($project->price, 0, ',', '.') }} triệu/m²</span>
-                            <span>•</span>
+                            <span class="hidden sm:inline">•</span>
                             <span><strong>Vị trí:</strong> {{ $project->location }}</span>
                         </div>
 
