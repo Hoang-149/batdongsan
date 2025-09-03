@@ -11,8 +11,8 @@
             <div
                 class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
 
-                <input type="text" id="search-text-{{ $type }}" placeholder="Nhập tối đa 3 quận..."
-                    class="w-full sm:w-64 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
+                <input type="text" id="search-text-{{ $type }}" placeholder="Nhập tối đa 3 phường..."
+                    class="w-full sm:w-11/12 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 font-normal text-xs sm:text-base">
 
                 {{-- <div id="selected-quans-{{ $type }}"
                     class="flex flex-wrap items-center pr-32 py-2 bg-transparent w-full">
@@ -23,10 +23,10 @@
                 </div>
 
                 <select id="tinh-select-{{ $type }}"
-                    class="absolute right-0 top-0 h-full px-4 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-200 bg-gray-100 z-10">
+                    class="absolute right-0 top-0 h-full px-4 sm:px-5 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 bg-gray-100 z-10 text-xs sm:text-base">
                     <option value="all">Tất cả</option>
                 </select>
-                <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 right-1 sm:right-2 flex items-center pointer-events-none">
                     <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                 </div>
             </div>

@@ -1,5 +1,5 @@
-$(document).ready(function (e) {
-    $(".toggle-password").on("click", function () {
+$(document).ready(function ($) {
+    jQuery(".toggle-password").on("click", function () {
         const $input = $(this).closest(".relative").find("input");
         const type = $input.attr("type") === "password" ? "text" : "password";
         $input.attr("type", type);
@@ -9,7 +9,7 @@ $(document).ready(function (e) {
     });
 
     // Slider featured properties (mobile)
-    $(".slider-featured-properties").slick({
+    jQuery(".slider-featured-properties").slick({
         infinite: true,
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -32,7 +32,7 @@ $(document).ready(function (e) {
     });
 
     // Slider news (mobile)
-    $(".slider-news").slick({
+    jQuery(".slider-news").slick({
         infinite: true,
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -54,7 +54,7 @@ $(document).ready(function (e) {
         ],
     });
 
-    $(".slider-projects").slick({
+    jQuery(".slider-projects").slick({
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -64,7 +64,7 @@ $(document).ready(function (e) {
         autoplaySpeed: 3000,
     });
 
-    $(".slider-section1-home").slick({
+    jQuery(".slider-section1-home").slick({
         infinite: true,
         slidesToShow: 5,
         slidesToScroll: 1,
@@ -97,20 +97,19 @@ $(document).ready(function (e) {
         console.error(error);
     });
 
-    function loadQuan(idtinh) {
+    function loadPhuong(idtinh) {
         return new Promise((resolve) => {
-            $.getJSON("/api/quan/" + idtinh, function (data_quan) {
-                if (data_quan.error == 0) {
-                    $("#quan").html('<option value="0">Quận Huyện</option>');
+            $.getJSON(`/api/phuong/${idtinh}`).done(function (data_phuong) {
+                if (data_phuong.error == false) {
                     $("#phuong").html('<option value="0">Phường Xã</option>');
-                    $.each(data_quan.data, function (key_quan, val_quan) {
-                        $("#quan").append(
+                    $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                        $("#phuong").append(
                             '<option value="' +
-                                val_quan.id +
+                                val_phuong.code +
                                 '" data-name="' +
-                                val_quan.full_name +
+                                val_phuong.name +
                                 '">' +
-                                val_quan.full_name +
+                                val_phuong.name +
                                 "</option>"
                         );
                     });
@@ -120,38 +119,9 @@ $(document).ready(function (e) {
         });
     }
 
-    function loadPhuong(idquan) {
-        return new Promise((resolve) => {
-            $.getJSON(
-                "https://esgoo.net/api-tinhthanh/3/" + idquan + ".htm",
-                function (data_phuong) {
-                    if (data_phuong.error == 0) {
-                        $("#phuong").html(
-                            '<option value="0">Phường Xã</option>'
-                        );
-                        $.each(
-                            data_phuong.data,
-                            function (key_phuong, val_phuong) {
-                                $("#phuong").append(
-                                    '<option value="' +
-                                        val_phuong.id +
-                                        '" data-name="' +
-                                        val_phuong.full_name +
-                                        '">' +
-                                        val_phuong.full_name +
-                                        "</option>"
-                                );
-                            }
-                        );
-                    }
-                    resolve();
-                }
-            );
-        });
-    }
-
     // Hàm này gọi sau khi đã render option tỉnh
-    async function setLocationDefault(tinhName, quanName, phuongName) {
+    async function setLocationDefault(tinhName, phuongName) {
+        $("#loadingSpinner").removeClass("hidden");
         // Set tỉnh
         let tinhId = null;
         $("#tinh option").each(function () {
@@ -165,28 +135,13 @@ $(document).ready(function (e) {
                 return false;
             }
         });
-        if (!tinhId) return;
-
-        // Đợi quận load xong
-        await loadQuan(tinhId);
-
-        // Set quận
-        let quanId = null;
-        $("#quan option").each(function () {
-            if (
-                ($(this).data("name") || "").toString().trim() ===
-                quanName.trim()
-            ) {
-                quanId = $(this).val();
-                $("#quan").val(quanId).trigger("change");
-                $("#quan_name").val(quanName);
-                return false;
-            }
-        });
-        if (!quanId) return;
+        if (!tinhId) {
+            $("#loadingSpinner").addClass("hidden");
+            return;
+        }
 
         // Đợi phường load xong
-        await loadPhuong(quanId);
+        await loadPhuong(tinhId);
 
         // Set phường
         $("#phuong option").each(function () {
@@ -196,21 +151,22 @@ $(document).ready(function (e) {
             ) {
                 $("#phuong").val($(this).val());
                 $("#phuong_name").val(phuongName);
-                return false;
+                return false; // dừng each
             }
         });
+        $("#loadingSpinner").addClass("hidden");
     }
 
     $.getJSON("/api/tinh", function (data_tinh) {
-        if (data_tinh.error == 0) {
+        if (data_tinh.error == false) {
             $.each(data_tinh.data, function (key_tinh, val_tinh) {
                 $("#tinh").append(
                     '<option value="' +
-                        val_tinh.id +
+                        val_tinh.code +
                         '" data-name="' +
-                        val_tinh.full_name +
+                        val_tinh.name +
                         '">' +
-                        val_tinh.full_name +
+                        val_tinh.name +
                         "</option>"
                 );
             });
@@ -219,66 +175,28 @@ $(document).ready(function (e) {
                 var idtinh = $(this).val();
                 var nameTinh = $(this).find("option:selected").data("name");
                 $("#tinh_name").val(nameTinh);
-                $("#quan_name").val("");
                 $("#phuong_name").val("");
-                $.getJSON("/api/quan/" + idtinh, function (data_quan) {
-                    if (data_quan.error == 0) {
-                        $("#quan").html(
-                            '<option value="0">Quận Huyện</option>'
-                        );
-                        $("#phuong").html(
-                            '<option value="0">Phường Xã</option>'
-                        );
-
-                        $.each(data_quan.data, function (key_quan, val_quan) {
-                            $("#quan").append(
-                                '<option value="' +
-                                    val_quan.id +
-                                    '" data-name="' +
-                                    val_quan.full_name +
-                                    '">' +
-                                    val_quan.full_name +
-                                    "</option>"
+                $.getJSON(`/api/phuong/${idtinh}`).done(function (data_phuong) {
+                    if (data_phuong.error == false) {
+                        if (data_phuong.error == false) {
+                            $("#phuong").html(
+                                '<option value="0">Phường Xã</option>'
                             );
-                        });
-
-                        $("#quan")
-                            .off("change")
-                            .on("change", function () {
-                                var idquan = $(this).val();
-                                var nameQuan = $(this)
-                                    .find("option:selected")
-                                    .data("name");
-                                $("#quan_name").val(nameQuan);
-                                $("#phuong_name").val("");
-                                $.getJSON(
-                                    "/api/quan/" + idquan,
-                                    function (data_phuong) {
-                                        if (data_phuong.error == 0) {
-                                            $("#phuong").html(
-                                                '<option value="0">Phường Xã</option>'
-                                            );
-                                            $.each(
-                                                data_phuong.data,
-                                                function (
-                                                    key_phuong,
-                                                    val_phuong
-                                                ) {
-                                                    $("#phuong").append(
-                                                        '<option value="' +
-                                                            val_phuong.id +
-                                                            '"  data-name="' +
-                                                            val_phuong.full_name +
-                                                            '">' +
-                                                            val_phuong.full_name +
-                                                            "</option>"
-                                                    );
-                                                }
-                                            );
-                                        }
-                                    }
-                                );
-                            });
+                            $.each(
+                                data_phuong.data,
+                                function (key_phuong, val_phuong) {
+                                    $("#phuong").append(
+                                        '<option value="' +
+                                            val_phuong.code +
+                                            '"  data-name="' +
+                                            val_phuong.name +
+                                            '">' +
+                                            val_phuong.name +
+                                            "</option>"
+                                    );
+                                }
+                            );
+                        }
                         $("#phuong").on("change", function () {
                             var namePhuong = $(this)
                                 .find("option:selected")
@@ -291,7 +209,6 @@ $(document).ready(function (e) {
             if (window.locationDefault) {
                 setLocationDefault(
                     window.locationDefault.tinh,
-                    window.locationDefault.quan,
                     window.locationDefault.phuong
                 );
             }

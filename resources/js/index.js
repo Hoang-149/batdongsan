@@ -18,28 +18,32 @@ jQuery(document).ready(function ($) {
     tabs.forEach(function (type) {
         let selectedQuans = [];
 
+        $("#loadingSpinner").removeClass("hidden");
         // Load tỉnh
-        $.getJSON("/api/tinh").done(function (data_tinh) {
-            if (data_tinh.error === 0) {
-                $.each(data_tinh.data, function (_, t) {
-                    $(`#tinh-select-${type}`).append(
-                        `<option value="${t.id}" data-name="${t.full_name}">${t.full_name}</option>`
-                    );
-                });
-                // $(`#tinh-select-${type}`).val(defaultTinhId).trigger("change");
-            }
-        });
+        $.getJSON("/api/tinh")
+            .done(function (respone) {
+                if (respone.error === false) {
+                    $.each(respone.data, function (_, t) {
+                        $(`#tinh-select-${type}`).append(
+                            `<option value="${t.code}" data-name="${t.name}">${t.name}</option>`
+                        );
+                    });
+                }
+            })
+            .always(function () {
+                $("#loadingSpinner").addClass("hidden"); // tắt spinner khi xong (thành công hoặc lỗi)
+            });
 
         // Click ô nhập địa điểm
         $(`#search-text-${type}`).on("click", function () {
             const tinhId = $(`#tinh-select-${type}`).val();
             if (tinhId && tinhId !== "all") {
-                $.getJSON(`/api/quan/${tinhId}`).done(function (data_quan) {
-                    if (data_quan.error === 0) {
+                $.getJSON(`/api/phuong/${tinhId}`).done(function (data_quan) {
+                    if (data_quan.error === false) {
                         $(`#quan-list-${type}`).empty();
                         $.each(data_quan.data, function (_, q) {
                             const isSelected = selectedQuans.some(
-                                (s) => s.id === q.id
+                                (s) => s.code === q.code
                             );
                             const isDisabled =
                                 selectedQuans.length >= maxSelections &&
@@ -51,11 +55,9 @@ jQuery(document).ready(function ($) {
                                     isDisabled
                                         ? "text-gray-400 cursor-not-allowed"
                                         : ""
-                                }" data-id="${q.id}" data-name="${
-                                    q.full_name
-                                }" ${
+                                }" data-id="${q.code}" data-name="${q.name}" ${
                                     isDisabled ? 'data-disabled="true"' : ""
-                                }>${q.full_name}</li>`
+                                }>${q.name}</li>`
                             );
                         });
                         $(`#quan-dropdown-${type}`).removeClass("hidden");
@@ -73,10 +75,10 @@ jQuery(document).ready(function ($) {
             const quanId = $(this).data("id");
             const quanName = $(this).data("name");
             if (
-                !selectedQuans.some((s) => s.id === quanId) &&
+                !selectedQuans.some((s) => s.code === quanId) &&
                 selectedQuans.length < maxSelections
             ) {
-                selectedQuans.push({ id: quanId, name: quanName });
+                selectedQuans.push({ code: quanId, name: quanName });
                 updateSelectedQuans();
             }
             $(`#quan-dropdown-${type}`).addClass("hidden");
@@ -89,7 +91,7 @@ jQuery(document).ready(function ($) {
                 $(`#selected-quans-${type}`).append(`
                     <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1 mr-2">
                         ${quan.name}
-                        <button class="ml-2 text-gray-500 hover:text-red-500" data-id="${quan.id}">
+                        <button class="ml-2 text-gray-500 hover:text-red-500" data-id="${quan.code}">
                             <i class="fas fa-times"></i>
                         </button>
                     </span>
@@ -100,7 +102,7 @@ jQuery(document).ready(function ($) {
         // Xóa quận đã chọn
         $(`#selected-quans-${type}`).on("click", "button", function () {
             const quanId = $(this).data("id");
-            selectedQuans = selectedQuans.filter((q) => q.id !== quanId);
+            selectedQuans = selectedQuans.filter((q) => q.code !== quanId);
             updateSelectedQuans();
         });
 

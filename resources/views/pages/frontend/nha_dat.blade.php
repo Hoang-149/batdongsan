@@ -13,9 +13,9 @@
             </div>
         </div>
 
-        <div class="max-w-6xl mx-4 sm:mx-0">
+        <div class="max-w-6xl mx-2 sm:mx-0">
             <!-- Main Search Container -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-8 mb-4">
 
                 <!-- Search Bar -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-28 sm:gap-4 mb-2 sm:mb-10">
@@ -26,18 +26,18 @@
 
                         <div
                             class="relative flex items-center border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300">
-                            <input type="text" id="search-text" placeholder="Nhập tối đa 3 quận..."
-                                class="w-full sm:w-64 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-base font-normal">
+                            <input type="text" id="search-text" placeholder="Nhập tối đa 3 phường..."
+                                class="w-full sm:w-11/12 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-xs sm:text-base font-normal">
 
                             <div id="selected-quans"
                                 class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-10 flex flex-wrap gap-2">
                             </div>
 
                             <select id="tinh-select"
-                                class="absolute right-0 top-0 h-full px-4 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 hover:bg-gray-200 bg-gray-100 z-10">
+                                class="absolute right-0 top-0 h-full px-4 sm:px-5 py-3 bg-transparent border-l border-gray-200 text-gray-700 rounded-r-2xl focus:ring-0 focus:outline-none appearance-none transition-colors duration-200 bg-gray-100 z-10 text-xs sm:text-base">
                                 <option value="all">Tất cả</option>
                             </select>
-                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                            <div class="absolute inset-y-0 right-1 sm:right-2 flex items-center pointer-events-none">
                                 <i class="fas fa-chevron-down text-gray-600 text-sm"></i>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                     </div>
 
                     <!-- Price Range Dropdown -->
-                    <div class="relative my-4">
+                    <div class="relative my-4 sm:my-0">
                         <select class="w-full sm:w-36 border rounded-lg p-2.5 appearance-none bg-white" id="price-filter">
                             <option value="">Chọn mức giá</option>
                             <option value="under_1b">Dưới 1 tỷ</option>
@@ -135,13 +135,6 @@
             <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Main Content Area -->
                 <div class="flex-1 order-2 lg:order-1 mx-4 sm:mx-0">
-
-                    <div id="loadingSpinner"
-                        class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center z-50">
-                        <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin">
-                        </div>
-                    </div>
-
                     <!-- Property Listings -->
                     <div class="space-y-4" id="property-list">
                         @include('partials.property-list', ['properties' => $properties])
@@ -363,21 +356,21 @@
                 loadProperties(1);
             });
 
-            // Xử lý khi click vào input để hiển thị dropdown quận/huyện
             $('#search-text').on('click', function() {
                 const tinhId = $('#tinh-select').val();
                 if (tinhId && tinhId !== 'all') {
                     // Gọi API để lấy danh sách quận/huyện
-                    $.getJSON(`/api/quan/${tinhId}`)
+                    $.getJSON(`/api/phuong/${tinhId}`)
                         .done(function(data_quan) {
-                            if (data_quan.error === 0) {
+                            if (data_quan.error === false) {
                                 $('#quan-list').empty(); // Xóa danh sách cũ
                                 $.each(data_quan.data, function(_, q) {
-                                    const isSelected = selectedQuans.some(s => s.id === q.id);
+                                    const isSelected = selectedQuans.some(s => s.code === q
+                                        .code);
                                     const isDisabled = selectedQuans.length >= maxSelections &&
                                         !isSelected;
                                     $('#quan-list').append(
-                                        `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer ${isSelected ? 'bg-gray-100' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed' : ''}" data-id="${q.id}" data-name="${q.full_name}" ${isDisabled ? 'data-disabled="true"' : ''}>${q.full_name}</li>`
+                                        `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer ${isSelected ? 'bg-gray-100' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed' : ''}" data-id="${q.code}" data-name="${q.name}" ${isDisabled ? 'data-disabled="true"' : ''}>${q.name}</li>`
                                     );
                                 });
                                 $('#quan-dropdown').removeClass('hidden');
@@ -407,10 +400,10 @@
             // ===== Load tỉnh =====
             $.getJSON("/api/tinh")
                 .done(function(data_tinh) {
-                    if (data_tinh.error === 0) {
+                    if (data_tinh.error === false) {
                         $.each(data_tinh.data, function(_, t) {
                             $('#tinh-select').append(
-                                `<option value="${t.id}" data-name="${t.full_name}">${t.full_name}</option>`
+                                `<option value="${t.code}" data-name="${t.name}">${t.name}</option>`
                             );
                         });
 
@@ -419,10 +412,10 @@
                         // Nếu có search_tinh → tìm ID tỉnh
                         if (searchTinhParam) {
                             const foundTinh = data_tinh.data.find(
-                                tinh => tinh.full_name.trim() === searchTinhParam.trim()
+                                tinh => tinh.name.trim() === searchTinhParam.trim()
                             );
                             if (foundTinh) {
-                                tinhIdToSelect = foundTinh.id;
+                                tinhIdToSelect = foundTinh.code;
                             }
                         }
 
@@ -438,9 +431,9 @@
 
             // ===== Load quận/huyện =====
             function loadQuanHuyen(tinhId, quanParam) {
-                $.getJSON(`/api/quan/${tinhId}`)
+                $.getJSON(`/api/phuong/${tinhId}`)
                     .done(function(data_quan) {
-                        if (data_quan.error === 0) {
+                        if (data_quan.error === false) {
 
                             if (quanParam && searchQuanIdsParam) {
                                 const quanList = quanParam.split(',').map(q => q.trim());
@@ -448,7 +441,7 @@
 
                                 for (let i = 0; i < quanList.length; i++) {
                                     selectedQuans.push({
-                                        id: quanIdsList[i],
+                                        code: quanIdsList[i],
                                         name: quanList[i]
                                     });
                                 }
@@ -458,14 +451,13 @@
                     });
             }
 
-            // Xử lý khi chọn quận/huyện
             $('#quan-list').on('click', 'li', function() {
                 if ($(this).data('disabled')) return;
                 const quanId = $(this).data('id');
                 const quanName = $(this).data('name');
-                if (!selectedQuans.some(s => s.id === quanId) && selectedQuans.length < maxSelections) {
+                if (!selectedQuans.some(s => s.code === quanId) && selectedQuans.length < maxSelections) {
                     selectedQuans.push({
-                        id: quanId,
+                        code: quanId,
                         name: quanName
                     });
                     updateSelectedQuans();
@@ -479,7 +471,7 @@
                     $('#selected-quans').append(`
                 <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1 mr-2">
                     ${quan.name}
-                    <button class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none" data-id="${quan.id}">
+                    <button class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none" data-id="${quan.code}">
                         <i class="fas fa-times"></i>
                     </button>
                 </span>
@@ -489,7 +481,7 @@
 
             $('#selected-quans').on('click', 'button', function() {
                 const quanId = $(this).data('id');
-                selectedQuans = selectedQuans.filter(q => q.id !== quanId);
+                selectedQuans = selectedQuans.filter(q => q.code !== quanId);
                 updateSelectedQuans();
             });
 

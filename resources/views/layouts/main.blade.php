@@ -14,6 +14,11 @@
     @include('modals.loginModal')
     @include('modals.registerModal')
 
+    <div id="loadingSpinner" class="hidden fixed inset-0 bg-gray-900 bg-opacity-40 flex items-center justify-center z-50">
+        <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin">
+        </div>
+    </div>
+
     <div id="app" class="@yield('app-container-class', 'w-full max-w-[1140px] mx-auto mt-24')">@yield('content')</div>
 
     <footer class="bg-gray-200 py-12">@include('includes.footer')</footer>

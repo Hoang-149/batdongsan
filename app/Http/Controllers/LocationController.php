@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LocationController extends Controller
 {
     public function getProvinces()
     {
         try {
-            $response = Http::get('https://esgoo.net/api-tinhthanh/1/0.htm');
-            return $response->json(); // Xem raw JSON
+            $response = Http::get('https://production.cas.so/address-kit/2025-07-01/provinces');
+            $json = $response->json();
+            return response()->json([
+                'error' => false,
+                'data' => $json['provinces'] ?? []
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
@@ -19,17 +24,20 @@ class LocationController extends Controller
             ], 500);
         }
     }
-
-    // Lấy danh sách quận/huyện theo tỉnh
-    public function getDistricts($provinceId)
-    {
-        $response = Http::get("https://esgoo.net/api-tinhthanh/2/{$provinceId}.htm");
-        return response()->json($response->json());
-    }
-    // Lấy danh sách phường/xã theo quận/huyện
     public function getWards($districtId)
     {
-        $response = Http::get("https://esgoo.net/api-tinhthanh/3/{$districtId}.htm");
-        return response()->json($response->json());
+        try {
+            $response = Http::get("https://production.cas.so/address-kit/2025-07-01/provinces/{$districtId}/communes");
+            $json = $response->json();
+            return response()->json([
+                'error' => false,
+                'data' => $json['communes'] ?? []
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

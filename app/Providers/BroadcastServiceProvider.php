@@ -14,6 +14,14 @@ class BroadcastServiceProvider extends ServiceProvider
     {
         Broadcast::routes();
 
+        $this->loadChannels();
+    }
+
+    /**
+     * Load the channel definitions.
+     */
+    protected function loadChannels()
+    {
         require base_path('routes/channels.php');
     }
 }

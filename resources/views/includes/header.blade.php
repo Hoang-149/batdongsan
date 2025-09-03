@@ -35,25 +35,24 @@
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 login">Đăng nhập</a>
             <a href="#" class="text-red-800 font-semibold hover:text-red-600 register">Đăng ký</a>
         @else
-            {{-- <label class="block text-sm font-semibold text-gray-700 relative">
-                <a href="#">
-                    <i class="fa-regular fa-bell text-red-500 mr-2 text-2xl"></i>
-                    <span
-                        class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full">1</span>
-                </a>
-            </label> --}}
             <div class="relative inline-block">
                 <button id="notification-btn" class="relative">
                     <i class="fa-regular fa-bell text-red-500 mr-2 text-2xl"></i>
                     <span id="notification-count"
-                        class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full hidden">
-                        0
+                        class="absolute -top-2 -right-2 bg-[#E03C31] text-white text-xs px-2 py-0.5 rounded-full {{ $notifications->count() ? '' : 'hidden' }}">
+                        {{ $notifications->count() }}
                     </span>
                 </button>
 
                 <div id="notification-dropdown"
                     class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50">
-                    <ul id="notification-list"></ul>
+                    <ul id="notification-list">
+                        @foreach ($notifications as $notification)
+                            <li class="px-4 py-2 border-b text-sm bg-green-50">
+                                {{ $notification->data['message'] }}
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
 
@@ -77,6 +76,9 @@
                     class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 hidden group-hover:block z-10">
                     <a href="{{ route('profile') }}"
                         class="block px-4 py-2 text-red-600 hover:bg-gray-100 font-semibold">Thông tin cá nhân</a>
+                    <a href="{{ route('user.properties.index') }}"
+                        class="block px-4 py-2 text-red-600 hover:bg-gray-100 font-semibold">Danh sách
+                        tin</a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit"
@@ -108,6 +110,9 @@
         @else
             <a href="{{ route('profile') }}" class="text-red-800 font-semibold hover:text-red-800">Thông tin cá
                 nhân</a>
+            <a href="{{ route('user.properties.index') }}" class="text-red-800 font-semibold hover:text-red-800">Danh
+                sách
+                tin</a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="w-full text-left text-red-800 font-semibold hover:text-red-800">Đăng
@@ -153,6 +158,21 @@
             $('#overlay').fadeOut(200);
         });
 
-
+        $('#notification-btn').on('click', function() {
+            $('#notification-dropdown').toggleClass('hidden');
+            // Nếu dropdown vừa mở thì gọi AJAX đánh dấu đã đọc
+            if (!$('#notification-dropdown').hasClass('hidden')) {
+                $.ajax({
+                    url: '{{ route('notifications.markAsRead') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        $('#notification-count').addClass('hidden').text('0');
+                    }
+                });
+            }
+        });
     });
 </script>

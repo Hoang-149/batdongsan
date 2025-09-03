@@ -4,13 +4,13 @@
 
     <div class="bg-gray-100">
 
-        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <div class="container mx-auto py-4 px-4 sm:px-6 lg:px-0">
         </div>
 
         <!-- Header Search Section -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 py-6 my-6">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-white rounded-lg p-4 sm:py-6">
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 py-6 my-6 mx-2 sm:mx-0">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-0">
+                <div class="bg-white rounded-lg px-0 py-4 sm:py-6">
 
                     <!-- Search Tabs -->
                     <nav class="flex flex-wrap justify-between gap-2 mb-6 border-b border-gray-200 nav-search">
@@ -92,9 +92,8 @@
             </div>
         </div>
 
-
         <!-- Featured Properties Section -->
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-0 py-8">
             <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 class="text-2xl font-bold">Bất động sản nổi bật</h2>
                 <span class="re__content-container-link text-sm sm:text-base">
@@ -132,7 +131,7 @@
 
         <!-- News Section -->
         <div class="bg-gray-100 py-8">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-0">
                 <div class="flex flex-row items-start sm:items-center justify-between mb-6 gap-4">
                     <h2 class="text-2xl font-bold text-gray-800">Tin tức bất động sản</h2>
                     <a href="{{ route('news') }}"
@@ -169,7 +168,7 @@
         </div>
 
         <!-- Location Properties Section -->
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-0 py-8">
             <h2 class="text-2xl font-bold mb-6">Bất động sản theo địa điểm</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- TP. Hồ Chí Minh Card -->
@@ -236,13 +235,13 @@
 
         <!-- Businesses Section -->
         <div class="bg-gray-100 py-8">
-            <h2 class="container mx-auto px-4 sm:px-6 lg:px-8 text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
-            <div class="slider-section1-home px-4 sm:px-6 lg:px-8">
+            <h2 class="container mx-auto px-4 sm:px-6 lg:px-0 text-2xl font-bold mb-6">Doanh nghiệp tiêu biểu</h2>
+            <div class="slider-section1-home px-4 sm:px-6 lg:px-0">
                 @forelse ($businesses as $business)
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition h-fit">
                         <a href="#">
                             <img src="{{ asset($business->image_url) }}" alt="Business Image"
-                                class="w-full h-32 sm:h-40 object-contain">
+                                class="w-full h-32 sm:h-40 object-contain p-4">
                         </a>
                     </div>
                 @empty

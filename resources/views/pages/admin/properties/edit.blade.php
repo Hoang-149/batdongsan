@@ -98,19 +98,12 @@
                                     <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
                                         <option value="0">Tỉnh Thành</option>
                                     </select>
-                                    <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
-                                        <option value="0">Quận Huyện</option>
-                                    </select>
                                     <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
                                         <option value="0">Phường Xã</option>
                                     </select>
                                     <input type="hidden" name="tinh_name" id="tinh_name" />
-                                    <input type="hidden" name="quan_name" id="quan_name" />
                                     <input type="hidden" name="phuong_name" id="phuong_name" />
                                     @error('tinh')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                    @error('quan')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                     @error('phuong')
@@ -271,8 +264,7 @@
 
             window.locationDefault = {
                 tinh: "{{ $property->location ? explode(', ', $property->location)[0] : '' }}",
-                quan: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}",
-                phuong: "{{ $property->location ? explode(', ', $property->location)[2] : '' }}"
+                phuong: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}"
             };
         });
     </script>

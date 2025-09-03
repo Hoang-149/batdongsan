@@ -55,6 +55,10 @@
             </tbody>
         </table>
 
-        {{ $news->links() }}
+
+        <div class="d-flex justify-content-center mt-3">
+            {{ $news->links('pagination::bootstrap-4') }}
+        </div>
+
     </div>
 @endsection

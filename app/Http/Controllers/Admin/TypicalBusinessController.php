@@ -13,7 +13,7 @@ class TypicalBusinessController extends Controller
      */
     public function index()
     {
-        $businesses = TypicalBusiness::all();
+        $businesses = TypicalBusiness::paginate(10);
         return view('pages.admin.typical_business.index', compact('businesses'));
     }
 

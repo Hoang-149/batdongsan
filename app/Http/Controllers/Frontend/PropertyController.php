@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\PropertyImage;
 use App\Models\PropertyType;
+use App\Models\User;
+use App\Notifications\NewPropertyCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -15,8 +17,6 @@ class PropertyController extends Controller
 {
     public function indexBan(Request $request)
     {
-        Log::info('Vo day 1');
-
         $query = Property::with('images')
             ->where('is_verified', 1)
             ->whereIn('demande', [1, 2]);
@@ -132,7 +132,6 @@ class PropertyController extends Controller
 
     public function indexThue(Request $request)
     {
-        Log::info('Vo day 2');
         $query = Property::with('images')
             ->where('is_verified', 1)
             ->whereIn('demande', [0, 2]);
@@ -277,7 +276,6 @@ class PropertyController extends Controller
                 'type_id' => 'required|array|min:1',
                 'type_id.*' => 'exists:propertytypes,type_id',
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
-                'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:projects,project_id',
                 'title' => 'required|string|max:255',
@@ -297,9 +295,7 @@ class PropertyController extends Controller
 
         try {
             // Tạo chuỗi location từ tỉnh, quận, phường
-            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
-
-            // dd($request->all());
+            $location = $request->tinh_name . ', ' . $request->phuong_name;
 
             $property = Property::create([
                 'user_id' => auth()->id(),
@@ -316,6 +312,13 @@ class PropertyController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            $admin = User::whereHas('roles', function ($query) {
+                $query->where('role_id', '1');
+            })->first();
+            if ($admin) {
+                $admin->notify(new NewPropertyCreatedNotification($property));
+            }
 
             if (!empty($request->type_id)) {
                 $property->propertyTypes()->attach($request->type_id);
@@ -367,9 +370,9 @@ class PropertyController extends Controller
         $property = Property::findOrFail($id);
         $propertyTypes = PropertyType::all();
 
-        list($tinhName, $quanName, $phuongName) = array_map('trim', explode(',', $property->location));
+        list($tinhName, $phuongName) = array_map('trim', explode(',', $property->location));
 
-        return view('pages.frontend.nha_dat.edit', compact('property', 'user', 'propertyTypes', 'tinhName', 'quanName', 'phuongName'));
+        return view('pages.frontend.nha_dat.edit', compact('property', 'user', 'propertyTypes', 'tinhName', 'phuongName'));
     }
 
     public function deleteImage($id)
@@ -395,7 +398,6 @@ class PropertyController extends Controller
                 'type_id' => 'required|array|min:1',
                 'type_id.*' => 'exists:propertytypes,type_id',
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
-                'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:Projects,project_id',
                 'title' => 'required|string|max:255',
@@ -414,8 +416,7 @@ class PropertyController extends Controller
         }
 
         try {
-            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
-            // $location = 'Thành phố Hồ Chí Minh, Quận Tân Phú, Phường Tây Thạnh';
+            $location = $request->tinh_name . ', ' . $request->phuong_name;
 
             $property->update([
                 'user_id' => auth()->id(),

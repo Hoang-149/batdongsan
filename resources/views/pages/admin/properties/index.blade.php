@@ -36,14 +36,9 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Tiêu đề</th>
-                                        {{-- <th>Người đăng</th> --}}
-                                        {{-- <th>Loại</th> --}}
                                         <th>Địa chỉ</th>
-                                        {{-- <th>Images</th> --}}
-                                        {{-- <th>Mức giá</th> --}}
                                         <th>Diện tích</th>
                                         <th>Xác thực</th>
-                                        {{-- <th>VIP Status</th> --}}
                                         <th>Nhu cầu</th>
                                         <th>Hành động</th>
                                     </tr>
@@ -53,27 +48,8 @@
                                         <tr>
                                             <td>{{ $property->property_id }}</td>
                                             <td>{{ \Illuminate\Support\Str::limit(strip_tags($property->title), 50) }}</td>
-                                            {{-- <td>{{ $property->user->username ?? 'N/A' }}</td> --}}
-                                            {{-- <td>{{ implode(', ', $property->propertyTypes->pluck('type_name')->toArray()) }} --}}
                                             </td>
                                             <td>{{ $property->location ?? 'N/A' }}</td>
-                                            {{-- <td>
-                                                <div class="flex flex-wrap gap-2">
-                                                    @if ($property->images->isNotEmpty())
-                                                        @foreach ($property->images as $image)
-                                                            <a href="{{ asset($image->image_url) }}" target="_blank"
-                                                                title="View full image">
-                                                                <img src="{{ asset($image->image_url) }}"
-                                                                    class="w-8 object-cover rounded hover:scale-105 transition-transform duration-200"
-                                                                    alt="Property Image" width="64px">
-                                                            </a>
-                                                        @endforeach
-                                                    @else
-                                                        <span class="text-gray-500">No images available</span>
-                                                    @endif
-                                                </div>
-                                            </td> --}}
-                                            {{-- <td>{{ $property->price ? number_format($property->price, 2) : 'N/A' }}</td> --}}
                                             <td>{{ $property->area ? number_format($property->area, 2) : 'N/A' }}</td>
 
                                             <td>
@@ -121,6 +97,10 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $properties->links('pagination::bootstrap-4') }}
+                            </div>
+
                         </div>
                     </div>
                 </div>

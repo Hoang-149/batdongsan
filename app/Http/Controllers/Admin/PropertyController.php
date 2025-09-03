@@ -11,6 +11,7 @@ use App\Models\PropertyImage;
 use App\Models\PropertyType;
 use App\Models\User;
 use App\Models\VipSubscription;
+use App\Notifications\PropertyVerifiedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -50,7 +51,6 @@ class PropertyController extends Controller
                 'type_id' => 'required|array|min:1',
                 'type_id.*' => 'exists:propertytypes,type_id',
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
-                'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:projects,project_id',
                 'title' => 'required|string|max:255',
@@ -71,7 +71,7 @@ class PropertyController extends Controller
 
         try {
             // Tạo chuỗi location từ tỉnh, quận, phường
-            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+            $location = $request->tinh_name . ', ' . $request->phuong_name;
 
             // dd($request->all());
 
@@ -144,7 +144,6 @@ class PropertyController extends Controller
                 'type_id' => 'required|array|min:1',
                 'type_id.*' => 'exists:propertytypes,type_id',
                 'phuong_name' => 'required|string|not_in:0', // Validate tỉnh
-                'quan_name' => 'required|string|not_in:0', // Validate quận
                 'tinh_name' => 'required|string|not_in:0', // Validate phường
                 'project_id' => 'nullable|exists:projects,project_id',
                 'title' => 'required|string|max:255',
@@ -167,7 +166,14 @@ class PropertyController extends Controller
 
         try {
             // Tạo chuỗi location từ tỉnh, quận, phường
-            $location = $request->tinh_name . ', ' . $request->quan_name . ', ' . $request->phuong_name;
+            $location = $request->tinh_name . ', ' . $request->phuong_name;
+
+
+            // Gửi thông báo nếu bài đăng được xác thực
+            if ($request->is_verified && !$property->is_verified) {
+                $property->user->notify(new PropertyVerifiedNotification($property));
+                broadcast(new PropertyVerified($property));
+            }
 
             // Update property with validated data
             $property->update([
@@ -184,11 +190,7 @@ class PropertyController extends Controller
                 'updated_at' => now(),
             ]);
 
-            // Gửi thông báo nếu bài đăng được xác thực
-            if ($request->is_verified && !$property->is_verified) {
-                // Bắn event realtime
-                broadcast(new PropertyVerified($property));
-            }
+
 
             if (!empty($request->type_id)) {
                 $property->propertyTypes()->sync($request->type_id); // Sync để cập nhật hoặc xóa các loại cũ

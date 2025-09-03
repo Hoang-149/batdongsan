@@ -75,6 +75,11 @@ Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ck
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+Route::post('/notifications/mark-as-read', function () {
+    auth()->user()->unreadNotifications->markAsRead();
+    return response()->json(['success' => true]);
+})->middleware('auth')->name('notifications.markAsRead');
+
 Route::prefix('admin')->middleware('check.admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
 
@@ -139,7 +144,6 @@ Route::prefix('admin')->middleware('check.admin')->group(function () {
 });
 
 Route::get('/api/tinh', [LocationController::class, 'getProvinces']);
-Route::get('/api/quan/{provinceId}', [LocationController::class, 'getDistricts']);
 Route::get('/api/phuong/{districtId}', [LocationController::class, 'getWards']);
 
 Broadcast::routes();

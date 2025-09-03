@@ -30,12 +30,6 @@ class PropertyVerified implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    // public function broadcastOn(): array
-    // {
-    //     return [
-    //         new PrivateChannel('channel-name'),
-    //     ];
-    // }
 
     public function broadcastOn()
     {
@@ -45,6 +39,6 @@ class PropertyVerified implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'property.update';
+        return 'PropertyVerified';
     }
 }

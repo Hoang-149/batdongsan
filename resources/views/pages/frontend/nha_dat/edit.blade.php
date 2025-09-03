@@ -95,16 +95,11 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">Địa chỉ <span
                                     class="text-red-500">*</span></label>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <select
                                     class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200"
                                     id="tinh" name="tinh" title="Chọn Tỉnh Thành">
                                     <option value="0">Tỉnh Thành</option>
-                                </select>
-                                <select
-                                    class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200"
-                                    id="quan" name="quan" title="Chọn Quận Huyện">
-                                    <option value="0">Quận Huyện</option>
                                 </select>
                                 <select
                                     class="w-full rounded-lg border-2 p-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 shadow-sm transition-colors duration-200"
@@ -113,12 +108,8 @@
                                 </select>
                             </div>
                             <input type="hidden" name="tinh_name" id="tinh_name" />
-                            <input type="hidden" name="quan_name" id="quan_name" />
                             <input type="hidden" name="phuong_name" id="phuong_name" />
                             @error('tinh')
-                                <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
-                            @enderror
-                            @error('quan')
                                 <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
                             @enderror
                             @error('phuong')
@@ -252,8 +243,7 @@
             // Gán địa chỉ mặc định cho dropdown (nếu có)
             window.locationDefault = {
                 tinh: "{{ $property->location ? explode(', ', $property->location)[0] : '' }}",
-                quan: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}",
-                phuong: "{{ $property->location ? explode(', ', $property->location)[2] : '' }}"
+                phuong: "{{ $property->location ? explode(', ', $property->location)[1] : '' }}"
             };
         });
     </script>
