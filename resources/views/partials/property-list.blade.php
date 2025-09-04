@@ -33,7 +33,7 @@
                     {{ $property->title }}
                 </h3>
                 <p class="text-[#E03C31] font-bold text-xl mb-2">
-                    {{ $property->price ? number_format($property->price) . ' ' . ($property->price_type == 0 ? 'triệu' : 'tỷ') : 'Thỏa thuận' }}
+                    {{ format_price($property->price) }}
                 </p>
                 <p class="text-gray-600 mb-2">
                     {{ $property->area }} m² -

@@ -8,7 +8,7 @@
         </div>
 
         <!-- Header Search Section -->
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 py-6 my-6 mx-2 sm:mx-0">
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 px-0 sm:px-6 py-6 my-6 mx-2 sm:mx-0">
             <div class="container mx-auto px-4 sm:px-6 lg:px-0">
                 <div class="bg-white rounded-lg px-0 py-4 sm:py-6">
 
@@ -112,11 +112,11 @@
                             <div class="p-4">
                                 <h3 class="font-semibold text-lg mb-2 line-clamp-2">{{ $property->title }}</h3>
                                 <p class="text-[#E03C31] font-bold">
-                                    {{ $property->price ? number_format($property->price) . ' ' . ($property->price_type == 0 ? 'triệu' : 'tỷ') : 'Thỏa thuận' }}
+                                    {{ format_price($property->price) }}
                                 </p>
                                 <p class="text-gray-600 text-sm mt-2">{{ $property->location ?? 'N/A' }}</p>
                                 <div class="flex gap-4 mt-2 text-sm text-gray-500">
-                                    <span>{{ $property->area }}m²</span>
+                                    <span>{{ $property->area }} m²</span>
                                 </div>
                             </div>
                         </a>
@@ -173,7 +173,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- TP. Hồ Chí Minh Card -->
                 <div class="relative rounded-lg overflow-hidden sm:col-span-2">
-                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Hồ Chí Minh') }}">
+                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Thành phố Hồ Chí Minh') }}">
                         <img src="assets/img/hcmcity.webp" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
@@ -185,7 +185,7 @@
 
                 <!-- Hà Nội Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Hà Nội') }}">
+                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Thành phố Hà Nội') }}">
                         <img src="assets/img/HN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
@@ -197,11 +197,11 @@
 
                 <!-- Đà Nẵng Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Đà Nẵng') }}">
+                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Thành phố Đà Nẵng') }}">
                         <img src="assets/img/DN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
-                            <h3 class="text-xl font-bold text-white">Đà Nẵng</h3>
+                            <h3 class="text-xl font-bold text-white">Thành phố Đà Nẵng</h3>
                             <p class="text-white">99 tin đăng</p>
                         </div>
                     </a>
@@ -209,7 +209,7 @@
 
                 <!-- Bình Dương Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Bình Dương') }}">
+                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Tỉnh Bình Dương') }}">
                         <img src="assets/img/BD.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">
@@ -221,7 +221,7 @@
 
                 <!-- Đồng Nai Card -->
                 <div class="relative rounded-lg overflow-hidden">
-                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Đồng Nai') }}">
+                    <a href="{{ url('/nha-dat-ban') }}?search_tinh={{ urlencode('Tỉnh Đồng Nai') }}">
                         <img src="assets/img/DNN.jpg" class="w-full h-[200px] sm:h-[250px] object-cover">
                         <div
                             class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent hover:underline text-white">

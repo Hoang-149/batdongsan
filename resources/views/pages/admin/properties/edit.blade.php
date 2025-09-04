@@ -181,7 +181,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="price">Mức giá(VND)</label>
+                                    <label for="price">Mức giá(triệu VND)</label>
                                     <input type="number" name="price" id="price" step="0.01"
                                         class="form-control @error('price') is-invalid @enderror"
                                         value="{{ old('price', $property->price) }}">
@@ -191,7 +191,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="area">Diện tích</label>
+                                    <label for="area">Diện tích(m2)</label>
                                     <input type="number" name="area" id="area" step="0.01"
                                         class="form-control @error('area') is-invalid @enderror"
                                         value="{{ old('area', $property->area) }}">

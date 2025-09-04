@@ -51,7 +51,7 @@
                                 </div>
                                 <span class="text-gray-700">
                                     @if ($property->price)
-                                        {{ number_format($property->price, 0, ',', '.') }} VNĐ
+                                        {{ format_price($property->price) }}
                                     @else
                                         Liên hệ <a href="tel:{{ $property->user->phone_number }}"
                                             class="font-semibold">{{ $property->user->phone_number }}</a>

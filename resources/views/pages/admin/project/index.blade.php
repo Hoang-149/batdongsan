@@ -37,7 +37,7 @@
                                         <th>ID</th>
                                         <th>Tiêu đề</th>
                                         <th>Địa chỉ</th>
-                                        <th>Diện tích</th>
+                                        <th>Diện tích(m2)</th>
                                         <th>Trạng thái</th>
                                         <th>Xác thực</th>
                                         <th>Hành động</th>

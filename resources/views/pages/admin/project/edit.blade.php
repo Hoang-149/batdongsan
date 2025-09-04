@@ -141,7 +141,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="area">Diện tích</label>
+                                    <label for="area">Diện tích(m2)</label>
                                     <input type="number" name="area" id="area" step="0.01"
                                         class="form-control @error('area') is-invalid @enderror"
                                         value="{{ old('area', $project->area) }}">

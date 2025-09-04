@@ -41,7 +41,7 @@
                                             {{ $property->location }}
                                         </p>
                                         <p class="text-red-600 font-bold mb-3">
-                                            {{ $property->price ? number_format($property->price) . ' ' . ($property->price_type == 0 ? 'triệu' : 'tỷ') : 'Thỏa thuận' }}
+                                            {{ format_price($property->price) }}
                                         </p>
                                         <div class="flex justify-between items-center text-sm mt-auto">
                                             <a href="{{ route('properties.show', $property->slug) }}"
