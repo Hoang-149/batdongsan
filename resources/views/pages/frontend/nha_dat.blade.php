@@ -30,7 +30,7 @@
                                 class="w-full sm:w-11/12 pl-8 sm:pl-12 pr-8 py-3 bg-transparent border-none focus:ring-0 focus:outline-none text-gray-800 placeholder-gray-400 text-xs sm:text-base font-normal">
 
                             <div id="selected-quans"
-                                class="absolute left-0 top-full w-full  p-2 max-h-40 overflow-y-auto z-10 flex flex-wrap gap-2">
+                                class="absolute left-0 top-full w-full  py-2 max-h-40 overflow-y-auto z-10 flex flex-wrap gap-2">
                             </div>
 
                             <select id="tinh-select"
@@ -258,7 +258,7 @@
                         price_filter: priceFilter,
                         is_verified: isVerified,
                         search_tinh: searchTinh,
-                        search_quan: searchQuan,
+                        search_phuong: searchQuan,
                         // professional_agent: professionalAgent,
                     },
                     success: function(response) {
@@ -384,8 +384,8 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const searchTinhParam = urlParams.get('search_tinh');
-            const searchQuanParam = urlParams.get('search_quan');
-            const searchQuanIdsParam = urlParams.get('search_quan_ids');
+            const searchQuanParam = urlParams.get('search_phuong');
+            const searchQuanIdsParam = urlParams.get('search_phuong_ids');
             const propertyTypeParam = urlParams.get('property_type');
             const priceRangesParam = urlParams.get('price_filter');
             const areaRangesParam = urlParams.get('area_ranges');
@@ -469,7 +469,7 @@
                 $('#selected-quans').empty();
                 selectedQuans.forEach(quan => {
                     $('#selected-quans').append(`
-                <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1 mr-2">
+                <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1">
                     ${quan.name}
                     <button class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none" data-id="${quan.code}">
                         <i class="fas fa-times"></i>

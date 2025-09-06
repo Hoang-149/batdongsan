@@ -64,8 +64,8 @@ class PropertyController extends Controller
             $query->where('location', 'like', "%{$search_tinh}%");
         }
 
-        if ($request->filled('search_quan')) {
-            $searchQuans = explode(', ', $request->input('search_quan'));
+        if ($request->filled('search_phuong')) {
+            $searchQuans = explode(', ', $request->input('search_phuong'));
             $query->where(function ($q) use ($searchQuans) {
                 foreach ($searchQuans as $quan) {
                     if (trim($quan) !== '') {
@@ -179,8 +179,8 @@ class PropertyController extends Controller
             $query->where('location', 'like', "%{$search_tinh}%");
         }
 
-        if ($request->filled('search_quan')) {
-            $searchQuans = explode(', ', $request->input('search_quan'));
+        if ($request->filled('search_phuong')) {
+            $searchQuans = explode(', ', $request->input('search_phuong'));
             $query->where(function ($q) use ($searchQuans) {
                 foreach ($searchQuans as $quan) {
                     if (trim($quan) !== '') {

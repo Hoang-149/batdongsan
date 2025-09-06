@@ -89,7 +89,7 @@ jQuery(document).ready(function ($) {
             $(`#selected-quans-${type}`).empty();
             selectedQuans.forEach((quan) => {
                 $(`#selected-quans-${type}`).append(`
-                    <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1 mr-2">
+                    <span class="flex items-center bg-gray-100 text-gray-700 text-sm rounded-full px-3 py-1">
                         ${quan.name}
                         <button class="ml-2 text-gray-500 hover:text-red-500" data-id="${quan.code}">
                             <i class="fas fa-times"></i>
@@ -137,15 +137,15 @@ jQuery(document).ready(function ($) {
                 .find("option:selected")
                 .data("name");
             let searchQuan = selectedQuans.map((q) => q.name).join(", ");
-            let searchQuanIds = selectedQuans.map((q) => q.id).join(",");
+            let searchQuanIds = selectedQuans.map((q) => q.code).join(",");
 
             const query_nha_dat = $.param({
                 property_type: propertyType,
                 price_filter: priceFilter,
                 "area_ranges[]": areaRanges,
                 search_tinh: searchTinh,
-                search_quan: searchQuan,
-                search_quan_ids: searchQuanIds,
+                search_phuong: searchQuan,
+                search_phuong_ids: searchQuanIds,
             });
 
             const query_du_an = $.param({
